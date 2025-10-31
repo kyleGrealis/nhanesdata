@@ -1,0 +1,10 @@
+data/
+*.rda
+*.parquet
+
+# R stuff
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
