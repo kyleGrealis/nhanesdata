@@ -3,7 +3,10 @@
     "allow": [
       "Bash(mkdir:*)",
       "Bash(quarto render:*)",
-      "Bash(Rscript:*)"
+      "Bash(Rscript:*)",
+      "Bash(test:*)",
+      "Bash(cat:*)",
+      "Bash(sed:*)"
     ],
     "deny": [],
     "ask": []

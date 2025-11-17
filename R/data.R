@@ -151,6 +151,8 @@ pull_nhanes <- function(nhanes_table, selected_variables = NULL, save = TRUE) {
     }
 
     # Save as .rda file (the object name will match the table name)
+    # Assign to a variable with the dataset name, then save it
+    assign(tolower(nhanes_table), mapped_dfr)
     save(
       list = tolower(nhanes_table),
       file = sprintf('data/raw/R/%s.rda', tolower(nhanes_table))

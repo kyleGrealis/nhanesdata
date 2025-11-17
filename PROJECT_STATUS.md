@@ -12,27 +12,70 @@ This document summarizes the work completed and the outstanding tasks for the `n
     -   `pins`-related logic from `pins_2.R` has been encapsulated into `nhanes_pin_write()` in `R/pins.R`.
     -   `R/custom_functions.R` has been cleaned up to contain only `find_variable` and `drop_label_kyle`, with appropriate `roxygen2` tags and `DESCRIPTION` updates for new dependencies (`rlang`, `tidyselect`, `cli`).
 -   **Documentation Generation:** `roxygen2` comments have been added to functions, and `devtools::document()` has been run to generate `.Rd` help files in `man/` and the `NAMESPACE` file.
--   **Vignette Creation:** The original `gather_nhanes_data.qmd` has been adapted into `vignettes/introduction.qmd`, serving as an introductory user guide for the package.
+-   **Vignette Creation:** Two Quarto vignettes have been created:
+    -   `vignettes/introduction.qmd` - Introductory user guide
+    -   `vignettes/getting-started.qmd` - Getting started guide
 -   **Original Script Preservation:** The full original content of `gather_nhanes_data.qmd` has been saved to `inst/extdata/original_data_pull_script.qmd` for historical reference.
--   **Unit Test Framework:** The `testthat` framework has been set up, and a basic unit test for `read_r2()` has been added in `tests/testthat/test-read_r2.R`.
+-   **Unit Test Framework:** The `testthat` framework has been set up with comprehensive tests:
+    -   `tests/testthat/test-read_r2.R` - Tests for `read_r2()` function
+    -   `tests/testthat/test-change-detection.R` - Tests for dataset change detection (30 passing tests)
+    -   `tests/testthat/test-config-loader.R` - Tests for YAML configuration loading (38 passing tests)
+    -   `tests/testthat/test-drop-labels.R` - Tests for `drop_label_kyle()` function (79 passing tests)
+    -   `tests/testthat/test-find-variable.R` - Tests for `find_variable()` function
+
+### New Features Added
+-   **Dataset Change Detection System:**
+    -   `detect_data_changes()` - Compares MD5 checksums to detect if datasets have changed
+    -   `update_checksum()` - Updates the `.checksums.json` file with new hashes
+    -   Supports automated workflow for detecting when CDC updates their data
+-   **Configuration Management:**
+    -   `load_dataset_config()` - Loads dataset configuration from `inst/extdata/datasets.yml`
+    -   YAML configuration file for managing dataset metadata (name, description, category, notes)
+-   **Workflow Automation Script:**
+    -   `inst/scripts/workflow_update.R` - Automated orchestration script for:
+        - Pulling fresh data from CDC servers
+        - Detecting changes using MD5 checksums
+        - Uploading to Cloudflare R2 bucket
+        - Generating workflow summary reports
+    -   Supports `--dry-run` and `--datasets` flags for testing and selective updates
 
 ### Repository Management
--   **Commit Message Provided:** A Conventional Commits-formatted message was provided for the package conversion.
--   **Local Directory Renamed:** The local project directory was renamed from `nhanes-data` to `nhanesdata` for consistency.
--   **Git Remote Updated:** The local Git remote URL was updated to `https://github.com/kyleGrealis/nhanesdata.git`.
+-   **Commit Messages:** Following Conventional Commits format
+-   **Local Directory:** Renamed from `nhanes-data` to `nhanesdata` for consistency
+-   **Git Remote:** Updated to SSH (`git@github.com:kyleGrealis/nhanesdata.git`)
+-   **Recent Commits:**
+    -   `816ae93` - Dataset change detection and configuration management
+    -   `1d31869` - Package structure initialization and script refactoring
 
 ## Remaining Tasks
 
 ### High Priority
--   **Fix Failing Unit Test:** The existing `read_r2` unit test is currently failing due to an issue with `httptest2` not correctly mocking the `arrow::read_parquet` call. This needs to be debugged and resolved.
+-   **Fix R CMD check Warnings:**
+    -   Add `VignetteBuilder: quarto` to DESCRIPTION file to resolve vignette warnings
+    -   Fix LICENSE DCF format issue
+    -   Add global variable bindings to resolve NSE notes:
+        - `Table`, `DocURL` (in `get_url`)
+        - `year`, `seqn` (in `pull_nhanes`)
+        - `Begin.Year`, `Variable.Name` (in `term_search`)
+-   **Build Vignettes:** Run `quarto::quarto_render()` or configure proper vignette builder
 
 ### Medium Priority
--   **Add Comprehensive Unit Tests:**
-    -   Develop robust unit tests for all exported functions (`pull_nhanes`, `get_url`, `term_search`, `var_search`, `nhanes_pin_write`, `find_variable`, `drop_label_kyle`) to ensure their correctness and reliability.
--   **Build and Check Package:** Run `devtools::check()` to perform a comprehensive check of the package against R CMD check standards, identifying any potential issues, warnings, or errors.
--   **Local Installation and Testing:** Install the `nhanesdata` package locally and perform manual tests to ensure all functions work as expected in a real R environment.
+-   **Complete Unit Test Coverage:**
+    -   Add tests for `pull_nhanes()` (complex function, needs mocking)
+    -   Add tests for `get_url()`, `term_search()`, `var_search()`
+    -   Add tests for `nhanes_pin_write()` (R2 upload functionality)
+-   **Improve Package Check Status:**
+    -   Resolve top-level file warnings (`SECURITY.md`, `logos/` directory)
+    -   Consider moving these to `.Rbuildignore` if appropriate
+-   **Local Installation and Testing:** Install the package locally with `devtools::install()` and perform manual integration testing
 
 ### Low Priority / Future Considerations
--   **Review `R/_libraries.R`:** This file is likely redundant now that dependencies are declared in `DESCRIPTION` and imported via `roxygen2`. It should be removed or repurposed.
--   **Review `R/survey_example.R`:** This file might contain useful example code that could be integrated into package examples or additional vignettes.
--   **Review `nhanes-data.qmd`:** This file was in the project root and is now ignored. Its purpose should be reviewed; if it contains valuable content, it could be converted into another vignette or moved to `inst/extdata`.
+-   **Review `R/_libraries.R`:** This file is likely redundant now that dependencies are declared in `DESCRIPTION` and imported via `roxygen2`. Consider removing.
+-   **GitHub Actions CI/CD:**
+    -   Set up automated workflow using `inst/scripts/workflow_update.R`
+    -   Configure R2 credentials as GitHub Secrets
+    -   Schedule periodic data updates
+-   **Documentation Improvements:**
+    -   Add package-level documentation (`package.R` or similar)
+    -   Create pkgdown website for online documentation
+    -   Add more detailed examples to function documentation

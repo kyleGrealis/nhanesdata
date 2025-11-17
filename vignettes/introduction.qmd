@@ -4,7 +4,7 @@ format: html
 editor: visual
 vignette: >
   %\VignetteIndexEntry{Introduction to nhanesdata}
-  %\VignetteEngine{quarto::quarto_ βρίσκεται}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -26,9 +26,9 @@ library(dplyr)
 
 The package includes several helper functions to find specific NHANES data.
 
-*   `term_search()`: Search for a term across variable names and descriptions.
-*   `var_search()`: Find the datasets a specific variable belongs to.
-*   `get_url()`: Get a direct link to the CDC's documentation for a data table.
+*   `term_search()`: Search for a term across variable names and descriptions.  
+*   `var_search()`: Find the datasets a specific variable belongs to.  
+*   `get_url()`: Get a direct link to the CDC's documentation for a data table.  
 
 For example, let's find data related to "caffeine":
 

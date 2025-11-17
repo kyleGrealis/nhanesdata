@@ -8,11 +8,11 @@ An R package for accessing NHANES (National Health and Nutrition Examination Sur
 
 This package provides:
 
-1. **Automated Data Updates**: GitHub Actions workflow pulls fresh NHANES data quarterly from CDC servers
-2. **Public Data Access**: Pre-processed datasets hosted on Cloudflare R2 for fast, reliable downloads
-3. **Data Harmonization**: Seamlessly combines survey cycles (1999-2021) with automatic type reconciliation
-4. **Dual Storage Formats**: Saves data as both `.rda` (R native) and `.parquet` (cross-platform)
-5. **Change Detection**: MD5 checksums ensure only updated datasets are uploaded to cloud storage
+1. **Automated Data Updates**: GitHub Actions workflow pulls fresh NHANES data quarterly from CDC servers  
+2. **Public Data Access**: Pre-processed datasets hosted on Cloudflare R2 for fast, reliable downloads  
+3. **Data Harmonization**: Seamlessly combines survey cycles (1999-2021) with automatic type reconciliation  
+4. **Dual Storage Formats**: Saves data as both `.rda` (R native) and `.parquet` (cross-platform)  
+5. **Change Detection**: MD5 checksums ensure only updated datasets are uploaded to cloud storage  
 
 All processed datasets are publicly available at `https://nhanes.kylegrealis.com/` with no authentication required.
 
@@ -43,22 +43,22 @@ demo_fresh <- pull_nhanes('demo')
 
 This package includes a **fully automated GitHub Actions workflow** that:
 
-1. **Runs quarterly** (Jan 1, Apr 1, Jul 1, Oct 1 at 2 AM UTC)
-2. **Pulls fresh data** from CDC servers for all 66 NHANES datasets
-3. **Detects changes** using MD5 checksums (only uploads modified data)
-4. **Uploads to R2** (Cloudflare object storage) for public access
-5. **Commits checksums** to track data versions over time
+1. **Runs quarterly** (Jan 1, Apr 1, Jul 1, Oct 1 at 2 AM UTC)  
+2. **Pulls fresh data** from CDC servers for all 66 NHANES datasets  
+3. **Detects changes** using MD5 checksums (only uploads modified data)  
+4. **Uploads to R2** (Cloudflare object storage) for public access  
+5. **Commits checksums** to track data versions over time  
 
 ### Manual Workflow Triggers
 
 You can also trigger data updates manually:
 
-**Via GitHub UI:**
-1. Go to **Actions** → **Update NHANES Data**
-2. Click **Run workflow**
-3. Optional: Specify datasets (comma-separated) or enable dry-run mode
+**Via GitHub UI:**  
+1. Go to **Actions** → **Update NHANES Data**  
+2. Click **Run workflow**  
+3. Optional: Specify datasets (comma-separated) or enable dry-run mode  
 
-**Via GitHub CLI:**
+**Via GitHub CLI:**  
 ```bash
 # Update all datasets
 gh workflow run update-nhanes-data.yml
@@ -74,20 +74,20 @@ gh workflow run update-nhanes-data.yml -f dry_run=true
 
 The automation processes **66 NHANES datasets** across two categories:
 
-**Questionnaire/Interview Tables (50):**
-- `demo` - Demographics
-- `bpq` - Blood Pressure & Cholesterol Questionnaire
-- `diq` - Diabetes
-- `smq` - Smoking
-- `alq` - Alcohol
-- ... and 45 more (see `inst/extdata/datasets.yml` for full list)
+**Questionnaire/Interview Tables (50):**  
+- `demo` - Demographics  
+- `bpq` - Blood Pressure & Cholesterol Questionnaire  
+- `diq` - Diabetes  
+- `smq` - Smoking  
+- `alq` - Alcohol  
+- ... and 45 more (see `inst/extdata/datasets.yml` for full list)  
 
-**Examination Tables (16):**
-- `bmx` - Body Measures
-- `bpx` - Blood Pressure (Examination)
-- `cbc` - Blood Counts
-- `trigly` - Triglycerides
-- ... and 12 more
+**Examination Tables (16):**  
+- `bmx` - Body Measures  
+- `bpx` - Blood Pressure (Examination)  
+- `cbc` - Blood Counts  
+- `trigly` - Triglycerides  
+- ... and 12 more  
 
 ## Package Structure
 
@@ -116,14 +116,14 @@ nhanesdata/
 
 ### Data Acquisition
 
-**`pull_nhanes(nhanes_table, selected_variables = NULL, save = TRUE)`**
+**`pull_nhanes(nhanes_table, selected_variables = NULL, save = TRUE)`**  
 
 Pulls all available cycles for a given NHANES table name and harmonizes them into a single dataset.
 
-- **Handles type mismatches**: Automatically coerces conflicting variable types across cycles
-- **Adds survey year**: Prepends `year` variable to track survey cycle
-- **Saves dual formats**: Outputs both `.rda` (for R) and `.parquet` (for cross-platform use)
-- **Case-insensitive**: Accepts lowercase table names (`'demo'` or `'DEMO'`)
+- **Handles type mismatches**: Automatically coerces conflicting variable types across cycles  
+- **Adds survey year**: Prepends `year` variable to track survey cycle  
+- **Saves dual formats**: Outputs both `.rda` (for R) and `.parquet` (for cross-platform use)  
+- **Case-insensitive**: Accepts lowercase table names (`'demo'` or `'DEMO'`)  
 
 Example:
 ```r
@@ -136,13 +136,13 @@ alq <- pull_nhanes('alq', selected_variables = c('SEQN', 'ALQ101', 'ALQ130'))
 
 ### Data Loading
 
-**`read_r2(dataset, type = 'parquet')`**
+**`read_r2(dataset, type = 'parquet')`**  
 
 Loads pre-processed NHANES data from public Cloudflare R2 storage.
 
-- **No re-downloading required**: Access already-processed data
-- **Faster than CDC servers**: Hosted on Cloudflare for reliability
-- **Public access**: No authentication needed
+- **No re-downloading required**: Access already-processed data  
+- **Faster than CDC servers**: Hosted on Cloudflare for reliability  
+- **Public access**: No authentication needed  
 
 Example:
 ```r
@@ -155,26 +155,26 @@ acq <- read_r2('acq')
 
 ### Helper Functions
 
-- **`get_url(table)`**: Returns the CDC codebook URL for a given table
-- **`term_search(var)`**: Wrapper around `nhanesA::nhanesSearch()` with cleaner output
-- **`var_search(var)`**: Wrapper around `nhanesA::nhanesSearchVarName()` with cleaner output
-- **`find_variable(var_name)`**: Searches all loaded data frames for a specific variable
-- **`drop_label_kyle(df, ...)`**: Removes variable labels that cause join conflicts
+- **`get_url(table)`**: Returns the CDC codebook URL for a given table  
+- **`term_search(var)`**: Wrapper around `nhanesA::nhanesSearch()` with cleaner output  
+- **`var_search(var)`**: Wrapper around `nhanesA::nhanesSearchVarName()` with cleaner output  
+- **`find_variable(var_name)`**: Searches all loaded data frames for a specific variable  
+- **`drop_label_kyle(df, ...)`**: Removes variable labels that cause join conflicts  
 
 ## Dependencies
 
 ### Core packages:
-- **tidyverse**: Data manipulation and pipelines
-- **nhanesA**: Interface to NHANES data API
-- **arrow**: Fast parquet file I/O
-- **janitor**: Variable name cleaning
-- **haven** / **foreign**: Reading CDC data formats
+- **tidyverse**: Data manipulation and pipelines  
+- **nhanesA**: Interface to NHANES data API  
+- **arrow**: Fast parquet file I/O  
+- **janitor**: Variable name cleaning  
+- **haven** / **foreign**: Reading CDC data formats  
 
 ### Optional packages:
-- **pins**: For pushing data to cloud storage (S3-compatible)
-- **survey** / **srvyr**: Complex survey analysis (not used in data acquisition)
-- **gtsummary** / **gt**: Table formatting (for downstream analysis)
-- **tidymodels**: Modeling framework (for downstream analysis)
+- **pins**: For pushing data to cloud storage (S3-compatible)  
+- **survey** / **srvyr**: Complex survey analysis (not used in data acquisition)  
+- **gtsummary** / **gt**: Table formatting (for downstream analysis)  
+- **tidymodels**: Modeling framework (for downstream analysis)  
 
 Install dependencies:
 ```r
@@ -208,9 +208,9 @@ This pattern applies to **all 66 datasets**: `BPX`, `BPX_B`, `BPX_C`, ..., `BPX_
 
 We **combine all cycles** and store them by **base name only** (no suffixes):
 
-- CDC has: `DEMO`, `DEMO_B`, `DEMO_C`, ..., `DEMO_L` (11 separate files)
-- We store: `demo` (1 merged file with all cycles)
-- A `year` column automatically tracks which cycle each row came from
+- CDC has: `DEMO`, `DEMO_B`, `DEMO_C`, ..., `DEMO_L` (11 separate files)  
+- We store: `demo` (1 merged file with all cycles)  
+- A `year` column automatically tracks which cycle each row came from  
 
 This means:
 
@@ -231,10 +231,10 @@ demo <- read_r2('demo')
 When searching CDC documentation, you'll see table names with suffixes (e.g., `DEMO_J` for 2017-2018 demographics). But when using this package, you use the **base name** (`demo`) and get **all cycles automatically merged**.
 
 This design:
-- Simplifies data access (one name instead of tracking 11 suffix codes)
-- Enables longitudinal analysis (all years in one dataset)
-- Handles type mismatches between cycles automatically
-- Adds temporal context via the `year` column
+- Simplifies data access (one name instead of tracking 11 suffix codes)  
+- Enables longitudinal analysis (all years in one dataset)  
+- Handles type mismatches between cycles automatically  
+- Adds temporal context via the `year` column  
 
 ## Usage Examples
 
@@ -358,8 +358,8 @@ find_variable('bpxsy1')  # Systolic blood pressure
 
 Both formats are saved automatically during the automated pipeline:
 
-- **`.parquet`** (default): Cross-platform, faster I/O, columnar storage, works with Python/Julia/Arrow
-- **`.rda`**: Native R format, preserves object names, slightly smaller file size
+- **`.parquet`** (default): Cross-platform, faster I/O, columnar storage, works with Python/Julia/Arrow  
+- **`.rda`**: Native R format, preserves object names, slightly smaller file size  
 
 The `read_r2()` function defaults to `.parquet` for better performance and interoperability.
 
@@ -367,9 +367,9 @@ The `read_r2()` function defaults to `.parquet` for better performance and inter
 
 ### Survey Cycle Details
 
-- **2-year cycles**: Data released biannually (1999-2000, 2001-2002, etc.)
-- **2019-2020 cycle**: Interrupted by COVID-19 pandemic and not released
-- **Suffix pattern**: Letters B through L, skipping K (so J → L between 2017-2018 and 2021-2022)
+- **2-year cycles**: Data released biannually (1999-2000, 2001-2002, etc.)  
+- **2019-2020 cycle**: Interrupted by COVID-19 pandemic and not released  
+- **Suffix pattern**: Letters B through L, skipping K (so J → L between 2017-2018 and 2021-2022)  
 
 ### Type Harmonization
 
@@ -384,7 +384,7 @@ demo <- pull_nhanes('demo')
 
 ### Special Cases
 
-**DXX Tables (Body Composition)**: The 2005-2006 cycle contains repeated measures that shouldn't be merged blindly with other cycles. Read the CDC documentation carefully before using these datasets.
+**DXX Tables (Body Composition)**: The 2005-2006 cycle contains repeated measures that shouldn't be merged blindly with other cycles. Read the CDC documentation carefully before using these datasets.  
 
 ## Public Data Access
 
@@ -405,9 +405,9 @@ trigly <- arrow::read_parquet('https://nhanes.kylegrealis.com/trigly.parquet')
 ```
 
 This is useful for:
-- Sharing data with collaborators who don't need the full package
-- Accessing data from Python, Julia, or other Arrow-compatible languages
-- Quick data exploration without installing dependencies
+- Sharing data with collaborators who don't need the full package  
+- Accessing data from Python, Julia, or other Arrow-compatible languages  
+- Quick data exploration without installing dependencies  
 
 ## Setup for Package Maintainers
 
@@ -440,11 +440,11 @@ See `SECURITY.md` for detailed setup instructions and security best practices.
 
 For automated workflows, add these secrets to your GitHub repository:
 
-1. Go to **Settings** → **Secrets and variables** → **Actions**
-2. Add new repository secrets:
-   - `R2_ACCOUNT_ID`
-   - `R2_ACCESS_KEY_ID`
-   - `R2_SECRET_ACCESS_KEY`
+1. Go to **Settings** → **Secrets and variables** → **Actions**  
+2. Add new repository secrets:  
+   - `R2_ACCOUNT_ID`  
+   - `R2_ACCESS_KEY_ID`  
+   - `R2_SECRET_ACCESS_KEY`  
 
 The workflow at `.github/workflows/update-nhanes-data.yml` will use these automatically.
 

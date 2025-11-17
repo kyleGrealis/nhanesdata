@@ -1,0 +1,12 @@
+{
+  "start_time": "2025-11-17 14:04:44",
+  "datasets_processed": 2,
+  "datasets_changed": 2,
+  "datasets_unchanged": 0,
+  "datasets_failed": 0,
+  "datasets_uploaded": 0,
+  "changed_datasets": ["alq", "diq"],
+  "failed_datasets": [],
+  "end_time": "2025-11-17 14:05:06",
+  "duration_minutes": 0.3658
+}

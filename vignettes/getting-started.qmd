@@ -25,14 +25,13 @@ The National Health and Nutrition Examination Survey (NHANES) is one of the most
 
 If you've tried to work with NHANES data before, you've likely encountered two major pain points:
 
-1. **CDC server reliability**: The CDC's data servers can be slow, unresponsive, or down entirely. This makes reproducible research difficult when you can't count on data availability.
-
-2. **Cycle suffix confusion**: The CDC publishes data in two-year cycles, each with a different letter suffix. Want demographics data? You'll need to work with `DEMO`, `DEMO_B`, `DEMO_C`, all the way through `DEMO_L`. Finding the right documentation becomes a scavenger hunt, and combining cycles requires careful data wrangling.
+1. **CDC server reliability**: The CDC's data servers can be slow, unresponsive, or down entirely. This makes reproducible research difficult when you can't count on data availability.  
+2. **Cycle suffix confusion**: The CDC publishes data in two-year cycles, each with a different letter suffix. Want demographics data? You'll need to work with `DEMO`, `DEMO_B`, `DEMO_C`, all the way through `DEMO_L`. Finding the right documentation becomes a scavenger hunt, and combining cycles requires careful data wrangling.  
 
 The **nhanesdata** package solves both problems:
 
-- **Reliable access**: All datasets are hosted on Cloudflare R2 with a public URL, giving you fast, dependable access anytime.
-- **Simplified naming**: We've already merged all cycles for you. Just ask for `demo` and you get all demographics data from 1999-2021, with a `year` column to track which cycle each observation belongs to.
+- **Reliable access**: All datasets are hosted on Cloudflare R2 with a public URL, giving you fast, dependable access anytime.  
+- **Simplified naming**: We've already merged all cycles for you. Just ask for `demo` and you get all demographics data from 1999-2021, with a `year` column to track which cycle each observation belongs to.  
 
 Let's get you from zero to your first NHANES analysis in the next 10 minutes.
 
@@ -75,8 +74,8 @@ glimpse(demo)
 
 Notice the `year` and `seqn` columns:
 
-- `year`: The survey cycle start year (1999, 2001, 2003, ..., 2017, 2021)
-- `seqn`: The respondent sequence number (unique within a cycle, used for joining datasets)
+- `year`: The survey cycle start year (1999, 2001, 2003, ..., 2017, 2021)  
+- `seqn`: The respondent sequence number (unique within a cycle, used for joining datasets)  
 
 With this one simple call, you now have over 100,000 observations spanning 11 survey cycles. No server timeouts, no wrestling with cycle suffixes.
 
@@ -204,10 +203,10 @@ head(bp_vars)
 
 This returns a dataset showing:
 
-- `Variable.Name`: The variable code (e.g., `BPXSY1` for systolic blood pressure)
-- `Data.File.Name`: Which CDC table it's in (e.g., `BPX_J`)
-- `Data.File.Description`: What the table contains
-- `Begin.Year`: When this data was collected
+- `Variable.Name`: The variable code (e.g., `BPXSY1` for systolic blood pressure)  
+- `Data.File.Name`: Which CDC table it's in (e.g., `BPX_J`)  
+- `Data.File.Description`: What the table contains  
+- `Begin.Year`: When this data was collected  
 
 From this, you can see that blood pressure data lives in the `BPX` tables. In nhanesdata, that means you want `read_r2('bpx')`.
 
@@ -310,9 +309,9 @@ This analysis combines data from over 100,000 individuals across multiple survey
 
 Most users will be well-served by `read_r2()`, which provides pre-processed, stable data updated quarterly. However, if you need:
 
-- Custom variable selection (only specific columns)
-- The absolute latest data before our quarterly update
-- To build your own data pipeline
+- Custom variable selection (only specific columns)  
+- The absolute latest data before our quarterly update  
+- To build your own data pipeline  
 
 You can use `pull_nhanes()` to download directly from the CDC:
 
@@ -330,10 +329,10 @@ demo_custom <- pull_nhanes(
 
 **Important notes:**
 
-- This function downloads from CDC servers, which can be slow or fail
-- It merges all cycles and harmonizes data types automatically
-- Use `save = TRUE` if you want to cache the results locally
-- The resulting data structure is identical to what `read_r2()` provides
+- This function downloads from CDC servers, which can be slow or fail  
+- It merges all cycles and harmonizes data types automatically  
+- Use `save = TRUE` if you want to cache the results locally  
+- The resulting data structure is identical to what `read_r2()` provides  
 
 For most analyses, stick with `read_r2()` for reliability and speed.
 
@@ -341,12 +340,12 @@ For most analyses, stick with `read_r2()` for reliability and speed.
 
 In this vignette, you've learned how to:
 
-1. Load NHANES datasets instantly with `read_r2()`
-2. Understand the relationship between CDC cycle-specific tables and nhanesdata's merged datasets
-3. Join multiple datasets using `seqn` and `year`
-4. Find variables using `term_search()`, `var_search()`, and `find_variable()`
-5. Access CDC documentation with `get_url()`
-6. Conduct real analyses combining demographic, anthropometric, and examination data
+1. Load NHANES datasets instantly with `read_r2()`  
+2. Understand the relationship between CDC cycle-specific tables and nhanesdata's merged datasets  
+3. Join multiple datasets using `seqn` and `year`  
+4. Find variables using `term_search()`, `var_search()`, and `find_variable()`  
+5. Access CDC documentation with `get_url()`  
+6. Conduct real analyses combining demographic, anthropometric, and examination data  
 
 The nhanesdata package removes the traditional friction from working with NHANES data. You can now focus on answering your research questions instead of fighting with data infrastructure.
 
@@ -354,10 +353,10 @@ The nhanesdata package removes the traditional friction from working with NHANES
 
 Ready to dive deeper? Here are some ideas for your own analyses:
 
-- Examine trends in diabetes prevalence using the `diq` (diabetes questionnaire) dataset
-- Analyze changes in dietary patterns with `dr1tot` and `dr2tot` (dietary interview data)
-- Study relationships between physical activity (`paq`) and health outcomes
-- Explore prescription medication use patterns with `rxq_rx` data
+- Examine trends in diabetes prevalence using the `diq` (diabetes questionnaire) dataset  
+- Analyze changes in dietary patterns with `dr1tot` and `dr2tot` (dietary interview data)  
+- Study relationships between physical activity (`paq`) and health outcomes  
+- Explore prescription medication use patterns with `rxq_rx` data  
 
 All of these datasets are available through `read_r2()`. Use the search functions to explore what's available, and don't hesitate to combine multiple datasets to answer complex questions.
 
