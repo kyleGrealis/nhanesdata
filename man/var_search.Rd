@@ -2,16 +2,43 @@
 % Please edit documentation in R/data.R
 \name{var_search}
 \alias{var_search}
-\title{Custom wrapped function to nhanes::nhanesSearchVarName for concise output}
+\title{Search for NHANES Variable by Exact Name}
 \usage{
 var_search(var)
 }
 \arguments{
-\item{var}{Character. Variable name}
+\item{var}{Character. Variable name to search for. Will be automatically
+converted to uppercase. Not case-sensitive.}
 }
 \value{
-Smaller output dataset
+A data.frame showing all occurrences of the variable across
+survey cycles, including variable descriptions, data file names, and
+years available. Returns an empty data.frame with appropriate structure
+if the variable is not found.
 }
 \description{
-Custom wrapped function to nhanes::nhanesSearchVarName for concise output
+A convenience wrapper around \code{nhanesA::nhanesSearchVarName} that
+searches for variables by exact variable name match. The function
+automatically converts input to uppercase to match NHANES naming conventions.
+Use this when you know the variable code; use \code{term_search()} for
+text-based searches.
 }
+\examples{
+# Search for specific variable (case-insensitive)
+var_search("RIAGENDR")  # Gender variable
+var_search("ridageyr")  # Age variable (auto-converted to uppercase)
+
+# See where glucose variables appear
+var_search("LBXGLU")
+
+}
+\seealso{
+\code{\link{term_search}} for text-based searches,
+\code{\link{get_url}} for documentation URLs,
+\code{\link[nhanesA]{nhanesSearchVarName}} for the underlying function
+
+Other search and lookup functions: 
+\code{\link{get_url}()},
+\code{\link{term_search}()}
+}
+\concept{search and lookup functions}

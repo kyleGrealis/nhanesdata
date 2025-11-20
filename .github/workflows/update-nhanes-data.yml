@@ -178,7 +178,7 @@ jobs:
             echo "**R Usage:**" >> release_notes.md
             echo '```r' >> release_notes.md
             echo 'library(nhanesdata)' >> release_notes.md
-            echo 'demo <- read_r2("demo")' >> release_notes.md
+            echo 'demo <- read_nhanes("demo")' >> release_notes.md
             echo '```' >> release_notes.md
 
             cat release_notes.md

@@ -1,0 +1,67 @@
+url: https://kyleGrealis.com/nhanesdata/
+template:
+  bootstrap: 5
+  light-switch: true
+  bslib:
+    font-size: 0.9rem
+    border-radius: 0.5rem
+    btn-border-radius: 0.25rem
+
+home:
+  title: "nhanesdata: Pre-processed NHANES Data with Automated Updates"
+  description: "Access harmonized NHANES survey data (1999-2023) with quarterly updates from CDC servers. Provides fast data loading, search functions, and automatic type reconciliation across survey cycles."
+
+articles:
+  - title: Get Started
+    navbar: ~
+    contents:
+      - getting-started
+      - introduction
+
+reference:
+  - title: "Data Loading"
+    desc: "Primary function for accessing pre-processed NHANES datasets from cloud storage"
+    contents:
+      - read_nhanes
+
+  - title: "Search and Discovery"
+    desc: "Functions to find variables and documentation across NHANES datasets"
+    contents:
+      - term_search
+      - var_search
+      - get_url
+
+  - title: "Internal Utilities"
+    desc: "Helper functions for internal package operations (not for typical users)"
+    contents:
+      - utils
+
+navbar:
+  structure:
+    left: [intro, reference, articles, news]
+    right: [search, github]
+  components:
+    home:
+      icon: fas fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    articles:
+      text: Articles
+      menu:
+      - text: Getting Started with NHANES Data
+        href: articles/getting-started.html
+      - text: Introduction to nhanesdata
+        href: articles/introduction.html
+    news:
+      text: Changelog
+      href: news/index.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/kyleGrealis/nhanesdata
+      aria-label: GitHub
+
+authors:
+  Kyle Grealis:
+    href: https://kylegrealis.com

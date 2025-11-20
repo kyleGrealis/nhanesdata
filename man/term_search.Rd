@@ -2,16 +2,53 @@
 % Please edit documentation in R/data.R
 \name{term_search}
 \alias{term_search}
-\title{Custom wrapped function to nhanesA::nhanesSearch for concise output}
+\title{Search NHANES Variables by Term or Phrase}
 \usage{
 term_search(var)
 }
 \arguments{
-\item{var}{Character. Term or phrase to search}
+\item{var}{Character. Search term or phrase to find in variable names
+or descriptions. Case-insensitive. Special regex characters are
+automatically escaped for literal matching.}
 }
 \value{
-Smaller output dataset
+A data.frame with 4 columns:
+\itemize{
+\item \code{Variable.Name}: NHANES variable code
+\item \code{Variable.Description}: Description of the variable
+\item \code{Data.File.Name}: Name of the data file containing the variable
+\item \code{Begin.Year}: Starting year of the survey cycle (numeric)
+}
+Results are sorted by \code{Begin.Year} (descending) then \code{Variable.Name}.
+Returns an empty data.frame with correct structure if no matches found.
 }
 \description{
-Custom wrapped function to nhanesA::nhanesSearch for concise output
+A convenience wrapper around \code{nhanesA::nhanesSearch} that returns
+a simplified, concise output focused on variable names, descriptions,
+and survey years. Results are sorted by year (most recent first) and
+then by variable name.
 }
+\examples{
+# Search for diabetes-related variables
+term_search("diabetes")
+
+# Search for blood pressure measurements
+term_search("blood pressure")
+
+# Search for demographic variables
+term_search("age")
+
+# Handles special characters safely
+term_search("weight (kg)")
+
+}
+\seealso{
+\code{\link{var_search}} for searching by exact variable name,
+\code{\link{get_url}} for getting documentation URLs,
+\code{\link[nhanesA]{nhanesSearch}} for the underlying search function
+
+Other search and lookup functions: 
+\code{\link{get_url}()},
+\code{\link{var_search}()}
+}
+\concept{search and lookup functions}

@@ -2,16 +2,41 @@
 % Please edit documentation in R/data.R
 \name{get_url}
 \alias{get_url}
-\title{Custom function to retrieve the codebook URL}
+\title{Get CDC Documentation URL for NHANES Table}
 \usage{
 get_url(table)
 }
 \arguments{
-\item{table}{Character. The table where variable information is needed.}
+\item{table}{Character. The table where variable information is needed.
+Can include cycle suffix (e.g., "DEMO_J") or not (e.g., "DEMO").
+Not case-sensitive.}
 }
 \value{
-Full URL to CDC data documentation, codebook, & frequencies.
+Character string (invisibly). Full URL to CDC data documentation,
+codebook, and frequencies is returned invisibly and also printed to the
+console via message() for interactive use.
 }
 \description{
-Custom function to retrieve the codebook URL
+Constructs and returns the full CDC documentation URL for a given NHANES
+table. The function handles table names with or without cycle suffixes
+(e.g., "DEMO_J" for 2017-2018 or "DEMO" for 1999-2000) and automatically
+maps the suffix to the appropriate survey cycle year.
 }
+\examples{
+# These examples will run and display URLs
+get_url("DEMO_J")  # Demographics 2017-2018
+get_url("diq_j")   # Case-insensitive: Diabetes 2017-2018
+get_url("DIQ")     # No suffix = 1999-2000 cycle
+
+# Capture the URL for programmatic use
+url <- get_url("BMX_J")
+
+}
+\seealso{
+\code{\link{term_search}}, \code{\link{var_search}}
+
+Other search and lookup functions: 
+\code{\link{term_search}()},
+\code{\link{var_search}()}
+}
+\concept{search and lookup functions}

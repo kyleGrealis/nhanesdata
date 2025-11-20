@@ -68,7 +68,25 @@ summary <- list(
 # Load dataset configuration
 cli_h2("Loading dataset configuration")
 tryCatch({
-  config <- load_dataset_config('inst/extdata/datasets.yml')
+  # Inline: load_dataset_config('inst/extdata/datasets.yml')
+  if (!requireNamespace("yaml", quietly = TRUE)) {
+    stop("Package 'yaml' is required. Install with: install.packages('yaml')", call. = FALSE)
+  }
+  config_file <- 'inst/extdata/datasets.yml'
+  if (!file.exists(config_file)) {
+    stop(sprintf('Configuration file not found: %s', config_file))
+  }
+  config_raw <- yaml::read_yaml(config_file)
+  config <- do.call(rbind, lapply(config_raw$datasets, function(x) {
+    data.frame(
+      name = x$name,
+      description = x$description,
+      category = x$category,
+      notes = ifelse(is.null(x$notes), NA_character_, x$notes),
+      stringsAsFactors = FALSE
+    )
+  }))
+
   cli_alert_success("Loaded {nrow(config)} datasets from configuration")
 }, error = function(e) {
   cli_alert_danger("Failed to load dataset configuration: {e$message}")
@@ -129,13 +147,40 @@ for (i in seq_len(nrow(config))) {
 
   # Step 2: Check if data has changed
   parquet_path <- sprintf('data/raw/parquet/%s.parquet', dataset_name)
+  checksums_file <- '.checksums.json'
 
   cli_alert("Checking for changes...")
-  has_changed <- detect_data_changes(
-    file_path = parquet_path,
-    dataset_name = dataset_name,
-    checksums_file = '.checksums.json'
-  )
+  # Inline: detect_data_changes()
+  if (!requireNamespace("tools", quietly = TRUE) || !requireNamespace("jsonlite", quietly = TRUE)) {
+    stop("Packages 'tools' and 'jsonlite' are required. Install with: install.packages(c('tools', 'jsonlite'))", call. = FALSE)
+  }
+
+  has_changed <- if (!file.exists(parquet_path)) {
+    warning(sprintf('File not found: %s', parquet_path))
+    FALSE
+  } else {
+    new_hash <- tools::md5sum(parquet_path)
+    names(new_hash) <- NULL
+
+    checksums <- if (file.exists(checksums_file)) {
+      jsonlite::read_json(checksums_file, simplifyVector = TRUE)
+    } else {
+      list()
+    }
+
+    stored_hash <- checksums[[dataset_name]]
+
+    if (is.null(stored_hash)) {
+      message(sprintf('%s: NEW dataset (no previous checksum)', dataset_name))
+      TRUE
+    } else if (new_hash != stored_hash) {
+      message(sprintf('%s: CHANGED (hash mismatch)', dataset_name))
+      TRUE
+    } else {
+      message(sprintf('%s: UNCHANGED (hash match)', dataset_name))
+      FALSE
+    }
+  }
 
   if (has_changed) {
     summary$datasets_changed <- summary$datasets_changed + 1
@@ -164,11 +209,31 @@ for (i in seq_len(nrow(config))) {
         cli_alert_success("Uploaded to R2")
 
         # Step 4: Update checksum
-        update_checksum(
-          dataset_name = dataset_name,
-          file_path = parquet_path,
-          checksums_file = '.checksums.json'
+        # Inline: update_checksum()
+        if (!file.exists(parquet_path)) {
+          stop(sprintf('File not found: %s', parquet_path))
+        }
+
+        new_hash <- tools::md5sum(parquet_path)
+        names(new_hash) <- NULL
+
+        checksums <- if (file.exists(checksums_file)) {
+          jsonlite::read_json(checksums_file, simplifyVector = TRUE)
+        } else {
+          list()
+        }
+
+        checksums[[dataset_name]] <- new_hash
+        checksums <- checksums[sort(names(checksums))]
+
+        jsonlite::write_json(
+          checksums,
+          checksums_file,
+          pretty = TRUE,
+          auto_unbox = TRUE
         )
+
+        message(sprintf('Updated checksum for %s', dataset_name))
       }
     } else {
       cli_alert_warning("SKIPPED upload (dry run mode)")

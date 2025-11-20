@@ -17,16 +17,43 @@
 #' @param description A text description for the pin.
 #' @param ... Additional arguments passed on to `pins::pin_write()`.
 #'
-#' @return The pin metadata, invisibly.
-#' @importFrom pins board_s3 pin_write
-#' @export
+#' @return The pin metadata (invisibly). Includes information about the uploaded
+#'   object such as version, file hash, and upload timestamp.
 #'
+#' @examples
+#' \dontrun{
+#' # Set up authentication in .Renviron or environment
+#' # R2_ACCOUNT_ID=your_account_id
+#' # R2_ACCESS_KEY_ID=your_access_key
+#' # R2_SECRET_ACCESS_KEY=your_secret_key
+#'
+#' # Upload a dataset
+#' demo_data <- pull_nhanes("DEMO")
+#' nhanes_pin_write(
+#'   x = demo_data,
+#'   name = "demographics",
+#'   bucket = "nhanes-data",
+#'   description = "NHANES Demographics data across all cycles"
+#' )
+#' }
+#'
+#' @family data storage functions
+#' @noRd
 nhanes_pin_write <- function(x, name, bucket, description = "", ...) {
-  
+
+  # Check for required Suggests package (internal function only)
+  if (!requireNamespace("pins", quietly = TRUE)) {
+    stop(
+      "Package 'pins' is required for nhanes_pin_write().\n",
+      "Install with: install.packages('pins')",
+      call. = FALSE
+    )
+  }
+
   # Check for required environment variables
   required_vars <- c('R2_ACCOUNT_ID', 'R2_ACCESS_KEY_ID', 'R2_SECRET_ACCESS_KEY')
   missing_vars <- required_vars[!required_vars %in% names(Sys.getenv())]
-  
+
   if (length(missing_vars) > 0) {
     stop(
       "Cannot find required environment variables for R2 authentication: ",

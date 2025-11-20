@@ -340,12 +340,12 @@ remotes::install_github("kyleGrealis/nhanesdata")
 
 # Load pre-processed data (no CDC download needed)
 library(nhanesdata)
-demo <- read_r2('demo')
-bpx <- read_r2('bpx')
+demo <- read_nhanes('demo')
+bpx <- read_nhanes('bpx')
 
 # Load multiple datasets with tidyverse style
 c('demo', 'bpx', 'bmx', 'trigly') |>
-  purrr::map(read_r2) |>
+  purrr::map(read_nhanes) |>
   purrr::set_names(c('demo', 'bpx', 'bmx', 'trigly'))
 ```
 

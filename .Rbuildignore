@@ -18,3 +18,8 @@
 ^SECURITY\.md$
 ^logos$
 ^workflow_summary\.json$
+^doc$
+^Meta$
+^_pkgdown\.yml$
+^pkgdown$
+^.*\.Rcheck$

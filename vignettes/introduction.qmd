@@ -8,7 +8,16 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This vignette provides an overview of the `nhanesdata` package, demonstrating how to search for NHANES variables and download complete datasets.
+This vignette shows you how to search for NHANES variables and load pre-processed datasets using the nhanesdata package.
+
+## Acknowledgments
+
+This package builds on the excellent [nhanesA](https://cran.r-project.org/package=nhanesA) package, which provides the foundation for accessing NHANES data through R. We're grateful for the nhanesA developers' work in making CDC data accessible.
+
+The nhanesdata package extends nhanesA by providing:  
+- Pre-processed datasets for fast access  
+- Automatic harmonization across survey cycles (1999-2021)  
+- Convenient search and discovery functions  
 
 ## Setup
 
@@ -17,6 +26,7 @@ First, load the `nhanesdata` package to get access to all its functions.
 ```{r}
 #| label: setup
 #| message: false
+#| eval: false
 
 library(nhanesdata)
 library(dplyr)
@@ -24,11 +34,11 @@ library(dplyr)
 
 ## Searching for Data
 
-The package includes several helper functions to find specific NHANES data.
-
-*   `term_search()`: Search for a term across variable names and descriptions.  
-*   `var_search()`: Find the datasets a specific variable belongs to.  
-*   `get_url()`: Get a direct link to the CDC's documentation for a data table.  
+The package includes several helper functions to find specific NHANES data. **All functions are case-insensitive!**
+  
+*   `term_search()`: Search for a term across variable names and descriptions  
+*   `var_search()`: Find the datasets a specific variable belongs to  
+*   `get_url()`: Get a direct link to the CDC's documentation for a data table  
 
 For example, let's find data related to "caffeine":
 
@@ -36,74 +46,99 @@ For example, let's find data related to "caffeine":
 #| label: search-example
 #| eval: false
 
+# Search functions are case-insensitive
 term_search("caffeine")
+term_search("CAFFEINE")  # Same results!
 ```
 
-## Reading Data from the Public Archive
+## Reading Pre-Processed Data (Recommended)
 
-The easiest way to get NHANES data is to read it from the pre-processed public archive. The `read_r2()` function downloads a specified dataset in `.parquet` format.
+The primary way to use this package is with `read_nhanes()`, which loads pre-processed NHANES datasets from cloud storage.
 
-Here is how you can download the triglycerides dataset:
+**Why "read_nhanes"?** The datasets are hosted on Cloudflare R2 (cloud object storage) for fast, reliable worldwide access. No credentials needed—the function downloads and reads the data in one step.
+
+### Benefits:  
+- **Fast downloads** from cloud storage (hosted on Cloudflare R2)  
+- **All survey cycles (1999-2021)** already merged  
+- **Type inconsistencies** already resolved  
+- **Updated quarterly** via automated workflows  
+- **Case-insensitive dataset names** - use 'demo', 'DEMO', or 'Demo' interchangeably!  
+
+### Example:
 
 ```{r}
-#| label: read-r2-example
+#| label: read-nhanes-example
 #| eval: false
 
-trigly <- read_r2('trigly')
+# All case variations work identically:
+trigly <- read_nhanes('trigly')    # Lowercase (easiest to type)
+demo <- read_nhanes('DEMO')        # Uppercase (matches CDC docs)
+bpx <- read_nhanes('Bpx')          # Mixed case (because you can!)
+
 head(trigly)
 ```
 
-## Pulling and Processing Raw Data
+**Note:** Each dataset includes a `year` column that identifies which survey cycle each row came from.
 
-If you need to pull data directly from the NHANES servers, you can use the `pull_nhanes()` function. This function iterates through all available survey cycles for a given data table, combines them, and harmonizes data types.
+## Important: 2019-2020 Survey Cycle
 
-**Note:** Running `pull_nhanes()` can be time-consuming as it downloads multiple files. The `save` argument is set to `TRUE` by default, which will save `.rda` and `.parquet` files to a `data/raw` directory.
+The 2019-2020 survey cycle (suffix K) is **not included** in the datasets provided by this package.
 
-The code chunk below demonstrates how you would call the function, but is not evaluated here.
+The COVID-19 pandemic disrupted data collection during this cycle, and the CDC determined that the data quality was insufficient for standard NHANES analysis. The CDC combined partial 2019-2020 data with 2021-2023 data and released it as a special pre-pandemic dataset.
+
+**Reference:** [CDC NHANES 2019-2020 Data Documentation](https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?BeginYear=2019)
+
+**What this means:** Datasets jump from suffix J (2017-2018) to suffix L (2021-2023), skipping K entirely.
+
+## Working with Multiple Datasets
+
+A common workflow is to load and join multiple related datasets:
 
 ```{r}
-#| label: pull-nhanes-example
+#| label: multiple-datasets
 #| eval: false
 
-# This demonstrates how to pull the demographics data.
-# The 'save' argument is TRUE by default.
-demo <- pull_nhanes('demo')
+library(nhanesdata)
+library(dplyr)
 
-# The original script contained calls to pull dozens of datasets.
-# These have been commented out to prevent long execution times when
-# building this vignette. You can run them individually as needed.
+# Dataset names are case-insensitive - mix freely!
+demo <- read_nhanes('demo')        # Lowercase
+bpx <- read_nhanes('BPX')          # Uppercase
+bmx <- read_nhanes('Bmx')          # Mixed case
 
-#
-# # acculturation
-# acq <- pull_nhanes('acq')
-#
-# # allergies
-# agq <- pull_nhanes('agq')
-#
-# # alcohol
-# alq <- pull_nhanes('alq')
-#
-# # ... and so on for all other datasets.
+# Join by participant ID (seqn) and survey year
+analysis_data <- demo |>
+  inner_join(bpx, by = c('seqn', 'year')) |>
+  inner_join(bmx, by = c('seqn', 'year')) |>
+  select(year, seqn, ridageyr, riagendr, bpxsy1, bmxbmi)
 ```
 
-## Storing Data in Your Own R2 Bucket
+The `year` column ensures you only join observations from the same survey cycle.
 
-For users who want to maintain their own collection of NHANES data, the package includes `nhanes_pin_write()`. This function uploads a data frame to a Cloudflare R2 bucket.
+## Filtering by Survey Year
 
-**Important:** This requires you to have your `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, and `R2_SECRET_ACCESS_KEY` set as environment variables.
+Since datasets include all cycles, you can filter to specific time periods:
 
 ```{r}
-#| label: pin-write-example
+#| label: filter-years
 #| eval: false
 
-# First, pull a dataset
-demo_data <- pull_nhanes('demo', save = FALSE)
+# Load demographics
+demo <- read_nhanes('demo')
 
-# Then, write it to your R2 bucket
-nhanes_pin_write(
-  x = demo_data,
-  name = "nhanes-demo-dataset",
-  bucket = "my-nhanes-data-bucket",
-  description = "Demographics data from all available cycles."
-)
+# Filter to recent cycles only (2015 and later)
+recent_demo <- demo |>
+  filter(year >= 2015)
+
+# Compare across time periods
+demo |>
+  mutate(
+    period = case_when(
+      year < 2010 ~ '1999-2009',
+      year < 2020 ~ '2010-2019',
+      TRUE ~ '2020+'
+    )
+  ) |>
+  group_by(period) |>
+  summarise(n_participants = n())
 ```

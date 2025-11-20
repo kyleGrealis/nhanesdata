@@ -8,3 +8,5 @@ data/
 .RData
 .Ruserdata
 *.Rproj
+/doc/
+/Meta/
