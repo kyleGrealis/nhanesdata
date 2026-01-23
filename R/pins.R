@@ -52,7 +52,7 @@ nhanes_pin_write <- function(x, name, bucket, description = "", ...) {
 
   # Check for required environment variables
   required_vars <- c('R2_ACCOUNT_ID', 'R2_ACCESS_KEY_ID', 'R2_SECRET_ACCESS_KEY')
-  missing_vars <- required_vars[!required_vars %in% names(Sys.getenv())]
+  missing_vars <- required_vars[!sapply(required_vars, function(x) nzchar(Sys.getenv(x)))]
 
   if (length(missing_vars) > 0) {
     stop(

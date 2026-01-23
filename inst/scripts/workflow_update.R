@@ -206,7 +206,7 @@ for (i in seq_len(nrow(config))) {
         )
         TRUE
       }, error = function(e) {
-        cli_alert_danger("R2 upload failed: {e$message}")
+        cli_alert_danger("R2 upload failed: {conditionMessage(e)}")
         summary$datasets_failed <- summary$datasets_failed + 1
         summary$failed_datasets <- c(summary$failed_datasets, dataset_name)
         FALSE
