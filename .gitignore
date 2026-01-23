@@ -10,3 +10,8 @@ data/
 *.Rproj
 /doc/
 /Meta/
+docs/
+
+# AI
+.claude
+CLAUDE.md

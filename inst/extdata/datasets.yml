@@ -242,10 +242,15 @@ datasets:
     category: examination
 
   - name: dxx
-    description: Bodyscan (NOTE - has repeated measures until 2005+)
+    description: DEXA Bodyscan (NOTE - has repeated measures until 2005+)
     category: examination
     notes: See https://wwwn.cdc.gov/nchs/data/nhanes/public/2005/datafiles/dxx_d.htm
 
+  - name: dxxag
+    description: DEXA Bodyscan (Android/Gynoid Measurements)
+    category: examination
+    notes: Non-repeated measures
+    
   - name: ghb
     description: Diabetes 2
     category: examination
@@ -260,6 +265,22 @@ datasets:
 
   - name: hiv
     description: HIV
+    category: examination
+
+  - name: l10
+    description: Glycohemoglobin
+    category: examination
+  
+  - name: l10am
+    description: Plasma Fasting Glucose, Serum C-peptide & Insulin
+    category: examination
+
+  - name: lab10
+    description: Glycohemoglobin
+    category: examination
+
+  - name: lab10am
+    description: Plasma Fasting Glucose, Serum C-peptide & Insulin
     category: examination
 
   - name: tchol
