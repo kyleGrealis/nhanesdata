@@ -198,8 +198,6 @@ head(analysis_data)
 - The `seqn` column is the participant ID (unique within a cycle)
 - The `year` column ensures you only join observations from the same
   survey cycle
-- The same `seqn` value can appear in different years if someone
-  participated multiple times
 
 ## Filtering by Survey Year
 
@@ -397,11 +395,11 @@ instead of fighting with data infrastructure.
 Ready to dive deeper? Here are some ideas for your own analyses:
 
 - Examine trends in diabetes prevalence using the `diq` (diabetes
-  questionnaire) dataset
+  questionnaire) dataset  
 - Analyze changes in dietary patterns with `dr1tot` and `dr2tot`
-  (dietary interview data)
+  (dietary interview data)  
 - Study relationships between physical activity (`paq`) and health
-  outcomes
+  outcomes  
 - Explore prescription medication use patterns with `rxq_rx` data
 
 All of these datasets are available through

@@ -248,7 +248,6 @@
 <li>Always join on BOTH <code>seqn</code> AND <code>year</code> together</li>
 <li>The <code>seqn</code> column is the participant ID (unique within a cycle)</li>
 <li>The <code>year</code> column ensures you only join observations from the same survey cycle</li>
-<li>The same <code>seqn</code> value can appear in different years if someone participated multiple times</li>
 </ul></section><section class="level2"><h2 id="filtering-by-survey-year">Filtering by Survey Year<a class="anchor" aria-label="anchor" href="#filtering-by-survey-year"></a>
 </h2>
 <p>Since datasets include all cycles, you can filter to specific time periods:</p>
@@ -420,9 +419,12 @@
 </h2>
 <p>Ready to dive deeper? Here are some ideas for your own analyses:</p>
 <ul>
-<li>Examine trends in diabetes prevalence using the <code>diq</code> (diabetes questionnaire) dataset</li>
-<li>Analyze changes in dietary patterns with <code>dr1tot</code> and <code>dr2tot</code> (dietary interview data)</li>
-<li>Study relationships between physical activity (<code>paq</code>) and health outcomes</li>
+<li>Examine trends in diabetes prevalence using the <code>diq</code> (diabetes questionnaire) dataset<br>
+</li>
+<li>Analyze changes in dietary patterns with <code>dr1tot</code> and <code>dr2tot</code> (dietary interview data)<br>
+</li>
+<li>Study relationships between physical activity (<code>paq</code>) and health outcomes<br>
+</li>
 <li>Explore prescription medication use patterns with <code>rxq_rx</code> data</li>
 </ul>
 <p>All of these datasets are available through <code><a href="../reference/read_nhanes.html">read_nhanes()</a></code>. Use the search functions to explore what’s available, and don’t hesitate to combine multiple datasets to answer complex questions.</p>
