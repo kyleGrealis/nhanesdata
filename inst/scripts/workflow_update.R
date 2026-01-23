@@ -22,6 +22,14 @@
 #   --dry-run     Skip R2 upload (testing mode)
 #   --datasets    Comma-separated list of specific datasets (default: all from config)
 
+#------- Uncomment if ::: fails below
+# Alternative: Source internal functions directly
+# This avoids ::: and is standard practice for build scripts
+# source("R/data.R")   # Provides pull_nhanes()
+# source("R/pins.R")   # Provides nhanes_pin_write()
+#-------
+
+
 # Parse command line arguments
 args <- commandArgs(trailingOnly = TRUE)
 dry_run <- "--dry-run" %in% args
@@ -130,7 +138,7 @@ for (i in seq_len(nrow(config))) {
   cli_alert("Pulling data from CDC servers...")
 
   dataset_obj <- tryCatch({
-    pull_nhanes(dataset_name, save = TRUE)
+    nhanesdata:::pull_nhanes(dataset_name, save = TRUE)
   }, error = function(e) {
     cli_alert_danger("Failed to pull {dataset_name}: {e$message}")
     summary$datasets_failed <- summary$datasets_failed + 1
@@ -191,7 +199,7 @@ for (i in seq_len(nrow(config))) {
       cli_alert("Uploading to R2 bucket...")
 
       upload_success <- tryCatch({
-        nhanes_pin_write(
+        nhanesdata:::nhanes_pin_write(
           x = dataset_obj,
           name = dataset_name,
           bucket = 'nhanes-data'
