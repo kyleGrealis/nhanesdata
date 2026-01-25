@@ -8,12 +8,12 @@
 ## Citation
 
 Grealis K (2026). *nhanesdata: An R Package to Access and Manage NHANES
-Data*. R package version 0.1.0, <https://kyleGrealis.com/nhanesdata>.
+Data*. R package version 0.1.1, <https://kyleGrealis.com/nhanesdata>.
 
     @Manual{,
       title = {nhanesdata: An R Package to Access and Manage NHANES Data},
       author = {Kyle Grealis},
       year = {2026},
-      note = {R package version 0.1.0},
+      note = {R package version 0.1.1},
       url = {https://kyleGrealis.com/nhanesdata},
     }

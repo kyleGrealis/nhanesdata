@@ -476,3 +476,5 @@ Helper functions for internal package operations (not for typical users)
 
 - [Getting Started with NHANES
   Data](https://kyleGrealis.com/nhanesdata/articles/getting-started.md):
+- [Available NHANES
+  Datasets](https://kyleGrealis.com/nhanesdata/articles/the-datasets.md):
