@@ -25,8 +25,8 @@
 #------- Uncomment if ::: fails below
 # Alternative: Source internal functions directly
 # This avoids ::: and is standard practice for build scripts
-# source("R/data.R")   # Provides pull_nhanes()
-# source("R/pins.R")   # Provides nhanes_pin_write()
+# source("R/data.R")        # Provides pull_nhanes()
+# source("R/r2_upload.R")   # Provides nhanes_r2_upload()
 #-------
 
 
@@ -199,14 +199,14 @@ for (i in seq_len(nrow(config))) {
       cli_alert("Uploading to R2 bucket...")
 
       upload_success <- tryCatch({
-        nhanesdata:::nhanes_pin_write(
+        nhanesdata:::nhanes_r2_upload(
           x = dataset_obj,
           name = dataset_name,
           bucket = 'nhanes-data'
         )
         TRUE
       }, error = function(e) {
-        cli_alert_danger("R2 upload failed: {e$message}")
+        cli_alert_danger("R2 upload failed: {conditionMessage(e)}")
         summary$datasets_failed <- summary$datasets_failed + 1
         summary$failed_datasets <- c(summary$failed_datasets, dataset_name)
         FALSE
@@ -289,7 +289,7 @@ if (length(summary$changed_datasets) > 0) {
 }
 
 # Save summary as JSON for GitHub Actions artifact
-summary_json <- jsonlite::toJSON(summary, pretty = TRUE, auto_unbox = TRUE)
+summary_json <- jsonlite::toJSON(summary, pretty = TRUE, auto_unbox = FALSE)
 writeLines(summary_json, 'workflow_summary.json')
 cli_alert_success("Summary saved to workflow_summary.json")
 
