@@ -16,6 +16,7 @@ articles:
     navbar: ~
     contents:
       - getting-started
+      - the-datasets
 
 reference:
   - title: "Data Loading"
@@ -46,11 +47,6 @@ navbar:
     reference:
       text: Reference
       href: reference/index.html
-    articles:
-      text: Articles
-      menu:
-      - text: Getting Started with NHANES Data
-        href: articles/getting-started.html
     news:
       text: Changelog
       href: news/index.html

@@ -1,0 +1,86 @@
+---
+title: "Available NHANES Datasets"
+format: html
+vignette: >
+  %\VignetteIndexEntry{Available NHANES Datasets}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(dplyr)
+library(reactable)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  eval = FALSE,  # Default: don't evaluate most chunks
+  comment = "#>"
+)
+
+config <- yaml::read_yaml(
+  system.file("extdata", "datasets.yml", package = "nhanesdata")
+)
+
+catalog <- do.call(rbind, lapply(config$datasets, function(x) {
+  data.frame(
+    Dataset = toupper(x$name),
+    Description = x$description,
+    Category = tools::toTitleCase(x$category),
+    stringsAsFactors = FALSE
+  )
+}))
+```
+
+## Available Datasets
+
+This package provides `r nrow(catalog)` NHANES datasets, automatically updated quarterly with data from 1999-2023 (excluding the 2019-2020 cycle).
+
+### Quick Start
+```r
+library(nhanesdata)
+
+# Load demographics data
+demo <- read_nhanes('demo')
+
+# Search for variables
+term_search('blood pressure')
+```
+
+
+### Categories
+
+**Questionnaire/Interview Tables** - Self-reported data from participant interviews
+
+**Examination Tables** - Physical measurements and laboratory results
+
+```{r}
+#| label: reactable-of-datasets
+#| echo: false
+#| eval: true
+
+catalog |>
+  arrange(Dataset) |>
+  reactable::reactable(
+    searchable = TRUE
+  )
+```
+
+### Notes
+
+- All datasets span multiple survey cycles (1999-2023)
+- Each includes `year` and `seqn` columns for merging
+- Data types are harmonized across cycles
+- Variable names match CDC documentation
+
+For detailed variable information, use `term_search()` or visit the [CDC NHANES website](https://wwwn.cdc.gov/nchs/nhanes/).
+
+::: callout-warning
+CDC may change data periodically. The data was aggregated as best as possible to reconcile
+variable types that changed across cycles. **ALWAYS** reference the CDC documentation
+with `nhanesdata::get_url(dataset)`!
+
++ See [get_url](.docs/reference/get_url.html) documentation.
+:::
