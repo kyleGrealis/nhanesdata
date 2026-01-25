@@ -55,6 +55,7 @@ jobs:
             any::remotes
             any::jsonlite
             any::yaml
+            any::paws.storage
           cache-version: 2
 
       - name: Install nhanesdata package

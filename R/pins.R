@@ -83,7 +83,7 @@ nhanes_pin_write <- function(x, name, bucket, description = "", ...) {
     name = name,
     type = 'parquet',
     description = description,
-    versioned = TRUE,
+    versioned = FALSE,
     ...
   )
   
