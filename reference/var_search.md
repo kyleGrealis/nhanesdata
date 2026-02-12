@@ -46,7 +46,7 @@ Other search and lookup functions:
 ``` r
 # \donttest{
 # Search for specific variable (case-insensitive)
-var_search("RIAGENDR")  # Gender variable
+var_search("RIAGENDR") # Gender variable
 #>  [1] "BFRPOL_D" "BFRPOL_E" "BFRPOL_F" "BFRPOL_G" "BFRPOL_H" "BFRPOL_I"
 #>  [7] "DEMO"     "DEMO_B"   "DEMO_C"   "DEMO_D"   "DEMO_E"   "DEMO_F"  
 #> [13] "DEMO_G"   "DEMO_H"   "DEMO_I"   "DEMO_J"   "DEMO_L"   "DOXPOL_D"
@@ -54,7 +54,7 @@ var_search("RIAGENDR")  # Gender variable
 #> [25] "PCBPOL_E" "PCBPOL_F" "PCBPOL_G" "PCBPOL_H" "PCBPOL_I" "PSTPOL_D"
 #> [31] "PSTPOL_E" "PSTPOL_F" "PSTPOL_G" "PSTPOL_H" "PSTPOL_I" "P_DEMO"  
 #> [37] "SSBFR_B"  "SSPCB_B"  "SSPST_B" 
-var_search("ridageyr")  # Age variable (auto-converted to uppercase)
+var_search("ridageyr") # Age variable (auto-converted to uppercase)
 #>  [1] "DEMO"   "DEMO_B" "DEMO_C" "DEMO_D" "DEMO_E" "DEMO_F" "DEMO_G" "DEMO_H"
 #>  [9] "DEMO_I" "DEMO_J" "DEMO_L" "P_DEMO"
 

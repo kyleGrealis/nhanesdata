@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhanesdata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,83 +38,65 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.1" id="nhanesdata-011-development-version">nhanesdata 0.1.1 (development version)<a class="anchor" aria-label="anchor" href="#nhanesdata-011-development-version"></a></h2>
-<p>Released: Jan. 25, 2026</p>
+<h2 class="pkg-version" data-toc-text="0.2.0" id="nhanesdata-020">nhanesdata 0.2.0<a class="anchor" aria-label="anchor" href="#nhanesdata-020"></a></h2>
+<p>Released: Feb. 2026</p>
 <div class="section level3">
-<h3 id="major-changes-0-1-1">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-0-1-1"></a></h3>
-<div class="section level4">
-<h4 id="automated-r2-upload-workflow-0-1-1">Automated R2 Upload Workflow<a class="anchor" aria-label="anchor" href="#automated-r2-upload-workflow-0-1-1"></a></h4>
-<ul><li>Implemented GitHub Actions workflow for quarterly automated NHANES data updates</li>
-<li>Workflow pulls fresh data from CDC servers, detects changes via MD5 checksums, and uploads only changed datasets to Cloudflare R2</li>
-<li>Added <code>.checksums.json</code> for version tracking across workflow runs</li>
-<li>Configured cron schedule for quarterly runs (January, April, July, October)</li>
-<li>Manual workflow dispatch available with optional dataset filtering and dry-run mode</li>
+<h3 id="breaking-changes-0-2-0">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-2-0"></a></h3>
+<ul><li>Categorical columns across all datasets are now stored as character with human-readable labels instead of raw numeric codes. For example, BMX <code>bmdbmic</code> values like <code>2, 3, 4, 1</code> are now <code>"Normal weight"</code>, <code>"Overweight"</code>, <code>"Obese"</code>, <code>"Underweight"</code>. This affects 95 variables across 22 datasets.</li>
 </ul></div>
-<div class="section level4">
-<h4 id="infrastructure-improvements-0-1-1">Infrastructure Improvements<a class="anchor" aria-label="anchor" href="#infrastructure-improvements-0-1-1"></a></h4>
-<ul><li>Replaced <code>pins</code> package with direct <code>paws.storage::s3$put_object()</code> for R2 uploads (#XX)
-<ul><li>Creates flat files at bucket root (<code>demo.parquet</code>) instead of nested versioned folders</li>
-<li>Maintains correct URL structure for <code><a href="../reference/read_nhanes.html">read_nhanes()</a></code> function</li>
-</ul></li>
-<li>Created <code>nhanes_r2_upload()</code> internal function for direct R2 uploads</li>
-<li>Added namespace access via <code>:::</code> operator for internal functions in workflow scripts</li>
-<li>Fixed JSON serialization bug (<code>auto_unbox = FALSE</code>) preventing workflow completion</li>
+<div class="section level3">
+<h3 id="bug-fixes-0-2-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-0"></a></h3>
+<ul><li>Fixed data corruption where factor-to-numeric conversion returned internal level indices instead of actual CDC codes (e.g., codes <code>1, 3, 4</code> were silently stored as <code>1, 2, 3</code>).</li>
+<li>Fixed continuous variables like <code>ridageyr</code> and <code>indfmpir</code> being corrupted when categorical label mappings were incorrectly applied to them.</li>
+<li>Fixed column type clashes when binding survey cycles where a column existed in some cycles but not others.</li>
 </ul></div>
-<div class="section level4">
-<h4 id="documentation-0-1-1">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-1-1"></a></h4>
-<ul><li>Added dataset catalog vignette with searchable, filterable table using <code>reactable</code>
-</li>
-<li>Improved workflow documentation with inline comments</li>
+<div class="section level3">
+<h3 id="new-features-0-2-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
+<ul><li>Cross-cycle label translation: when the CDC codebook is unavailable for a particular cycle, labels are now carried over from a sibling cycle so all waves have consistent human-readable values.</li>
+<li>Added 5 new datasets: <code>dxxag</code>, <code>l10</code>, <code>l10am</code>, <code>lab10</code>, <code>lab10am</code> (71 datasets total).</li>
+<li>Added <code>inst/CITATION</code> for <code>citation("nhanesdata")</code> support.</li>
 </ul></div>
+<div class="section level3">
+<h3 id="contributors-0-2-0">Contributors<a class="anchor" aria-label="anchor" href="#contributors-0-2-0"></a></h3>
+<ul><li>Added Amrit Baral, Natalie Neugaard, Johannes Thrul, and Janardan Devkota as contributors.</li>
+</ul><hr></div>
 </div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.1" id="nhanesdata-011">nhanesdata 0.1.1<a class="anchor" aria-label="anchor" href="#nhanesdata-011"></a></h2>
+<p>Released: Jan. 2026</p>
 <div class="section level3">
-<h3 id="dependencies-0-1-1">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies-0-1-1"></a></h3>
-<ul><li>Added <code>paws.storage</code> to GitHub Actions workflow dependencies</li>
-<li>Added <code>reactable</code> to Suggests for interactive dataset catalog</li>
-</ul></div>
-<div class="section level3">
-<h3 id="bug-fixes-0-1-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-1"></a></h3>
-<ul><li>Fixed environment variable validation to check for non-empty values</li>
-<li>Improved error handling in R2 upload with informative messages</li>
-<li>Fixed workflow summary generation for single-dataset updates</li>
+<h3 id="changes-0-1-1">Changes<a class="anchor" aria-label="anchor" href="#changes-0-1-1"></a></h3>
+<ul><li>Automated quarterly data updates via GitHub Actions with checksum-based change detection and Cloudflare R2 uploads.</li>
+<li>Replaced <code>pins</code> with direct R2 uploads for simpler URL structure.</li>
+<li>Added dataset catalog vignette with searchable table.</li>
 </ul><hr></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="nhanesdata-010">nhanesdata 0.1.0<a class="anchor" aria-label="anchor" href="#nhanesdata-010"></a></h2>
-<ul><li>Improved vignettes and README with clearer examples and better documentation.</li>
-</ul><div class="section level3">
-<h3 id="breaking-changes-0-1-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-1-0"></a></h3>
+<div class="section level3">
+<h3 id="breaking-changes-0-1-0">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-1-0"></a></h3>
 <ul><li>
-<code>read_r2()</code> renamed to <code><a href="../reference/read_nhanes.html">read_nhanes()</a></code> to better reflect the function’s purpose.</li>
+<code>read_r2()</code> renamed to <code><a href="../reference/read_nhanes.html">read_nhanes()</a></code>.</li>
 <li>
-<code>pull_nhanes()</code> no longer exported; end users should use <code><a href="../reference/read_nhanes.html">read_nhanes()</a></code> to load data.</li>
+<code>pull_nhanes()</code> no longer exported; use <code><a href="../reference/read_nhanes.html">read_nhanes()</a></code> to load data.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="improvements-0-1-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-1-0"></a></h3>
-<ul><li>Reduced required dependencies—moved 7 packages to Suggests (janitor, fs, pins, jsonlite, yaml, tools, cli).</li>
-<li>Dataset names are now case-insensitive; use ‘demo’, ‘DEMO’, or ‘Demo’ interchangeably.</li>
-<li>Improved error messages for clearer debugging and better user experience.</li>
-<li>
-<code><a href="../reference/get_url.html">get_url()</a></code> rewritten for better reliability and performance.</li>
+<ul><li>Reduced required dependencies (moved 7 packages to Suggests).</li>
+<li>Dataset names are now case-insensitive.</li>
+<li>Improved error messages and <code><a href="../reference/get_url.html">get_url()</a></code> reliability.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-0-1-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-0"></a></h3>
-<ul><li>Fixed critical bug in <code>pull_nhanes()</code> where <code><a href="https://rdrr.io/r/base/save.html" class="external-link">save()</a></code> was failing with “object not found” error.</li>
-<li>Fixed NULL handling in <code><a href="../reference/term_search.html">term_search()</a></code> and <code><a href="../reference/var_search.html">var_search()</a></code> to prevent crashes on unexpected API responses.</li>
-<li>Fixed type coercion where Begin.Year column was not being properly converted to numeric format.</li>
-</ul></div>
+<h3 id="bug-fixes-0-1-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-0"></a></h3>
+<ul><li>Fixed <code>pull_nhanes()</code> where <code><a href="https://rdrr.io/r/base/save.html" class="external-link">save()</a></code> failed with “object not found” error.</li>
+<li>Fixed NULL handling in <code><a href="../reference/term_search.html">term_search()</a></code> and <code><a href="../reference/var_search.html">var_search()</a></code>.</li>
+<li>Fixed <code>Begin.Year</code> column not converting to numeric.</li>
+</ul><hr></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.0.9000" id="nhanesdata-0009000-2025-11-17">nhanesdata 0.0.0.9000 (2025-11-17)<a class="anchor" aria-label="anchor" href="#nhanesdata-0009000-2025-11-17"></a></h2>
-<div class="section level3">
-<h3 id="new-features-0-0-0-9000">New features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9000"></a></h3>
-<ul><li>Added automated quarterly data update workflow via GitHub Actions with manual trigger capability.</li>
+<ul><li>Initial development version with core functionality for accessing and managing NHANES data.</li>
 </ul></div>
-<div class="section level3">
-<h3 id="initial-release-0-0-0-9000">Initial release<a class="anchor" aria-label="anchor" href="#initial-release-0-0-0-9000"></a></h3>
-<ul><li>Initial development version of nhanesdata with core functionality for accessing and managing NHANES data.</li>
-</ul></div>
-</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

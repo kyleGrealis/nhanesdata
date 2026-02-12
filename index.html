@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">nhanesdata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +59,7 @@
 <!-- badges: start -->
 
 <p>The National Health and Nutrition Examination Survey (NHANES) is one of the most comprehensive public health datasets available, spanning over two decades of U.S. health data. But working with it has been frustrating. If you’ve tried using NHANES before, you’ve likely hit two major problems: (1) CDC server reliability issues that break reproducible research, and (2) cycle suffix confusion—finding <code>DEMO</code>, <code>DEMO_B</code>, <code>DEMO_C</code>, all the way through <code>DEMO_L</code> makes data discovery a scavenger hunt.</p>
-<p><strong>nhanesdata</strong> solves both problems. All datasets are hosted on reliable cloud storage with fast access, and we’ve already merged all survey cycles for you. Just use <code>read_nhanes('demo')</code> and you get demographics data from 1999-2021 with a <code>year</code> column tracking which cycle each observation belongs to—no CDC server timeouts, no suffix confusion.</p>
+<p><strong>nhanesdata</strong> solves both problems. All datasets are hosted on reliable cloud storage with fast access, and we’ve already merged all survey cycles for you. Just use <code>read_nhanes('demo')</code> and you get demographics data from 1999-2023 with a <code>year</code> column tracking which cycle each observation belongs to—no CDC server timeouts, no suffix confusion.</p>
 <blockquote>
 <p>All processed datasets are publicly available at <code>https://nhanes.kylegrealis.com/</code> with no authentication required.</p>
 </blockquote>
@@ -163,7 +163,7 @@
 <div class="section level2">
 <h2 id="available-datasets">Available Datasets<a class="anchor" aria-label="anchor" href="#available-datasets"></a>
 </h2>
-<p>This package currently includes 66 datasets (with more coming) across two categories:</p>
+<p>This package currently includes 71 datasets (with more coming) across two categories:</p>
 <p><strong>Questionnaire/Interview Tables (50):</strong></p>
 <ul>
 <li>
@@ -295,7 +295,7 @@
 </tr>
 <tr class="odd">
 <td><code>DEMO_L</code></td>
-<td>2021-2022</td>
+<td>2021-2023</td>
 <td>L (skips K)</td>
 </tr>
 </tbody>
@@ -325,7 +325,7 @@
 <span><span class="co"># - 1999-2000 data (from DEMO)</span></span>
 <span><span class="co"># - 2001-2002 data (from DEMO_B)</span></span>
 <span><span class="co"># - 2003-2004 data (from DEMO_C)</span></span>
-<span><span class="co"># - ... through 2021-2022 (from DEMO_L)</span></span>
+<span><span class="co"># - ... through 2021-2023 (from DEMO_L)</span></span>
 <span><span class="co"># - Each row has a 'year' column showing its cycle</span></span></code></pre></div>
 <p><strong>Important Note on the <code>year</code> Variable:</strong> The <code>year</code> column represents the <strong>start year</strong> of each 2-year survey cycle. For example, <code>year = 1999</code> indicates the 1999-2000 cycle, and <code>year = 2017</code> indicates the 2017-2018 cycle. Refer to the <a href="https://www.cdc.gov/nchs/nhanes/" class="external-link">NHANES documentation</a> for more details on survey cycles and year representation.</p>
 </div>
@@ -444,7 +444,7 @@
 <strong>2019-2020 cycle</strong>: Interrupted by COVID-19 pandemic and not released<br>
 </li>
 <li>
-<strong>Suffix pattern</strong>: Letters B through L, skipping K (so J → L between 2017-2018 and 2021-2022)</li>
+<strong>Suffix pattern</strong>: Letters B through L, skipping K (so J → L between 2017-2018 and 2021-2023)</li>
 </ul>
 </div>
 <div class="section level3">
@@ -555,6 +555,7 @@
 <ul class="list-unstyled">
 <li>
 <a href="https://kylegrealis.com" class="external-link">Kyle Grealis</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-9223-8854" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 

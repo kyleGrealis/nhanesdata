@@ -26,7 +26,7 @@ The **nhanesdata** package solves both problems:
 - **Reliable access**: All datasets are hosted on Cloudflare R2 with a
   public URL, giving you fast, dependable access anytime.
 - **Simplified naming**: We’ve already merged all cycles for you. Just
-  ask for `demo` and you get all demographics data from 1999-2021, with
+  ask for `demo` and you get all demographics data from 1999-2023, with
   a `year` column to track which cycle each observation belongs to.
 
 Let’s get you from zero to your first NHANES analysis in the next 10
@@ -41,7 +41,7 @@ the **nhanesA** developers’ work in making CDC data accessible.
 The **nhanesdata** package extends **nhanesA** by providing:
 
 - Pre-processed datasets for fast access
-- Automatic harmonization across survey cycles (1999-2021)
+- Automatic harmonization across survey cycles (1999-2023)
 - Convenient search and discovery functions
 
 ## Installation
@@ -49,7 +49,6 @@ The **nhanesdata** package extends **nhanesA** by providing:
 Install the package from GitHub:
 
 ``` r
-# install.packages("devtools")
 devtools::install_github("kyleGrealis/nhanesdata")
 ```
 
@@ -57,8 +56,8 @@ Then load the package:
 
 ``` r
 library(nhanesdata)
-library(dplyr)    # for data manipulation
-library(ggplot2)  # for visualization
+library(dplyr) # for data manipulation
+library(ggplot2) # for visualization
 ```
 
 ## Your First Dataset in 30 Seconds
@@ -70,7 +69,7 @@ race/ethnicity, income, and other demographic variables:
     #> DEMO complete! (113,249 rows)
 
 ``` r
-demo <- read_nhanes('demo')
+demo <- read_nhanes("demo")
 
 # Take a look at what we have
 glimpse(demo)
@@ -125,7 +124,7 @@ multiple tables:
 | DEMO_B             | 2001-2002        | single dataset called `demo`,   |
 | DEMO_C             | 2003-2004        | adds a `year` column, and       |
 | …                  | …                | harmonizes data types across    |
-| DEMO_L             | 2021-2022        | cycles so you can analyze them  |
+| DEMO_L             | 2021-2023        | cycles so you can analyze them  |
 |                    |                  | together without any extra work |
 
 **Why does this matter?**
@@ -141,10 +140,10 @@ function helps with this:
 
 ``` r
 # Get documentation for the original DEMO table (1999-2000)
-get_url('DEMO')
+get_url("DEMO")
 
 # Get documentation for DEMO_I (2015-2016)
-get_url('DEMO_I')
+get_url("DEMO_I")
 ```
 
 This will return the full URL to the CDC’s documentation page where you
@@ -176,16 +175,16 @@ examinations and questionnaires.
 ``` r
 # Load three related datasets
 # Dataset names are case-insensitive - use whichever style you prefer
-demo <- read_nhanes('demo')        # Demographics (age, gender, etc.)
-bpx <- read_nhanes('BPX')          # Blood pressure measurements
-bmx <- read_nhanes('Bmx')          # Body measurements (height, weight, BMI)
+demo <- read_nhanes("demo") # Demographics (age, gender, etc.)
+bpx <- read_nhanes("BPX") # Blood pressure measurements
+bmx <- read_nhanes("Bmx") # Body measurements (height, weight, BMI)
 
 # Combine the datasets using inner_join()
 # inner_join() keeps only participants who appear in ALL datasets
 # We join by 'seqn' (participant ID) and 'year' (survey cycle)
 analysis_data <- demo |>
-  inner_join(bpx, by = c('seqn', 'year')) |>
-  inner_join(bmx, by = c('seqn', 'year')) |>
+  inner_join(bpx, by = c("seqn", "year")) |>
+  inner_join(bmx, by = c("seqn", "year")) |>
   select(year, seqn, ridageyr, riagendr, bpxsy1, bmxbmi)
 
 # View the first few rows
@@ -206,7 +205,7 @@ periods:
 
 ``` r
 # Load demographics
-demo <- read_nhanes('demo')
+demo <- read_nhanes("demo")
 
 # Filter to recent cycles only (2015 and later)
 recent_demo <- demo |>
@@ -216,9 +215,9 @@ recent_demo <- demo |>
 demo |>
   mutate(
     period = case_when(
-      year < 2010 ~ '1999-2009',
-      year < 2020 ~ '2010-2019',
-      TRUE ~ '2020+'
+      year < 2010 ~ "1999-2009",
+      year < 2020 ~ "2010-2019",
+      TRUE ~ "2020+"
     )
   ) |>
   group_by(period) |>
@@ -275,10 +274,10 @@ variable you need:
 
 ``` r
 # Load a dataset
-bmx <- read_nhanes('bmx')
+bmx <- read_nhanes("bmx")
 
 # Check if it contains the height variable
-'bmxht' %in% names(bmx)  # TRUE
+"bmxht" %in% names(bmx) # TRUE
 
 # Or see all available columns
 names(bmx)
@@ -295,12 +294,12 @@ showing the results:
 
 ``` r
 # Step 1: Load required datasets
-demo <- read_nhanes('demo')
-bpx <- read_nhanes('bpx')
+demo <- read_nhanes("demo")
+bpx <- read_nhanes("bpx")
 
 # Step 2: Select demographic variables for adults
 demo_adults <- demo |>
-  filter(ridageyr >= 18) |>  # adults only
+  filter(ridageyr >= 18) |> # adults only
   select(seqn, year, ridageyr, riagendr, ridreth1)
 
 # Step 3: Select blood pressure variables
@@ -316,9 +315,9 @@ bp_combined <- demo_adults |>
 # Step 5: Filter to valid blood pressure readings and create age groups
 bp_analysis <- bp_combined |>
   filter(
-    !is.na(bpxsy1),     # valid systolic BP
-    !is.na(bpxdi1),     # valid diastolic BP
-    bpxsy1 > 0,         # exclude special codes
+    !is.na(bpxsy1), # valid systolic BP
+    !is.na(bpxdi1), # valid diastolic BP
+    bpxsy1 > 0, # exclude special codes
     bpxdi1 > 0
   ) |>
   mutate(

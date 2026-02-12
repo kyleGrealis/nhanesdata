@@ -11,7 +11,7 @@ quarterly updates."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">nhanesdata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,25 +87,25 @@ suggestions for troubleshooting.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># All case variations work identically:</span></span></span>
-<span class="r-in"><span><span class="va">trigly</span> <span class="op">&lt;-</span> <span class="fu">read_nhanes</span><span class="op">(</span><span class="st">'trigly'</span><span class="op">)</span>    <span class="co"># Lowercase</span></span></span>
+<span class="r-in"><span><span class="va">trigly</span> <span class="op">&lt;-</span> <span class="fu">read_nhanes</span><span class="op">(</span><span class="st">"trigly"</span><span class="op">)</span> <span class="co"># Lowercase</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading: TRIGLY</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> TRIGLY complete! (27,039 rows)</span>
-<span class="r-in"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu">read_nhanes</span><span class="op">(</span><span class="st">'DEMO'</span><span class="op">)</span>        <span class="co"># Uppercase</span></span></span>
+<span class="r-in"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu">read_nhanes</span><span class="op">(</span><span class="st">"DEMO"</span><span class="op">)</span> <span class="co"># Uppercase</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading: DEMO</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> DEMO complete! (113,249 rows)</span>
-<span class="r-in"><span><span class="va">acq</span> <span class="op">&lt;-</span> <span class="fu">read_nhanes</span><span class="op">(</span><span class="st">'Acq'</span><span class="op">)</span>          <span class="co"># Mixed case</span></span></span>
+<span class="r-in"><span><span class="va">acq</span> <span class="op">&lt;-</span> <span class="fu">read_nhanes</span><span class="op">(</span><span class="st">"Acq"</span><span class="op">)</span> <span class="co"># Mixed case</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading: ACQ</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ACQ complete! (89,381 rows)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Load multiple datasets</span></span></span>
-<span class="r-in"><span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'demo'</span>, <span class="st">'BPX'</span>, <span class="st">'bmx'</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"demo"</span>, <span class="st">"BPX"</span>, <span class="st">"bmx"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">read_nhanes</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading: DEMO</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> DEMO complete! (113,249 rows)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading: BPX</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> BPX complete! (96,766 rows)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading: BMX</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> BMX complete! (105,626 rows)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> BMX complete! (96,288 rows)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

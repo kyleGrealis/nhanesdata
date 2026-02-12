@@ -15,7 +15,7 @@ text-based searches."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">nhanesdata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,7 +89,7 @@ if the variable is not found.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Search for specific variable (case-insensitive)</span></span></span>
-<span class="r-in"><span><span class="fu">var_search</span><span class="op">(</span><span class="st">"RIAGENDR"</span><span class="op">)</span>  <span class="co"># Gender variable</span></span></span>
+<span class="r-in"><span><span class="fu">var_search</span><span class="op">(</span><span class="st">"RIAGENDR"</span><span class="op">)</span> <span class="co"># Gender variable</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "BFRPOL_D" "BFRPOL_E" "BFRPOL_F" "BFRPOL_G" "BFRPOL_H" "BFRPOL_I"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "DEMO"     "DEMO_B"   "DEMO_C"   "DEMO_D"   "DEMO_E"   "DEMO_F"  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13] "DEMO_G"   "DEMO_H"   "DEMO_I"   "DEMO_J"   "DEMO_L"   "DOXPOL_D"</span>
@@ -97,7 +97,7 @@ if the variable is not found.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [25] "PCBPOL_E" "PCBPOL_F" "PCBPOL_G" "PCBPOL_H" "PCBPOL_I" "PSTPOL_D"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [31] "PSTPOL_E" "PSTPOL_F" "PSTPOL_G" "PSTPOL_H" "PSTPOL_I" "P_DEMO"  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [37] "SSBFR_B"  "SSPCB_B"  "SSPST_B" </span>
-<span class="r-in"><span><span class="fu">var_search</span><span class="op">(</span><span class="st">"ridageyr"</span><span class="op">)</span>  <span class="co"># Age variable (auto-converted to uppercase)</span></span></span>
+<span class="r-in"><span><span class="fu">var_search</span><span class="op">(</span><span class="st">"ridageyr"</span><span class="op">)</span> <span class="co"># Age variable (auto-converted to uppercase)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "DEMO"   "DEMO_B" "DEMO_C" "DEMO_D" "DEMO_E" "DEMO_F" "DEMO_G" "DEMO_H"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "DEMO_I" "DEMO_J" "DEMO_L" "P_DEMO"</span>
 <span class="r-in"><span></span></span>

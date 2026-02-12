@@ -13,7 +13,7 @@ maps the suffix to the appropriate survey cycle year.'></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">nhanesdata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,11 +83,11 @@ console via message() for interactive use.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># These examples will run and display URLs</span></span></span>
-<span class="r-in"><span><span class="fu">get_url</span><span class="op">(</span><span class="st">"DEMO_J"</span><span class="op">)</span>  <span class="co"># Demographics 2017-2018</span></span></span>
+<span class="r-in"><span><span class="fu">get_url</span><span class="op">(</span><span class="st">"DEMO_J"</span><span class="op">)</span> <span class="co"># Demographics 2017-2018</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> https://wwwn.cdc.gov/nchs/data/nhanes/public/2017/datafiles/DEMO_J.htm</span>
-<span class="r-in"><span><span class="fu">get_url</span><span class="op">(</span><span class="st">"diq_j"</span><span class="op">)</span>   <span class="co"># Case-insensitive: Diabetes 2017-2018</span></span></span>
+<span class="r-in"><span><span class="fu">get_url</span><span class="op">(</span><span class="st">"diq_j"</span><span class="op">)</span> <span class="co"># Case-insensitive: Diabetes 2017-2018</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> https://wwwn.cdc.gov/nchs/data/nhanes/public/2017/datafiles/DIQ_J.htm</span>
-<span class="r-in"><span><span class="fu">get_url</span><span class="op">(</span><span class="st">"DIQ"</span><span class="op">)</span>     <span class="co"># No suffix = 1999-2000 cycle</span></span></span>
+<span class="r-in"><span><span class="fu">get_url</span><span class="op">(</span><span class="st">"DIQ"</span><span class="op">)</span> <span class="co"># No suffix = 1999-2000 cycle</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> https://wwwn.cdc.gov/nchs/data/nhanes/public/1999/datafiles/DIQ.htm</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Capture the URL for programmatic use</span></span></span>

@@ -38,11 +38,11 @@ Other search and lookup functions:
 
 ``` r
 # These examples will run and display URLs
-get_url("DEMO_J")  # Demographics 2017-2018
+get_url("DEMO_J") # Demographics 2017-2018
 #> https://wwwn.cdc.gov/nchs/data/nhanes/public/2017/datafiles/DEMO_J.htm
-get_url("diq_j")   # Case-insensitive: Diabetes 2017-2018
+get_url("diq_j") # Case-insensitive: Diabetes 2017-2018
 #> https://wwwn.cdc.gov/nchs/data/nhanes/public/2017/datafiles/DIQ_J.htm
-get_url("DIQ")     # No suffix = 1999-2000 cycle
+get_url("DIQ") # No suffix = 1999-2000 cycle
 #> https://wwwn.cdc.gov/nchs/data/nhanes/public/1999/datafiles/DIQ.htm
 
 # Capture the URL for programmatic use

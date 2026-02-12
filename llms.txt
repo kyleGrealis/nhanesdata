@@ -12,7 +12,7 @@ scavenger hunt.
 **nhanesdata** solves both problems. All datasets are hosted on reliable
 cloud storage with fast access, and we’ve already merged all survey
 cycles for you. Just use `read_nhanes('demo')` and you get demographics
-data from 1999-2021 with a `year` column tracking which cycle each
+data from 1999-2023 with a `year` column tracking which cycle each
 observation belongs to—no CDC server timeouts, no suffix confusion.
 
 > All processed datasets are publicly available at
@@ -99,7 +99,7 @@ love the feedback!
 
 ## Available Datasets
 
-This package currently includes 66 datasets (with more coming) across
+This package currently includes 71 datasets (with more coming) across
 two categories:
 
 **Questionnaire/Interview Tables (50):**
@@ -174,7 +174,7 @@ The CDC releases NHANES data in 2-year cycles, with each cycle getting a
 | `DEMO_D`       | 2005-2006    | D                       |
 | …              | …            | …                       |
 | `DEMO_J`       | 2017-2018    | J                       |
-| `DEMO_L`       | 2021-2022    | L (skips K)             |
+| `DEMO_L`       | 2021-2023    | L (skips K)             |
 
 This pattern applies to **all NHANES datasets**: `BPX`, `BPX_B`,
 `BPX_C`, …, `BPX_L` for blood pressure examination data, and so on.
@@ -201,7 +201,7 @@ demo <- read_nhanes('demo')
 # - 1999-2000 data (from DEMO)
 # - 2001-2002 data (from DEMO_B)
 # - 2003-2004 data (from DEMO_C)
-# - ... through 2021-2022 (from DEMO_L)
+# - ... through 2021-2023 (from DEMO_L)
 # - Each row has a 'year' column showing its cycle
 ```
 
@@ -359,7 +359,7 @@ them locally.
 - **2019-2020 cycle**: Interrupted by COVID-19 pandemic and not
   released  
 - **Suffix pattern**: Letters B through L, skipping K (so J → L between
-  2017-2018 and 2021-2022)
+  2017-2018 and 2021-2023)
 
 ### Type Harmonization
 

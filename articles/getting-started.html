@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhanesdata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,7 +84,7 @@
 <li>
 <strong>Reliable access</strong>: All datasets are hosted on Cloudflare R2 with a public URL, giving you fast, dependable access anytime.</li>
 <li>
-<strong>Simplified naming</strong>: We’ve already merged all cycles for you. Just ask for <code>demo</code> and you get all demographics data from 1999-2021, with a <code>year</code> column to track which cycle each observation belongs to.</li>
+<strong>Simplified naming</strong>: We’ve already merged all cycles for you. Just ask for <code>demo</code> and you get all demographics data from 1999-2023, with a <code>year</code> column to track which cycle each observation belongs to.</li>
 </ul>
 <p>Let’s get you from zero to your first NHANES analysis in the next 10 minutes.</p>
 </section><section class="level2"><h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
@@ -93,22 +93,21 @@
 <p>The <strong>nhanesdata</strong> package extends <strong>nhanesA</strong> by providing:</p>
 <ul>
 <li>Pre-processed datasets for fast access</li>
-<li>Automatic harmonization across survey cycles (1999-2021)</li>
+<li>Automatic harmonization across survey cycles (1999-2023)</li>
 <li>Convenient search and discovery functions</li>
 </ul></section><section class="level2"><h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>Install the package from GitHub:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"kyleGrealis/nhanesdata"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"kyleGrealis/nhanesdata"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>Then load the package:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://kyleGrealis.com/nhanesdata">nhanesdata</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>    <span class="co"># for data manipulation</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>  <span class="co"># for visualization</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span> <span class="co"># for data manipulation</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span> <span class="co"># for visualization</span></span></code></pre></div>
 </div>
 </section><section class="level2"><h2 id="your-first-dataset-in-30-seconds">Your First Dataset in 30 Seconds<a class="anchor" aria-label="anchor" href="#your-first-dataset-in-30-seconds"></a>
 </h2>
@@ -119,7 +118,7 @@
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'demo'</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Take a look at what we have</span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">demo</span><span class="op">)</span></span></code></pre></div>
@@ -194,7 +193,7 @@
 </tr>
 <tr class="odd">
 <td>DEMO_L</td>
-<td>2021-2022</td>
+<td>2021-2023</td>
 <td>cycles so you can analyze them</td>
 </tr>
 <tr class="even">
@@ -210,10 +209,10 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get documentation for the original DEMO table (1999-2000)</span></span>
-<span><span class="fu"><a href="../reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">'DEMO'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">"DEMO"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Get documentation for DEMO_I (2015-2016)</span></span>
-<span><span class="fu"><a href="../reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">'DEMO_I'</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">"DEMO_I"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>This will return the full URL to the CDC’s documentation page where you can find variable descriptions, value codes, and survey methodology notes.</p>
 <section class="level3"><h3 id="important-2019-2020-survey-cycle">Important: 2019-2020 Survey Cycle<a class="anchor" aria-label="anchor" href="#important-2019-2020-survey-cycle"></a>
@@ -229,16 +228,16 @@
 <div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load three related datasets</span></span>
 <span><span class="co"># Dataset names are case-insensitive - use whichever style you prefer</span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'demo'</span><span class="op">)</span>        <span class="co"># Demographics (age, gender, etc.)</span></span>
-<span><span class="va">bpx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'BPX'</span><span class="op">)</span>          <span class="co"># Blood pressure measurements</span></span>
-<span><span class="va">bmx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'Bmx'</span><span class="op">)</span>          <span class="co"># Body measurements (height, weight, BMI)</span></span>
+<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span> <span class="co"># Demographics (age, gender, etc.)</span></span>
+<span><span class="va">bpx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"BPX"</span><span class="op">)</span> <span class="co"># Blood pressure measurements</span></span>
+<span><span class="va">bmx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"Bmx"</span><span class="op">)</span> <span class="co"># Body measurements (height, weight, BMI)</span></span>
 <span></span>
 <span><span class="co"># Combine the datasets using inner_join()</span></span>
 <span><span class="co"># inner_join() keeps only participants who appear in ALL datasets</span></span>
 <span><span class="co"># We join by 'seqn' (participant ID) and 'year' (survey cycle)</span></span>
 <span><span class="va">analysis_data</span> <span class="op">&lt;-</span> <span class="va">demo</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">bpx</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'seqn'</span>, <span class="st">'year'</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">bmx</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'seqn'</span>, <span class="st">'year'</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">bpx</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"seqn"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">bmx</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"seqn"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">seqn</span>, <span class="va">ridageyr</span>, <span class="va">riagendr</span>, <span class="va">bpxsy1</span>, <span class="va">bmxbmi</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># View the first few rows</span></span>
@@ -255,7 +254,7 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load demographics</span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'demo'</span><span class="op">)</span></span>
+<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Filter to recent cycles only (2015 and later)</span></span>
 <span><span class="va">recent_demo</span> <span class="op">&lt;-</span> <span class="va">demo</span> <span class="op">|&gt;</span></span>
@@ -264,10 +263,10 @@
 <span><span class="co"># Compare across time periods</span></span>
 <span><span class="va">demo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    period <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span>      <span class="va">year</span> <span class="op">&lt;</span> <span class="fl">2010</span> <span class="op">~</span> <span class="st">'1999-2009'</span>,</span>
-<span>      <span class="va">year</span> <span class="op">&lt;</span> <span class="fl">2020</span> <span class="op">~</span> <span class="st">'2010-2019'</span>,</span>
-<span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">'2020+'</span></span>
+<span>    period <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="va">year</span> <span class="op">&lt;</span> <span class="fl">2010</span> <span class="op">~</span> <span class="st">"1999-2009"</span>,</span>
+<span>      <span class="va">year</span> <span class="op">&lt;</span> <span class="fl">2020</span> <span class="op">~</span> <span class="st">"2010-2019"</span>,</span>
+<span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"2020+"</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">period</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -313,10 +312,10 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load a dataset</span></span>
-<span><span class="va">bmx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'bmx'</span><span class="op">)</span></span>
+<span><span class="va">bmx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"bmx"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Check if it contains the height variable</span></span>
-<span><span class="st">'bmxht'</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bmx</span><span class="op">)</span>  <span class="co"># TRUE</span></span>
+<span><span class="st">"bmxht"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bmx</span><span class="op">)</span> <span class="co"># TRUE</span></span>
 <span></span>
 <span><span class="co"># Or see all available columns</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bmx</span><span class="op">)</span></span></code></pre></div>
@@ -328,12 +327,12 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 1: Load required datasets</span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'demo'</span><span class="op">)</span></span>
-<span><span class="va">bpx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'bpx'</span><span class="op">)</span></span>
+<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span></span>
+<span><span class="va">bpx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"bpx"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Step 2: Select demographic variables for adults</span></span>
 <span><span class="va">demo_adults</span> <span class="op">&lt;-</span> <span class="va">demo</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ridageyr</span> <span class="op">&gt;=</span> <span class="fl">18</span><span class="op">)</span> <span class="op">|&gt;</span>  <span class="co"># adults only</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ridageyr</span> <span class="op">&gt;=</span> <span class="fl">18</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># adults only</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">seqn</span>, <span class="va">year</span>, <span class="va">ridageyr</span>, <span class="va">riagendr</span>, <span class="va">ridreth1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Step 3: Select blood pressure variables</span></span>
@@ -349,9 +348,9 @@
 <span><span class="co"># Step 5: Filter to valid blood pressure readings and create age groups</span></span>
 <span><span class="va">bp_analysis</span> <span class="op">&lt;-</span> <span class="va">bp_combined</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
-<span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">bpxsy1</span><span class="op">)</span>,     <span class="co"># valid systolic BP</span></span>
-<span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">bpxdi1</span><span class="op">)</span>,     <span class="co"># valid diastolic BP</span></span>
-<span>    <span class="va">bpxsy1</span> <span class="op">&gt;</span> <span class="fl">0</span>,         <span class="co"># exclude special codes</span></span>
+<span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">bpxsy1</span><span class="op">)</span>, <span class="co"># valid systolic BP</span></span>
+<span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">bpxdi1</span><span class="op">)</span>, <span class="co"># valid diastolic BP</span></span>
+<span>    <span class="va">bpxsy1</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="co"># exclude special codes</span></span>
 <span>    <span class="va">bpxdi1</span> <span class="op">&gt;</span> <span class="fl">0</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
