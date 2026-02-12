@@ -1,0 +1,24 @@
+bibentry(
+  bibtype = "Manual",
+  title = "nhanesdata: An R Package to Access and Manage NHANES Data",
+  author = c(
+    person("Kyle", "Grealis",
+      comment = c(ORCID = "0000-0002-9223-8854")
+    ),
+    person("Amrit", "Baral",
+      comment = c(ORCID = "0000-0002-0961-9665")
+    ),
+    person("Natalie", "Neugaard",
+      comment = c(ORCID = "0009-0008-0820-5111")
+    ),
+    person("Johannes", "Thrul",
+      comment = c(ORCID = "0000-0001-8929-9579")
+    ),
+    person("Janardan", "Devkota",
+      comment = c(ORCID = "0009-0007-6734-777X")
+    )
+  ),
+  year = "2026",
+  url = "https://kyleGrealis.com/nhanesdata",
+  note = "R package version 0.2.0"
+)

@@ -17,9 +17,9 @@
 #' @export
 #' @examples
 #' # These examples will run and display URLs
-#' get_url("DEMO_J")  # Demographics 2017-2018
-#' get_url("diq_j")   # Case-insensitive: Diabetes 2017-2018
-#' get_url("DIQ")     # No suffix = 1999-2000 cycle
+#' get_url("DEMO_J") # Demographics 2017-2018
+#' get_url("diq_j") # Case-insensitive: Diabetes 2017-2018
+#' get_url("DIQ") # No suffix = 1999-2000 cycle
 #'
 #' # Capture the URL for programmatic use
 #' url <- get_url("BMX_J")
@@ -35,15 +35,19 @@ get_url <- function(table) {
     parts <- strsplit(table, "_")[[1]]
     suffix <- parts[length(parts)]
   } else {
-    suffix <- ''
+    suffix <- ""
   }
 
   # Get year from suffix
-  year <- .get_year_from_suffix(suffix)
+  year <- .get_year_from_suffix(suffix) # nolint: object_usage_linter.
 
   if (is.null(year)) {
     warning(sprintf(
-      "Unrecognized table suffix '_%s'. Valid suffixes: A-J, L (excluding K). Defaulting to 1999.",
+      paste0(
+        "Unrecognized table suffix '_%s'. ",
+        "Valid suffixes: A-J, L (excluding K). ",
+        "Defaulting to 1999."
+      ),
       suffix
     ))
     year <- 1999L
@@ -140,18 +144,24 @@ term_search <- function(var) {
     error = function(e) {
       # Handle API/network failures with helpful message
       message(sprintf(
-        "\nUnable to search NHANES database for '%s'.\nThis may be due to:\n  - NHANES API temporarily unavailable\n  - Network connectivity issues\n  - Service maintenance\n\nPlease try again later or check your internet connection.",
+        paste0(
+          "\nUnable to search NHANES database ",
+          "for '%s'.\nThis may be due to:",
+          "\n  - NHANES API temporarily unavailable",
+          "\n  - Network connectivity issues",
+          "\n  - Service maintenance",
+          "\n\nPlease try again later or ",
+          "check your internet connection."
+        ),
         var
       ))
-      # Return empty data.frame with correct structure immediately
-      return(
-        data.frame(
-          Variable.Name = character(0),
-          Variable.Description = character(0),
-          Data.File.Name = character(0),
-          Begin.Year = numeric(0),
-          stringsAsFactors = FALSE
-        )
+      # Return empty data.frame with correct structure
+      data.frame(
+        Variable.Name = character(0),
+        Variable.Description = character(0),
+        Data.File.Name = character(0),
+        Begin.Year = numeric(0),
+        stringsAsFactors = FALSE
       )
     }
   )
@@ -176,13 +186,14 @@ term_search <- function(var) {
     )
   }
 
+
   # Select columns and ensure Begin.Year is numeric
-  result <- result |>
+  # nolint start: object_usage_linter.
+  result |>
     dplyr::select(1:3, Begin.Year) |>
     dplyr::mutate(Begin.Year = as.numeric(Begin.Year)) |>
     dplyr::arrange(dplyr::desc(`Begin.Year`), `Variable.Name`)
-
-  return(result)
+  # nolint end
 }
 
 #----------------------------------------------------------------------------------------
@@ -205,8 +216,8 @@ term_search <- function(var) {
 #' @examples
 #' \donttest{
 #' # Search for specific variable (case-insensitive)
-#' var_search("RIAGENDR")  # Gender variable
-#' var_search("ridageyr")  # Age variable (auto-converted to uppercase)
+#' var_search("RIAGENDR") # Gender variable
+#' var_search("ridageyr") # Age variable (auto-converted to uppercase)
 #'
 #' # See where glucose variables appear
 #' var_search("LBXGLU")
@@ -241,22 +252,28 @@ var_search <- function(var) {
     error = function(e) {
       # Handle API/network failures with helpful message
       message(sprintf(
-        "\nUnable to search NHANES database for variable '%s'.\nThis may be due to:\n  - NHANES API temporarily unavailable\n  - Network connectivity issues\n  - Service maintenance\n\nPlease try again later or check your internet connection.",
+        paste0(
+          "\nUnable to search NHANES database ",
+          "for variable '%s'.\nThis may be due to:",
+          "\n  - NHANES API temporarily unavailable",
+          "\n  - Network connectivity issues",
+          "\n  - Service maintenance",
+          "\n\nPlease try again later or ",
+          "check your internet connection."
+        ),
         var_upper
       ))
-      # Return empty data.frame with correct structure immediately
-      return(
-        data.frame(
-          Variable.Name = character(0),
-          Variable.Description = character(0),
-          Data.File.Name = character(0),
-          Data.File.Description = character(0),
-          Begin.Year = numeric(0),
-          EndYear = numeric(0),
-          Component = character(0),
-          UseConstraints = character(0),
-          stringsAsFactors = FALSE
-        )
+      # Return empty data.frame with correct structure
+      data.frame(
+        Variable.Name = character(0),
+        Variable.Description = character(0),
+        Data.File.Name = character(0),
+        Data.File.Description = character(0),
+        Begin.Year = numeric(0),
+        EndYear = numeric(0),
+        Component = character(0),
+        UseConstraints = character(0),
+        stringsAsFactors = FALSE
       )
     }
   )
@@ -285,7 +302,7 @@ var_search <- function(var) {
     )
   }
 
-  return(result)
+  result
 }
 
 #----------------------------------------------------------------------------------------
@@ -324,13 +341,34 @@ var_search <- function(var) {
 #' \itemize{
 #'   \item Adds a \code{year} column (survey cycle start year)
 #'   \item Ensures \code{seqn} (respondent ID) is present
-#'   \item Harmonizes variable types when they differ across cycles
-#'   \item Converts all variable names to lowercase via \code{janitor::clean_names()}
+#'   \item Converts all variable names to lowercase via
+#'     \code{janitor::clean_names()}
+#'   \item Applies cross-cycle translation so categorical variables have
+#'     human-readable labels in every cycle, even when the CDC codebook was
+#'     unavailable for a particular cycle
+#'   \item Converts all factor columns to character before binding to avoid
+#'     factor-level conflicts and the data corruption caused by
+#'     \code{as.double(factor)} returning level indices
+#'   \item Harmonizes remaining type mismatches (integer vs double -> double;
+#'     any factor involvement -> character; everything else -> character)
 #' }
 #'
-#' Type harmonization: When a variable has different types across cycles
-#' (e.g., numeric in one cycle, character in another), the function converts
-#' both to a compatible type (numeric types to double, others to character).
+#' @section Type harmonization:
+#' \code{nhanesA::nhanes()} returns categorical variables as factors with text
+#' labels in most cycles, but some cycles lack a parseable CDC codebook and
+#' return raw numeric codes instead. This function handles the mismatch in
+#' three stages:
+#' \enumerate{
+#'   \item \strong{Cross-cycle translation}: Numeric columns that have a
+#'     translation table available from any sibling cycle are converted to
+#'     text labels via \code{.translate_numeric_columns()}.
+#'   \item \strong{Factor-to-character conversion}: All remaining factor
+#'     columns are converted to character to prevent \code{bind_rows()} from
+#'     encountering factor-level conflicts.
+#'   \item \strong{Proactive type harmonization}: Before each
+#'     \code{bind_rows()} call, \code{.harmonize_column_types()} compares
+#'     column classes and coerces mismatched columns to a common type.
+#' }
 #'
 #' @return A tibble with combined data from all available cycles. Always includes:
 #'   \itemize{
@@ -356,10 +394,11 @@ var_search <- function(var) {
 #'
 #' @noRd
 pull_nhanes <- function(nhanes_table, selected_variables = NULL, save = TRUE) {
-
   # Check for required Suggests packages (internal function only)
   required_pkgs <- c("janitor", "fs", "scales")
-  missing_pkgs <- required_pkgs[!sapply(required_pkgs, requireNamespace, quietly = TRUE)]
+  missing_pkgs <- required_pkgs[
+    !sapply(required_pkgs, requireNamespace, quietly = TRUE)
+  ]
 
   if (length(missing_pkgs) > 0) {
     stop(
@@ -372,122 +411,252 @@ pull_nhanes <- function(nhanes_table, selected_variables = NULL, save = TRUE) {
   }
 
   nhanes_table <- stringr::str_to_upper(nhanes_table)
-  message(sprintf('\nDataset: %s', nhanes_table))
+  message(sprintf("\nDataset: %s", nhanes_table))
 
-  # Starting with B through L, skipping K
+  # Build the list of table codes and their corresponding survey years.
+  # Suffixes B through J cover 2001-2017; L covers 2021-2023.
+  # Suffix K (2019-2020) is intentionally skipped due to COVID-19 data
+
+  # collection issues that compromised data quality.
   table_suffixes <- c(LETTERS[2:10], LETTERS[12])
 
   start_dfr <- tibble::tibble(
-    # Append the suffix to tables. First table has no letter suffix.
-    # Will create something like DEMO_B & LAB_X
-    code = c(nhanes_table, paste0(nhanes_table, '_', table_suffixes)),
-    # The data for 2019-2020 was not collected the same way. See full docs.
-    # This creates years: 1999-2017 & 2021
+    code = c(nhanes_table, paste0(nhanes_table, "_", table_suffixes)),
     year = c(seq(1999, 2017, by = 2), 2021)
   )
 
-  # Initialize dataset
+  # ---------------------------------------------------------------------------
+  # Build reference translation tables for cross-cycle label application.
+  #
+  # nhanesA::nhanes() calls nhanesTranslate() internally to convert numeric
+  # CDC codes to human-readable factor labels (e.g., 1 -> "Male"). However,
+  # some cycles lack a parseable CDC codebook, so certain columns come back
+  # as plain numeric in those cycles. To ensure every cycle has labels, we
+  # cache a set of translation tables from a cycle that DOES have them and
+  # apply those mappings to untranslated numeric columns.
+  #
+  # We try the most recent cycles first (L, J, I, ...) because their
+  # codebooks tend to be most complete and up-to-date.
+  # ---------------------------------------------------------------------------
+  reference_translations <- NULL
+  ref_suffixes <- rev(c("", table_suffixes)) # try newest first
+
+  for (ref_suffix in ref_suffixes) {
+    ref_table <- if (ref_suffix == "") {
+      nhanes_table
+    } else {
+      paste0(nhanes_table, "_", ref_suffix)
+    }
+
+    reference_translations <- tryCatch(
+      suppressMessages(suppressWarnings(
+        nhanesA::nhanesTranslate(ref_table)
+      )),
+      error = function(e) NULL
+    )
+
+    has_translations <- !is.null(reference_translations) &&
+      length(reference_translations) > 0
+    if (has_translations) {
+      message(sprintf(
+        "  Cached translation tables from %s (%d columns)",
+        ref_table, length(reference_translations)
+      ))
+      break
+    }
+  }
+
+  # ---------------------------------------------------------------------------
+  # Main loop: download each cycle, translate, harmonize, and bind.
+  # ---------------------------------------------------------------------------
   combined_data <- tibble::tibble()
+  skipped_cycles <- character(0)
 
   for (i in seq_len(nrow(start_dfr))) {
-    code <- start_dfr$code[i]  # the dataset name with suffix
-    yr   <- start_dfr$year[i]  # corresponding year
+    code <- start_dfr$code[i]
+    yr <- start_dfr$year[i]
 
-    message(sprintf('Processing NHANES data for year: %s', yr))
-    data <- nhanesA::nhanes(code)
+    message(sprintf("Processing NHANES data for year: %s", yr))
 
-    # Skip if dataset doesn't exist
-    if (is.null(data)) {
-      message(sprintf('Dataset %s not available, skipping...', code))
+    # Retry on errors (network failures, timeouts) but NOT on NULL
+    # returns. nhanesA::nhanes() returns NULL for tables that genuinely
+    # don't exist in a cycle (e.g., AGQ only exists 1999-2005), which
+    # is normal and should not trigger retries or be flagged.
+    max_retries <- 3
+    retry_delay <- getOption("nhanesdata.retry_delay", 5)
+    data <- NULL
+    last_error <- NULL
+
+    for (attempt in seq_len(max_retries)) {
+      result <- tryCatch(
+        list(data = nhanesA::nhanes(code), ok = TRUE),
+        error = function(e) list(data = NULL, ok = FALSE, msg = e$message)
+      )
+
+      if (result$ok) {
+        data <- result$data
+        break
+      }
+
+      # Only retry on actual errors (network, timeout, etc.)
+      last_error <- result$msg
+      if (attempt < max_retries) {
+        message(sprintf(
+          "  Attempt %d/%d errored for %s: %s. Retrying in %ds...",
+          attempt, max_retries, code, last_error, retry_delay
+        ))
+        Sys.sleep(retry_delay)
+      }
+    }
+
+    if (!is.null(last_error) && is.null(data)) {
+      # All retries exhausted on an actual error
+      message(sprintf(
+        "Dataset %s failed after %d attempts: %s",
+        code, max_retries, last_error
+      ))
+      skipped_cycles <- c(skipped_cycles, code)
       next
     }
 
-    if (is.null(selected_variables)) {
-      current_data <- data |> dplyr::mutate(year = yr, .before = 1) |> janitor::clean_names()
-    } else {
-      # Select only certain variables if a vector was passed
-      current_data <- data |> 
-        dplyr::select(dplyr::any_of(stringr::str_to_upper(selected_variables))) |>
-        dplyr::mutate(year = yr, .before = 1) |> janitor::clean_names()
+    if (is.null(data)) {
+      message(sprintf("Dataset %s not available, skipping...", code))
+      next
     }
 
+    # Prepare the cycle data: add year column, clean column names
+    if (is.null(selected_variables)) {
+      current_data <- data |>
+        dplyr::mutate(year = yr, .before = 1) |>
+        janitor::clean_names()
+    } else {
+      current_data <- data |>
+        dplyr::select(
+          dplyr::any_of(stringr::str_to_upper(selected_variables))
+        ) |>
+        dplyr::mutate(year = yr, .before = 1) |>
+        janitor::clean_names()
+    }
+
+    # Step 1: Apply cached translation tables to any numeric columns that
+    # nhanesA failed to translate in this cycle. This ensures columns like
+    # BMIWT get labels ("Could not obtain", "Clothing", "Medical appliance")
+    # even in cycles where the CDC codebook was unavailable.
+    current_data <- .translate_numeric_columns( # nolint: object_usage_linter.
+      current_data, reference_translations
+    )
+
+    # Step 2: Convert all factor columns to character. This avoids factor-level
+    # conflicts across cycles and prevents the data corruption that occurs when
+    # as.double() is called on a factor (which returns level indices, not the
+    # original CDC codes).
+    for (col_name in names(current_data)) {
+      if (is.factor(current_data[[col_name]])) {
+        current_data[[col_name]] <- as.character(current_data[[col_name]])
+      }
+    }
+
+    # Step 3: Proactively harmonize column types before binding. This catches
+    # remaining mismatches (integer vs double, character vs numeric, etc.)
+    # and resolves them safely. See .harmonize_column_types() in R/utils.R
+    # for the full set of type resolution rules.
     if (nrow(combined_data) == 0) {
       combined_data <- current_data
     } else {
-      combined_data <- tryCatch({
-        dplyr::bind_rows(combined_data, current_data)
-      }, error = function(e) {
-        # Previous attmempts to combine data from multiple cycles has led to type
-        # mismatching: one was factor while the other was character, you get the point...
-        # Find the common variables and attempt to harmonize types
-        common_cols <- intersect(names(combined_data), names(current_data))
+      harmonized <- .harmonize_column_types( # nolint: object_usage_linter.
+        combined_data, current_data
+      )
+      combined_data <- harmonized$existing
+      current_data <- harmonized$new
 
-        for (col in common_cols) {
-          if (col == 'year') next
-
-          existing_var_type <- typeof(combined_data[[col]])
-          entering_var_type <- typeof(current_data[[col]])
-
-          if (existing_var_type != entering_var_type) {
-            message(sprintf(
-              'Type mismatch in %s: %s vs %s... converting types now...', 
-              col, existing_var_type, entering_var_type
-            ))
-            num_types <- c('double', 'integer')
-            if (existing_var_type %in% num_types & entering_var_type %in% num_types) {
-              combined_data[[col]] <- as.double(combined_data[[col]])
-              current_data[[col]]  <- as.double(current_data[[col]])
-            } else {
-              combined_data[[col]] <- as.character(combined_data[[col]])
-              current_data[[col]]  <- as.character(current_data[[col]])
+      # bind_rows() with a safety net for any edge case we didn't anticipate.
+      # After proactive harmonization this should never fire, but if it does,
+      # we fall back to converting all mismatched columns to character.
+      combined_data <- tryCatch(
+        dplyr::bind_rows(combined_data, current_data),
+        error = function(e) {
+          warning(sprintf(
+            "bind_rows() failed after harmonization for %s (year %s): %s",
+            code, yr, conditionMessage(e)
+          ))
+          common_cols <- intersect(
+            names(combined_data), names(current_data)
+          )
+          for (col in common_cols) {
+            if (col %in% c("year", "seqn")) next
+            types_differ <- class(combined_data[[col]])[1] !=
+              class(current_data[[col]])[1]
+            if (types_differ) {
+              combined_data[[col]] <<- as.character(
+                combined_data[[col]]
+              )
+              current_data[[col]] <<- as.character(
+                current_data[[col]]
+              )
             }
           }
+          dplyr::bind_rows(combined_data, current_data)
         }
-
-        dplyr::bind_rows(combined_data, current_data)
-      })
+      )
     }
   }
 
-  mapped_dfr <- combined_data |> 
+  # Handle case where all cycles failed
+  if (nrow(combined_data) == 0) {
+    warning(sprintf(
+      "%s: No data retrieved from any cycle.", nhanes_table
+    ), call. = FALSE)
+    mapped_dfr <- combined_data
+    if (length(skipped_cycles) > 0) {
+      attr(mapped_dfr, "skipped_cycles") <- skipped_cycles
+    }
+    return(mapped_dfr)
+  }
+
+  # Enforce canonical types for structural columns
+  mapped_dfr <- combined_data |>
     dplyr::mutate(
-      year = as.integer(year),
-      seqn = as.integer(seqn)
+      year = as.integer(year), # nolint: object_usage_linter.
+      seqn = as.integer(seqn) # nolint: object_usage_linter.
     )
 
   if (save) {
-    # Save the data in data/raw:
-    if (!fs::dir_exists('data/raw/R')) {
-      fs::dir_create('data/raw/R', recurse = TRUE)
+    if (!fs::dir_exists("data/raw/R")) {
+      fs::dir_create("data/raw/R", recurse = TRUE)
     }
-    if (!fs::dir_exists('data/raw/parquet')) {
-      fs::dir_create('data/raw/parquet', recurse = TRUE)
+    if (!fs::dir_exists("data/raw/parquet")) {
+      fs::dir_create("data/raw/parquet", recurse = TRUE)
     }
 
-    # Save as .rda file (the object name will match the table name)
-    # Assign to a variable with the dataset name, then save it
     assign(tolower(nhanes_table), mapped_dfr)
     save(
       list = tolower(nhanes_table),
-      file = sprintf('data/raw/R/%s.rda', tolower(nhanes_table))
+      file = sprintf("data/raw/R/%s.rda", tolower(nhanes_table))
     )
 
-    # Save as .parquet
     arrow::write_parquet(
       mapped_dfr,
-      sprintf('data/raw/parquet/%s.parquet', tolower(nhanes_table))
+      sprintf("data/raw/parquet/%s.parquet", tolower(nhanes_table))
     )
   }
 
-  message(
-    sprintf(
-      'Number of rows for %s: %s',
-      nhanes_table,
-      scales::comma(nrow(mapped_dfr))
-    )
-  )
+  message(sprintf(
+    "Number of rows for %s: %s",
+    nhanes_table,
+    scales::comma(nrow(mapped_dfr))
+  ))
 
-  return(mapped_dfr)
+  if (length(skipped_cycles) > 0) {
+    warning(sprintf(
+      "%s: %d cycle(s) skipped after retries: %s",
+      nhanes_table,
+      length(skipped_cycles),
+      paste(skipped_cycles, collapse = ", ")
+    ), call. = FALSE)
+    attr(mapped_dfr, "skipped_cycles") <- skipped_cycles
+  }
+
+  mapped_dfr
 }
 
 #-------------------------------------------------------
@@ -522,12 +691,12 @@ pull_nhanes <- function(nhanes_table, selected_variables = NULL, save = TRUE) {
 #'
 #' @examples
 #' # All case variations work identically:
-#' trigly <- read_nhanes('trigly')    # Lowercase
-#' demo <- read_nhanes('DEMO')        # Uppercase
-#' acq <- read_nhanes('Acq')          # Mixed case
+#' trigly <- read_nhanes("trigly") # Lowercase
+#' demo <- read_nhanes("DEMO") # Uppercase
+#' acq <- read_nhanes("Acq") # Mixed case
 #'
 #' # Load multiple datasets
-#' datasets <- c('demo', 'BPX', 'bmx') |>
+#' datasets <- c("demo", "BPX", "bmx") |>
 #'   purrr::map(read_nhanes)
 #'
 #' @export
@@ -545,11 +714,11 @@ read_nhanes <- function(dataset) {
 
   # Construct URL
   url <- sprintf(
-    'https://nhanes.kylegrealis.com/%s.parquet',
+    "https://nhanes.kylegrealis.com/%s.parquet",
     dataset
   )
 
-  message(sprintf('Loading: %s', toupper(dataset)))
+  message(sprintf("Loading: %s", toupper(dataset)))
 
   # Attempt download with error handling
   ds <- tryCatch(
@@ -557,7 +726,12 @@ read_nhanes <- function(dataset) {
     error = function(e) {
       stop(
         sprintf(
-          "Failed to load dataset '%s'.\n  URL: %s\n  Error: %s\n  Did you misspell the dataset name?",
+          paste0(
+            "Failed to load dataset '%s'.",
+            "\n  URL: %s",
+            "\n  Error: %s",
+            "\n  Did you misspell the dataset name?"
+          ),
           toupper(dataset),
           url,
           conditionMessage(e)
@@ -567,6 +741,10 @@ read_nhanes <- function(dataset) {
     }
   )
 
-  message(sprintf('%s complete! (%s rows)', toupper(dataset), format(nrow(ds), big.mark = ",")))
-  return(ds)
+  message(sprintf(
+    "%s complete! (%s rows)",
+    toupper(dataset),
+    format(nrow(ds), big.mark = ",")
+  ))
+  ds
 }

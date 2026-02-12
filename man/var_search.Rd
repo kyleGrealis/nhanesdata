@@ -26,8 +26,8 @@ text-based searches.
 \examples{
 \donttest{
 # Search for specific variable (case-insensitive)
-var_search("RIAGENDR")  # Gender variable
-var_search("ridageyr")  # Age variable (auto-converted to uppercase)
+var_search("RIAGENDR") # Gender variable
+var_search("ridageyr") # Age variable (auto-converted to uppercase)
 
 # See where glucose variables appear
 var_search("LBXGLU")

@@ -25,3 +25,5 @@
 ^vignettes/\.quarto$
 .claude
 CLAUDE.md
+^\.pre-commit-config\.yaml$
+^\.lintr$

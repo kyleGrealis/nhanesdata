@@ -43,7 +43,6 @@
 #' @family data storage functions
 #' @noRd
 nhanes_r2_upload <- function(x, name, bucket) {
-  
   # Check for required packages
   if (!requireNamespace("arrow", quietly = TRUE)) {
     stop(
@@ -52,7 +51,7 @@ nhanes_r2_upload <- function(x, name, bucket) {
       call. = FALSE
     )
   }
-  
+
   if (!requireNamespace("paws.storage", quietly = TRUE)) {
     stop(
       "Package 'paws.storage' is required for nhanes_r2_upload().\n",
@@ -60,11 +59,13 @@ nhanes_r2_upload <- function(x, name, bucket) {
       call. = FALSE
     )
   }
-  
+
   # Check for required environment variables
-  required_vars <- c('R2_ACCOUNT_ID', 'R2_ACCESS_KEY_ID', 'R2_SECRET_ACCESS_KEY')
-  missing_vars <- required_vars[!sapply(required_vars, function(var) nzchar(Sys.getenv(var)))]
-  
+  required_vars <- c("R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY")
+  missing_vars <- required_vars[
+    !vapply(required_vars, function(v) nzchar(Sys.getenv(v)), logical(1))
+  ]
+
   if (length(missing_vars) > 0) {
     stop(
       "Cannot find required environment variables for R2 authentication: ",
@@ -72,49 +73,52 @@ nhanes_r2_upload <- function(x, name, bucket) {
       call. = FALSE
     )
   }
-  
+
   # Create temporary parquet file
   temp_file <- tempfile(fileext = ".parquet")
   on.exit(unlink(temp_file), add = TRUE)
-  
+
   arrow::write_parquet(x, temp_file)
 
   # Construct endpoint URL
   endpoint <- sprintf(
-    'https://%s.r2.cloudflarestorage.com',
-    Sys.getenv('R2_ACCOUNT_ID')
+    "https://%s.r2.cloudflarestorage.com",
+    Sys.getenv("R2_ACCOUNT_ID")
   )
-  
+
   # Configure S3 client for R2
   s3 <- paws.storage::s3(
     config = list(
       credentials = list(
         creds = list(
-          access_key_id = Sys.getenv('R2_ACCESS_KEY_ID'),
-          secret_access_key = Sys.getenv('R2_SECRET_ACCESS_KEY')
+          access_key_id = Sys.getenv("R2_ACCESS_KEY_ID"),
+          secret_access_key = Sys.getenv("R2_SECRET_ACCESS_KEY")
         )
       ),
       endpoint = endpoint,
-      region = 'auto'
+      region = "auto"
     )
   )
-  
+
   # Upload to bucket root
   key_name <- paste0(name, ".parquet")
-  
-  tryCatch({
-    s3$put_object(
-      Bucket = bucket,
-      Key = key_name,
-      Body = temp_file
-    )
-    message(sprintf("Uploaded %s to %s", key_name, bucket))
-  }, error = function(e) {
-    stop(
-      sprintf("Failed to upload to R2: %s", conditionMessage(e)),
-      call. = FALSE
-    )
-  })
-  
+
+  tryCatch(
+    {
+      s3$put_object(
+        Bucket = bucket,
+        Key = key_name,
+        Body = temp_file
+      )
+      message(sprintf("Uploaded %s to %s", key_name, bucket))
+    },
+    error = function(e) {
+      stop(
+        sprintf("Failed to upload to R2: %s", conditionMessage(e)),
+        call. = FALSE
+      )
+    }
+  )
+
   invisible(NULL)
 }

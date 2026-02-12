@@ -38,12 +38,12 @@ suggestions for troubleshooting.
 }
 \examples{
 # All case variations work identically:
-trigly <- read_nhanes('trigly')    # Lowercase
-demo <- read_nhanes('DEMO')        # Uppercase
-acq <- read_nhanes('Acq')          # Mixed case
+trigly <- read_nhanes("trigly") # Lowercase
+demo <- read_nhanes("DEMO") # Uppercase
+acq <- read_nhanes("Acq") # Mixed case
 
 # Load multiple datasets
-datasets <- c('demo', 'BPX', 'bmx') |>
+datasets <- c("demo", "BPX", "bmx") |>
   purrr::map(read_nhanes)
 
 }

@@ -1,31 +1,36 @@
 test_that("term_search handles API failures gracefully", {
-  # Mock nhanesA::nhanesSearch to simulate API failure
-  mockery::stub(term_search, "nhanesA::nhanesSearch", function(...) {
-    stop("Connection error: API unavailable")
-  })
+  local_mocked_bindings(
+    nhanesSearch = function(...) stop("Connection error: API unavailable"),
+    .package = "nhanesA"
+  )
 
   # Should return empty data.frame and message (not crash)
   expect_message(
     result <- term_search("diabetes"),
-    "Unable to search the NHANES database"
+    "Unable to search NHANES database"
   )
 
   # Result should be empty data.frame with correct structure
   expect_s3_class(result, "data.frame")
   expect_equal(nrow(result), 0)
-  expect_named(result, c("Variable.Name", "Variable.Description", "Data.File.Name", "Begin.Year"))
+  expect_named(
+    result,
+    c("Variable.Name", "Variable.Description", "Data.File.Name", "Begin.Year")
+  )
 })
 
 test_that("var_search handles API failures gracefully", {
-  # Mock nhanesA::nhanesSearchVarName to simulate API failure
-  mockery::stub(var_search, "nhanesA::nhanesSearchVarName", function(...) {
-    stop("Connection error: API unavailable")
-  })
+  local_mocked_bindings(
+    nhanesSearchVarName = function(...) {
+      stop("Connection error: API unavailable")
+    },
+    .package = "nhanesA"
+  )
 
   # Should return empty data.frame and message (not crash)
   expect_message(
     result <- var_search("RIAGENDR"),
-    "Unable to search the NHANES database"
+    "Unable to search NHANES database"
   )
 
   # Result should be empty data.frame with correct structure
@@ -52,10 +57,97 @@ test_that("term_search still handles regex errors by escaping", {
   })
 })
 
+test_that("pull_nhanes retries on errors and tracks skipped cycles", {
+  # Simulate persistent network errors (not NULL returns)
+  local_mocked_bindings(
+    nhanes = function(...) stop("Connection timed out"),
+    .package = "nhanesA"
+  )
+  local_mocked_bindings(
+    nhanesTranslate = function(...) NULL,
+    .package = "nhanesA"
+  )
+  withr::local_options(nhanesdata.retry_delay = 0)
+
+  # Expect warning about no data retrieved (all cycles error out)
+  expect_warning(
+    result <- suppressMessages(
+      nhanesdata:::pull_nhanes("DEMO", save = FALSE)
+    ),
+    "No data retrieved from any cycle"
+  )
+
+  # Should still return a tibble (empty since all cycles failed)
+  expect_s3_class(result, "tbl_df")
+
+  # Should have skipped_cycles attribute listing every attempted table
+  skipped <- attr(result, "skipped_cycles")
+  expect_true(!is.null(skipped))
+  expect_true(length(skipped) > 0)
+  expect_true("DEMO" %in% skipped) # base table (1999)
+})
+
+test_that("pull_nhanes does NOT retry or flag when nhanes() returns NULL", {
+  # NULL means "table doesn't exist" — not a transient error.
+  # Should skip immediately without retry or flagging as skipped.
+  call_count <- 0
+  local_mocked_bindings(
+    nhanes = function(...) {
+      call_count <<- call_count + 1
+      NULL
+    },
+    .package = "nhanesA"
+  )
+  local_mocked_bindings(
+    nhanesTranslate = function(...) NULL,
+    .package = "nhanesA"
+  )
+  withr::local_options(nhanesdata.retry_delay = 0)
+
+  # No skipped_cycles warning — NULL is normal "not found"
+  expect_warning(
+    result <- suppressMessages(
+      nhanesdata:::pull_nhanes("DEMO", save = FALSE)
+    ),
+    "No data retrieved from any cycle"
+  )
+
+  # Should NOT have skipped_cycles (NULL returns are not errors)
+  expect_null(attr(result, "skipped_cycles"))
+
+  # Each cycle should be called exactly once (no retries)
+  expect_equal(call_count, 11) # 11 cycles for DEMO
+})
+
+test_that("pull_nhanes succeeds without warning when no cycles are skipped", {
+  # Simulate a dataset where nhanes always returns data
+  mock_data <- data.frame(SEQN = 1:5, X = letters[1:5])
+  local_mocked_bindings(
+    nhanes = function(...) mock_data,
+    .package = "nhanesA"
+  )
+  local_mocked_bindings(
+    nhanesTranslate = function(...) NULL,
+    .package = "nhanesA"
+  )
+  withr::local_options(nhanesdata.retry_delay = 0)
+
+  # Should NOT warn about skipped cycles
+  expect_no_warning(
+    result <- suppressMessages(
+      nhanesdata:::pull_nhanes("DEMO", save = FALSE)
+    )
+  )
+
+  expect_null(attr(result, "skipped_cycles"))
+  expect_true(nrow(result) > 0)
+})
+
 test_that("error messages are diplomatic and helpful", {
-  mockery::stub(term_search, "nhanesA::nhanesSearch", function(...) {
-    stop("Some API error")
-  })
+  local_mocked_bindings(
+    nhanesSearch = function(...) stop("Some API error"),
+    .package = "nhanesA"
+  )
 
   # Capture the message text
   msgs <- capture_messages(term_search("test"))

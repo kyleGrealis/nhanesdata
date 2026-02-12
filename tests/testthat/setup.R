@@ -1,4 +1,4 @@
-# tests/testthat/setup.R
+# nolint start: commented_code_linter.
 
 # Helper function to skip tests when offline or when NHANES API is unavailable
 skip_if_offline <- function() {
@@ -32,3 +32,5 @@ skip_if_offline <- function() {
     testthat::skip("NHANES API unavailable")
   }
 }
+
+# nolint end

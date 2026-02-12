@@ -16,7 +16,7 @@ library(reactable)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
-  eval = FALSE,  # Default: don't evaluate most chunks
+  eval = FALSE, # Default: don't evaluate most chunks
   comment = "#>"
 )
 

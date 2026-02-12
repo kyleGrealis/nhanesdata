@@ -40,7 +40,6 @@
 #' @family data storage functions
 #' @noRd
 nhanes_pin_write <- function(x, name, bucket, description = "", ...) {
-
   # Check for required Suggests package (internal function only)
   if (!requireNamespace("pins", quietly = TRUE)) {
     stop(
@@ -51,7 +50,7 @@ nhanes_pin_write <- function(x, name, bucket, description = "", ...) {
   }
 
   # Check for required environment variables
-  required_vars <- c('R2_ACCOUNT_ID', 'R2_ACCESS_KEY_ID', 'R2_SECRET_ACCESS_KEY')
+  required_vars <- c("R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY")
   missing_vars <- required_vars[!sapply(required_vars, function(x) nzchar(Sys.getenv(x)))]
 
   if (length(missing_vars) > 0) {
@@ -60,32 +59,32 @@ nhanes_pin_write <- function(x, name, bucket, description = "", ...) {
       paste(missing_vars, collapse = ", ")
     )
   }
-  
+
   # Construct endpoint URL
   endpoint <- sprintf(
-    'https://%s.r2.cloudflarestorage.com',
-    Sys.getenv('R2_ACCOUNT_ID')
+    "https://%s.r2.cloudflarestorage.com",
+    Sys.getenv("R2_ACCOUNT_ID")
   )
-  
+
   # Create a board connection
   board <- pins::board_s3(
     bucket = bucket,
     endpoint = endpoint,
-    access_key = Sys.getenv('R2_ACCESS_KEY_ID'),
-    secret_access_key = Sys.getenv('R2_SECRET_ACCESS_KEY'),
-    region = 'auto'
+    access_key = Sys.getenv("R2_ACCESS_KEY_ID"),
+    secret_access_key = Sys.getenv("R2_SECRET_ACCESS_KEY"),
+    region = "auto"
   )
-  
+
   # Write the data to the board
   pins::pin_write(
     board = board,
     x = x,
     name = name,
-    type = 'parquet',
+    type = "parquet",
     description = description,
     versioned = FALSE,
     ...
   )
-  
+
   message(sprintf("Successfully wrote '%s' to the '%s' bucket.", name, bucket))
 }

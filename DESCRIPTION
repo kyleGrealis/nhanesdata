@@ -1,12 +1,37 @@
 Package: nhanesdata
 Title: An R Package to Access and Manage NHANES Data
-Version: 0.1.1
-Authors@R: 
+Version: 0.2.0
+Authors@R: c(
     person(
         "Kyle", "Grealis",
         email = "kylegrealis@proton.me",
         role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-9223-8854")
+    ),
+    person(
+        "Amrit", "Baral",
+        email = "abaral3@jhu.edu",
+        role = "ctb",
+        comment = c(ORCID = "0000-0002-0961-9665")
+    ),
+    person(
+        "Natalie", "Neugaard",
+        email = "nataliegoulett@gmail.com",
+        role = "ctb",
+        comment = c(ORCID = "0009-0008-0820-5111")
+    ),
+    person(
+        "Johannes", "Thrul",
+        email = "jthrul@jhu.edu",
+        role = "ctb",
+        comment = c(ORCID = "0000-0001-8929-9579")
+    ),
+    person(
+        "Janardan", "Devkota",
+        email = "jdevkot1@jhu.edu",
+        role = "ctb",
+        comment = c(ORCID = "0009-0007-6734-777X")
+    )
     )
 Description: Instant access to harmonized National Health and Nutrition Examination Survey (NHANES) data spanning 1999-2023. Retrieve pre-processed datasets from reliable cloud storage with automatic type reconciliation and integrated search tools for variables and datasets. Simplifies NHANES data workflows by handling cycle management and maintaining data consistency across survey waves.
 License: MIT + file LICENSE
@@ -25,6 +50,7 @@ Imports:
     tibble
 Suggests:
     cli,
+    curl,
     devtools,
     fs,
     ggplot2,
@@ -33,6 +59,7 @@ Suggests:
     jsonlite,
     knitr,
     pins,
+    paws.storage,
     purrr,
     quarto,
     reactable,
@@ -40,6 +67,7 @@ Suggests:
     roxygen2,
     testthat (>= 3.0.0),
     tools,
+    withr,
     yaml
 Config/testthat/edition: 3
 VignetteBuilder: quarto

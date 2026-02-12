@@ -69,42 +69,53 @@ summary <- list(
   datasets_unchanged = 0,
   datasets_failed = 0,
   datasets_uploaded = 0,
+  datasets_skipped_cycles = 0,
   changed_datasets = character(0),
-  failed_datasets = character(0)
+  failed_datasets = character(0),
+  skipped_cycle_details = list()
 )
 
 # Load dataset configuration
 cli_h2("Loading dataset configuration")
-tryCatch({
-  # Inline: load_dataset_config('inst/extdata/datasets.yml')
-  if (!requireNamespace("yaml", quietly = TRUE)) {
-    stop("Package 'yaml' is required. Install with: install.packages('yaml')", call. = FALSE)
-  }
-  config_file <- 'inst/extdata/datasets.yml'
-  if (!file.exists(config_file)) {
-    stop(sprintf('Configuration file not found: %s', config_file))
-  }
-  config_raw <- yaml::read_yaml(config_file)
-  config <- do.call(rbind, lapply(config_raw$datasets, function(x) {
-    data.frame(
-      name = x$name,
-      description = x$description,
-      category = x$category,
-      notes = ifelse(is.null(x$notes), NA_character_, x$notes),
-      stringsAsFactors = FALSE
-    )
-  }))
+tryCatch(
+  {
+    # Load dataset config from YAML
+    if (!requireNamespace("yaml", quietly = TRUE)) {
+      stop(
+        "Package 'yaml' is required. Install with: install.packages('yaml')",
+        call. = FALSE
+      )
+    }
+    config_file <- "inst/extdata/datasets.yml"
+    if (!file.exists(config_file)) {
+      stop(sprintf("Configuration file not found: %s", config_file))
+    }
+    config_raw <- yaml::read_yaml(config_file)
+    config <- do.call(rbind, lapply(config_raw$datasets, function(x) {
+      data.frame(
+        name = x$name,
+        description = x$description,
+        category = x$category,
+        notes = ifelse(is.null(x$notes), NA_character_, x$notes),
+        stringsAsFactors = FALSE
+      )
+    }))
 
-  cli_alert_success("Loaded {nrow(config)} datasets from configuration")
-}, error = function(e) {
-  cli_alert_danger("Failed to load dataset configuration: {e$message}")
-  quit(status = 1)
-})
+    cli_alert_success("Loaded {nrow(config)} datasets from configuration")
+  },
+  error = function(e) {
+    cli_alert_danger("Failed to load dataset configuration: {e$message}")
+    quit(status = 1)
+  }
+)
 
 # Filter to specific datasets if requested
 if (!is.null(specific_datasets)) {
   config <- config[config$name %in% specific_datasets, ]
-  cli_alert_info("Filtered to {nrow(config)} specific datasets: {paste(specific_datasets, collapse=', ')}")
+  ds_list <- paste(specific_datasets, collapse = ", ")
+  cli_alert_info(
+    "Filtered to {nrow(config)} specific datasets: {ds_list}"
+  )
 }
 
 # Validate R2 credentials (unless dry run)
@@ -114,7 +125,10 @@ if (!dry_run) {
   missing_vars <- required_vars[!sapply(required_vars, function(x) nzchar(Sys.getenv(x)))]
 
   if (length(missing_vars) > 0) {
-    cli_alert_danger("Missing required environment variables: {paste(missing_vars, collapse=', ')}")
+    mv_list <- paste(missing_vars, collapse = ", ")
+    cli_alert_danger(
+      "Missing required environment variables: {mv_list}"
+    )
     cli_alert_info("Set these in GitHub Secrets or your local environment")
     quit(status = 1)
   }
@@ -137,14 +151,17 @@ for (i in seq_len(nrow(config))) {
   # Step 1: Pull data from CDC
   cli_alert("Pulling data from CDC servers...")
 
-  dataset_obj <- tryCatch({
-    nhanesdata:::pull_nhanes(dataset_name, save = TRUE)
-  }, error = function(e) {
-    cli_alert_danger("Failed to pull {dataset_name}: {e$message}")
-    summary$datasets_failed <- summary$datasets_failed + 1
-    summary$failed_datasets <- c(summary$failed_datasets, dataset_name)
-    return(NULL)
-  })
+  dataset_obj <- tryCatch(
+    {
+      nhanesdata:::pull_nhanes(dataset_name, save = TRUE)
+    },
+    error = function(e) {
+      cli_alert_danger("Failed to pull {dataset_name}: {e$message}")
+      summary$datasets_failed <- summary$datasets_failed + 1
+      summary$failed_datasets <- c(summary$failed_datasets, dataset_name)
+      NULL
+    }
+  )
 
   if (is.null(dataset_obj)) {
     cli_rule()
@@ -153,18 +170,42 @@ for (i in seq_len(nrow(config))) {
 
   cli_alert_success("Downloaded {scales::comma(nrow(dataset_obj))} rows")
 
+  # Check for skipped cycles (transient CDC API failures)
+  skipped <- attr(dataset_obj, "skipped_cycles")
+  if (!is.null(skipped) && length(skipped) > 0) {
+    summary$datasets_skipped_cycles <- summary$datasets_skipped_cycles + 1
+    summary$skipped_cycle_details[[dataset_name]] <- skipped
+    cli_alert_danger(paste0(
+      "SKIPPING upload for {dataset_name}: ",
+      "{length(skipped)} cycle(s) failed after retries: ",
+      "{paste(skipped, collapse = ', ')}"
+    ))
+    cli_alert_warning(paste0(
+      "Data may be incomplete. Will not overwrite R2 ",
+      "with potentially missing cycles."
+    ))
+    cli_rule()
+    next
+  }
+
   # Step 2: Check if data has changed
-  parquet_path <- sprintf('data/raw/parquet/%s.parquet', dataset_name)
-  checksums_file <- '.checksums.json'
+  parquet_path <- sprintf("data/raw/parquet/%s.parquet", dataset_name)
+  checksums_file <- ".checksums.json"
 
   cli_alert("Checking for changes...")
-  # Inline: detect_data_changes()
-  if (!requireNamespace("tools", quietly = TRUE) || !requireNamespace("jsonlite", quietly = TRUE)) {
-    stop("Packages 'tools' and 'jsonlite' are required. Install with: install.packages(c('tools', 'jsonlite'))", call. = FALSE)
+  # Detect data changes via checksum comparison
+  tools_ok <- requireNamespace("tools", quietly = TRUE)
+  json_ok <- requireNamespace("jsonlite", quietly = TRUE)
+  if (!tools_ok || !json_ok) {
+    stop(
+      "Packages 'tools' and 'jsonlite' are required. ",
+      "Install with: install.packages(c('tools', 'jsonlite'))",
+      call. = FALSE
+    )
   }
 
   has_changed <- if (!file.exists(parquet_path)) {
-    warning(sprintf('File not found: %s', parquet_path))
+    warning(sprintf("File not found: %s", parquet_path))
     FALSE
   } else {
     new_hash <- tools::md5sum(parquet_path)
@@ -179,13 +220,13 @@ for (i in seq_len(nrow(config))) {
     stored_hash <- checksums[[dataset_name]]
 
     if (is.null(stored_hash)) {
-      message(sprintf('%s: NEW dataset (no previous checksum)', dataset_name))
+      message(sprintf("%s: NEW dataset (no previous checksum)", dataset_name))
       TRUE
     } else if (new_hash != stored_hash) {
-      message(sprintf('%s: CHANGED (hash mismatch)', dataset_name))
+      message(sprintf("%s: CHANGED (hash mismatch)", dataset_name))
       TRUE
     } else {
-      message(sprintf('%s: UNCHANGED (hash match)', dataset_name))
+      message(sprintf("%s: UNCHANGED (hash match)", dataset_name))
       FALSE
     }
   }
@@ -198,28 +239,30 @@ for (i in seq_len(nrow(config))) {
     if (!dry_run) {
       cli_alert("Uploading to R2 bucket...")
 
-      upload_success <- tryCatch({
-        nhanesdata:::nhanes_r2_upload(
-          x = dataset_obj,
-          name = dataset_name,
-          bucket = 'nhanes-data'
-        )
-        TRUE
-      }, error = function(e) {
-        cli_alert_danger("R2 upload failed: {conditionMessage(e)}")
-        summary$datasets_failed <- summary$datasets_failed + 1
-        summary$failed_datasets <- c(summary$failed_datasets, dataset_name)
-        FALSE
-      })
+      upload_success <- tryCatch(
+        {
+          nhanesdata:::nhanes_r2_upload(
+            x = dataset_obj,
+            name = dataset_name,
+            bucket = "nhanes-data"
+          )
+          TRUE
+        },
+        error = function(e) {
+          cli_alert_danger("R2 upload failed: {conditionMessage(e)}")
+          summary$datasets_failed <- summary$datasets_failed + 1
+          summary$failed_datasets <- c(summary$failed_datasets, dataset_name)
+          FALSE
+        }
+      )
 
       if (upload_success) {
         summary$datasets_uploaded <- summary$datasets_uploaded + 1
         cli_alert_success("Uploaded to R2")
 
-        # Step 4: Update checksum
-        # Inline: update_checksum()
+        # Step 4: Update checksum for this dataset
         if (!file.exists(parquet_path)) {
-          stop(sprintf('File not found: %s', parquet_path))
+          stop(sprintf("File not found: %s", parquet_path))
         }
 
         new_hash <- tools::md5sum(parquet_path)
@@ -241,7 +284,7 @@ for (i in seq_len(nrow(config))) {
           auto_unbox = TRUE
         )
 
-        message(sprintf('Updated checksum for %s', dataset_name))
+        message(sprintf("Updated checksum for %s", dataset_name))
       }
     } else {
       cli_alert_warning("SKIPPED upload (dry run mode)")
@@ -275,9 +318,23 @@ if (!dry_run) {
   cli_alert_success("Uploaded to R2: {summary$datasets_uploaded}")
 }
 
+if (summary$datasets_skipped_cycles > 0) {
+  cli_alert_warning(
+    "Skipped upload (missing cycles): {summary$datasets_skipped_cycles}"
+  )
+  for (ds in names(summary$skipped_cycle_details)) {
+    cycles <- summary$skipped_cycle_details[[ds]]
+    cli_alert_warning(
+      "  {ds}: missing {paste(cycles, collapse = ', ')}"
+    )
+  }
+}
+
 if (summary$datasets_failed > 0) {
   cli_alert_danger("Failed datasets: {summary$datasets_failed}")
-  cli_alert_warning("Failed: {paste(summary$failed_datasets, collapse=', ')}")
+  cli_alert_warning(
+    "Failed: {paste(summary$failed_datasets, collapse = ', ')}"
+  )
 }
 
 # Print changed datasets
@@ -290,12 +347,18 @@ if (length(summary$changed_datasets) > 0) {
 
 # Save summary as JSON for GitHub Actions artifact
 summary_json <- jsonlite::toJSON(summary, pretty = TRUE, auto_unbox = FALSE)
-writeLines(summary_json, 'workflow_summary.json')
+writeLines(summary_json, "workflow_summary.json")
 cli_alert_success("Summary saved to workflow_summary.json")
 
 # Exit with appropriate status
 if (summary$datasets_failed > 0) {
   cli_alert_warning("Workflow completed with failures")
+  quit(status = 1)
+} else if (summary$datasets_skipped_cycles > 0) {
+  cli_alert_warning(paste0(
+    "Workflow completed but {summary$datasets_skipped_cycles} ",
+    "dataset(s) skipped due to missing CDC cycles"
+  ))
   quit(status = 1)
 } else {
   cli_alert_success("Workflow completed successfully")

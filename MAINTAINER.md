@@ -27,7 +27,7 @@ Settings → Secrets and variables → Actions → Add:
 ### Local Full Update
 ```r
 source("inst/scripts/workflow_update.R")
-# Runs all 66 datasets, uploads to R2, updates .checksums.json
+# Runs all 71 datasets, uploads to R2, updates .checksums.json
 ```
 
 ### GitHub Actions

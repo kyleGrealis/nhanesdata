@@ -77,7 +77,7 @@ test_that("read_nhanes returns a data.frame/tibble", {
   result <- read_nhanes("demo")
 
   expect_s3_class(result, "data.frame")
-  expect_s3_class(result, "tbl_df")  # tibble
+  expect_s3_class(result, "tbl_df") # tibble
 })
 
 test_that("read_nhanes returns data with required core columns", {
@@ -121,7 +121,7 @@ test_that("read_nhanes returns non-empty data", {
   result <- read_nhanes("demo")
 
   expect_gt(nrow(result), 0)
-  expect_gt(ncol(result), 2)  # More than just year and seqn
+  expect_gt(ncol(result), 2) # More than just year and seqn
 })
 
 # ------------------------------------------------------------------------------
@@ -279,7 +279,7 @@ test_that("read_nhanes returns data with expected year range", {
 
   # Years should be in expected NHANES range (1999-2023+)
   expect_true(all(result$year >= 1999))
-  expect_true(all(result$year <= 2030))  # Future-proof a bit
+  expect_true(all(result$year <= 2030)) # Future-proof a bit
 
   # Years should be odd numbers (survey cycles start on odd years)
   expect_true(all(result$year %% 2 == 1))

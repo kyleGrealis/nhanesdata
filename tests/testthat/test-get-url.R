@@ -47,9 +47,9 @@ test_that("get_url handles single letter suffixes correctly", {
   url_c <- get_url("DEMO_C")
   url_l <- get_url("DEMO_L")
 
-  expect_true(grepl("2001", url_b))  # B = 2001-2002
-  expect_true(grepl("2003", url_c))  # C = 2003-2004
-  expect_true(grepl("2021", url_l))  # L = 2021-2023
+  expect_true(grepl("2001", url_b)) # B = 2001-2002 # nolint
+  expect_true(grepl("2003", url_c)) # C = 2003-2004 # nolint
+  expect_true(grepl("2021", url_l)) # L = 2021-2023 # nolint
 })
 
 # ------------------------------------------------------------------------------
@@ -69,7 +69,10 @@ test_that("get_url constructs URLs with correct structure", {
 
   # URL should follow pattern:
   # https://wwwn.cdc.gov/nchs/data/nhanes/public/YEAR/datafiles/TABLE.htm
-  pattern <- "^https://wwwn\\.cdc\\.gov/nchs/data/nhanes/public/\\d{4}/datafiles/[A-Z_]+\\.htm$"
+  pattern <- paste0(
+    "^https://wwwn\\.cdc\\.gov/nchs/data/",
+    "nhanes/public/\\d{4}/datafiles/[A-Z_]+\\.htm$"
+  )
   expect_true(grepl(pattern, url))
 })
 
@@ -198,7 +201,7 @@ test_that("get_url handles table names with no underscore", {
   # Should construct URL for 1999-2000 cycle
   expect_true(grepl("1999", url))
   expect_true(grepl("DEMO", url))
-  expect_false(grepl("DEMO_", url))  # Should not have underscore
+  expect_false(grepl("DEMO_", url)) # Should not have underscore
 })
 
 test_that("get_url handles table names with multiple underscores", {
@@ -225,12 +228,12 @@ test_that("get_url extracts only final letter as suffix", {
 test_that("get_url works with common NHANES tables", {
   # Test several real NHANES table names
   common_tables <- c(
-    "DEMO_J",    # Demographics
-    "BMX_J",     # Body measures
-    "BPX_J",     # Blood pressure
-    "DIQ_J",     # Diabetes
-    "GHB_J",     # Glycohemoglobin
-    "TCHOL_J"    # Cholesterol
+    "DEMO_J", # Demographics
+    "BMX_J", # Body measures
+    "BPX_J", # Blood pressure
+    "DIQ_J", # Diabetes
+    "GHB_J", # Glycohemoglobin
+    "TCHOL_J" # Cholesterol
   )
 
   for (table in common_tables) {
@@ -268,7 +271,7 @@ test_that("get_url generates valid URLs (structure check)", {
   # But we can check format
   expect_match(url, "^https://")
   expect_match(url, "\\.htm$")
-  expect_true(nchar(url) > 50)  # Should be a reasonably long URL
+  expect_true(nchar(url) > 50) # Should be a reasonably long URL
 })
 
 test_that("get_url includes datafiles in path", {
@@ -285,7 +288,7 @@ test_that("get_url includes datafiles in path", {
 test_that("get_url returns consistent results for same input", {
   url1 <- get_url("DEMO_J")
   url2 <- get_url("DEMO_J")
-  url3 <- get_url("demo_j")  # Different case
+  url3 <- get_url("demo_j") # Different case
 
   expect_equal(url1, url2)
   expect_equal(url1, url3)
