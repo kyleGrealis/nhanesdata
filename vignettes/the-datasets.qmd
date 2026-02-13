@@ -82,5 +82,5 @@ CDC may change data periodically. The data was aggregated as best as possible to
 variable types that changed across cycles. **ALWAYS** reference the CDC documentation
 with `nhanesdata::get_url(dataset)`!
 
-+ See [get_url](.docs/reference/get_url.html) documentation.
++ See [get_url](../reference/get_url.html) documentation.
 :::

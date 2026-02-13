@@ -19,6 +19,6 @@ bibentry(
     )
   ),
   year = "2026",
-  url = "https://kyleGrealis.com/nhanesdata",
+  url = "https://www.kyleGrealis.com/nhanesdata/",
   note = "R package version 0.2.0"
 )
