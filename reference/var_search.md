@@ -5,7 +5,7 @@ A convenience wrapper around
 that searches for variables by exact variable name match. The function
 automatically converts input to uppercase to match NHANES naming
 conventions. Use this when you know the variable code; use
-[`term_search()`](https://kyleGrealis.com/nhanesdata/reference/term_search.md)
+[`term_search()`](https://www.kyleGrealis.com/nhanesdata/reference/term_search.md)
 for text-based searches.
 
 ## Usage
@@ -30,16 +30,16 @@ variable is not found.
 
 ## See also
 
-[`term_search`](https://kyleGrealis.com/nhanesdata/reference/term_search.md)
+[`term_search`](https://www.kyleGrealis.com/nhanesdata/reference/term_search.md)
 for text-based searches,
-[`get_url`](https://kyleGrealis.com/nhanesdata/reference/get_url.md) for
-documentation URLs,
+[`get_url`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md)
+for documentation URLs,
 [`nhanesSearchVarName`](https://rdrr.io/pkg/nhanesA/man/nhanesSearchVarName.html)
 for the underlying function
 
 Other search and lookup functions:
-[`get_url()`](https://kyleGrealis.com/nhanesdata/reference/get_url.md),
-[`term_search()`](https://kyleGrealis.com/nhanesdata/reference/term_search.md)
+[`get_url()`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md),
+[`term_search()`](https://www.kyleGrealis.com/nhanesdata/reference/term_search.md)
 
 ## Examples
 

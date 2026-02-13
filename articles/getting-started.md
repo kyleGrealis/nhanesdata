@@ -135,7 +135,7 @@ For example, if you’re working with 2015-2016 data, you’ll want the
 `DEMO_I` codebook.
 
 The
-[`get_url()`](https://kyleGrealis.com/nhanesdata/reference/get_url.md)
+[`get_url()`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md)
 function helps with this:
 
 ``` r
@@ -232,7 +232,7 @@ pressure data, but which dataset contains it?
 ### Method 1: Search by Term
 
 Use
-[`term_search()`](https://kyleGrealis.com/nhanesdata/reference/term_search.md)
+[`term_search()`](https://www.kyleGrealis.com/nhanesdata/reference/term_search.md)
 to find variables related to a topic:
 
 ``` r
@@ -257,7 +257,7 @@ tables. In **nhanesdata**, that means you want `read_nhanes('bpx')`.
 ### Method 2: Search by Variable Name
 
 If you know the specific variable you need, use
-[`var_search()`](https://kyleGrealis.com/nhanesdata/reference/var_search.md):
+[`var_search()`](https://www.kyleGrealis.com/nhanesdata/reference/var_search.md):
 
 ``` r
 # Find all occurrences of the BPXSY1 variable
@@ -370,18 +370,18 @@ server timeout or cycle suffix.
 In this vignette, you’ve learned how to:
 
 1.  Load NHANES datasets instantly with
-    [`read_nhanes()`](https://kyleGrealis.com/nhanesdata/reference/read_nhanes.md)
+    [`read_nhanes()`](https://www.kyleGrealis.com/nhanesdata/reference/read_nhanes.md)
 2.  Understand the relationship between CDC cycle-specific tables and
     **nhanesdata**’s merged datasets
 3.  Join multiple datasets using `seqn` and `year`
 4.  Filter data by survey year to analyze specific time periods
 5.  Work with multiple datasets simultaneously
 6.  Find variables using
-    [`term_search()`](https://kyleGrealis.com/nhanesdata/reference/term_search.md)
+    [`term_search()`](https://www.kyleGrealis.com/nhanesdata/reference/term_search.md)
     and
-    [`var_search()`](https://kyleGrealis.com/nhanesdata/reference/var_search.md)
+    [`var_search()`](https://www.kyleGrealis.com/nhanesdata/reference/var_search.md)
 7.  Access CDC documentation with
-    [`get_url()`](https://kyleGrealis.com/nhanesdata/reference/get_url.md)
+    [`get_url()`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md)
 8.  Conduct real analyses combining demographic, anthropometric, and
     examination data
 
@@ -402,7 +402,7 @@ Ready to dive deeper? Here are some ideas for your own analyses:
 - Explore prescription medication use patterns with `rxq_rx` data
 
 All of these datasets are available through
-[`read_nhanes()`](https://kyleGrealis.com/nhanesdata/reference/read_nhanes.md).
+[`read_nhanes()`](https://www.kyleGrealis.com/nhanesdata/reference/read_nhanes.md).
 Use the search functions to explore what’s available, and don’t hesitate
 to combine multiple datasets to answer complex questions.
 

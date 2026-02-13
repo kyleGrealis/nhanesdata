@@ -250,7 +250,7 @@ functions to help you discover variables.
 ### Method 1: Search by Term
 
 Use
-[`term_search()`](https://kyleGrealis.com/nhanesdata/reference/term_search.md)
+[`term_search()`](https://www.kyleGrealis.com/nhanesdata/reference/term_search.md)
 to find variables by keyword:
 
 ``` r
@@ -268,7 +268,7 @@ appear in, and descriptions. For example, you’ll see that `BPXSY1`
 ### Method 2: Search by Variable Name
 
 If you know the exact variable name, use
-[`var_search()`](https://kyleGrealis.com/nhanesdata/reference/var_search.md):
+[`var_search()`](https://www.kyleGrealis.com/nhanesdata/reference/var_search.md):
 
 ``` r
 # Find all occurrences of BPXSY1 across cycles
@@ -294,8 +294,8 @@ names(bmx)
 ```
 
 All search functions are **case-insensitive**, so
-[`term_search()`](https://kyleGrealis.com/nhanesdata/reference/term_search.md),
-[`var_search()`](https://kyleGrealis.com/nhanesdata/reference/var_search.md),
+[`term_search()`](https://www.kyleGrealis.com/nhanesdata/reference/term_search.md),
+[`var_search()`](https://www.kyleGrealis.com/nhanesdata/reference/var_search.md),
 and other functions work with any capitalization.
 
 ## Working with Multiple Datasets
@@ -345,7 +345,7 @@ survey cycles, and the same sequence number can be reused across cycles.
 All datasets are stored remotely as `.parquet` files for optimal
 performance and cross-platform compatibility. **Note:** The storage
 format does not affect how you read the data - simply use
-[`read_nhanes()`](https://kyleGrealis.com/nhanesdata/reference/read_nhanes.md)
+[`read_nhanes()`](https://www.kyleGrealis.com/nhanesdata/reference/read_nhanes.md)
 and the function handles everything. You are not writing `.parquet`
 files to your local environment unless you explicitly choose to save
 them locally.
@@ -397,7 +397,7 @@ trigly <- arrow::read_parquet('https://nhanes.kylegrealis.com/trigly.parquet')
 ```
 
 **Note:** Dataset names in URLs are lowercase. The
-[`read_nhanes()`](https://kyleGrealis.com/nhanesdata/reference/read_nhanes.md)
+[`read_nhanes()`](https://www.kyleGrealis.com/nhanesdata/reference/read_nhanes.md)
 function handles case conversion automatically.
 
 This direct access is useful for:
@@ -412,8 +412,8 @@ This direct access is useful for:
 - **Bug reports & feature requests**: [GitHub
   Issues](https://github.com/kyleGrealis/nhanesdata/issues)  
 - **Function documentation**: `?function_name` (e.g.,
-  [`?read_nhanes`](https://kyleGrealis.com/nhanesdata/reference/read_nhanes.md),
-  [`?term_search`](https://kyleGrealis.com/nhanesdata/reference/term_search.md))  
+  [`?read_nhanes`](https://www.kyleGrealis.com/nhanesdata/reference/read_nhanes.md),
+  [`?term_search`](https://www.kyleGrealis.com/nhanesdata/reference/term_search.md))  
 - **Package vignettes**: `browseVignettes("nhanesdata")` for detailed
   guides  
 - **CDC NHANES resources**: [NHANES
@@ -444,37 +444,29 @@ provided as-is.
 
 # Package index
 
-## Data Loading
+## Load Data
 
-Primary function for accessing pre-processed NHANES datasets from cloud
-storage
+Access pre-processed NHANES datasets from cloud storage.
 
-- [`read_nhanes()`](https://kyleGrealis.com/nhanesdata/reference/read_nhanes.md)
+- [`read_nhanes()`](https://www.kyleGrealis.com/nhanesdata/reference/read_nhanes.md)
   : Read NHANES Data from Cloud Storage
 
-## Search and Discovery
+## Search & Discovery
 
-Functions to find variables and documentation across NHANES datasets
+Find variables and documentation across NHANES datasets.
 
-- [`term_search()`](https://kyleGrealis.com/nhanesdata/reference/term_search.md)
+- [`term_search()`](https://www.kyleGrealis.com/nhanesdata/reference/term_search.md)
   : Search NHANES Variables by Term or Phrase
-- [`var_search()`](https://kyleGrealis.com/nhanesdata/reference/var_search.md)
+- [`var_search()`](https://www.kyleGrealis.com/nhanesdata/reference/var_search.md)
   : Search for NHANES Variable by Exact Name
-- [`get_url()`](https://kyleGrealis.com/nhanesdata/reference/get_url.md)
+- [`get_url()`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md)
   : Get CDC Documentation URL for NHANES Table
-
-## Internal Utilities
-
-Helper functions for internal package operations (not for typical users)
-
-- [`utils`](https://kyleGrealis.com/nhanesdata/reference/utils.md) :
-  Internal Utility Functions
 
 # Articles
 
 ### Get Started
 
 - [Getting Started with NHANES
-  Data](https://kyleGrealis.com/nhanesdata/articles/getting-started.md):
+  Data](https://www.kyleGrealis.com/nhanesdata/articles/getting-started.md):
 - [Available NHANES
-  Datasets](https://kyleGrealis.com/nhanesdata/articles/the-datasets.md):
+  Datasets](https://www.kyleGrealis.com/nhanesdata/articles/the-datasets.md):

@@ -37,16 +37,16 @@ Returns an empty data.frame with correct structure if no matches found.
 
 ## See also
 
-[`var_search`](https://kyleGrealis.com/nhanesdata/reference/var_search.md)
+[`var_search`](https://www.kyleGrealis.com/nhanesdata/reference/var_search.md)
 for searching by exact variable name,
-[`get_url`](https://kyleGrealis.com/nhanesdata/reference/get_url.md) for
-getting documentation URLs,
+[`get_url`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md)
+for getting documentation URLs,
 [`nhanesSearch`](https://rdrr.io/pkg/nhanesA/man/nhanesSearch.html) for
 the underlying search function
 
 Other search and lookup functions:
-[`get_url()`](https://kyleGrealis.com/nhanesdata/reference/get_url.md),
-[`var_search()`](https://kyleGrealis.com/nhanesdata/reference/var_search.md)
+[`get_url()`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md),
+[`var_search()`](https://www.kyleGrealis.com/nhanesdata/reference/var_search.md)
 
 ## Examples
 

@@ -32,7 +32,7 @@ interviews
 - Variable names match CDC documentation
 
 For detailed variable information, use
-[`term_search()`](https://kyleGrealis.com/nhanesdata/reference/term_search.md)
+[`term_search()`](https://www.kyleGrealis.com/nhanesdata/reference/term_search.md)
 or visit the [CDC NHANES website](https://wwwn.cdc.gov/nchs/nhanes/).
 
 > **Warning**
@@ -43,5 +43,5 @@ or visit the [CDC NHANES website](https://wwwn.cdc.gov/nchs/nhanes/).
 > `nhanesdata::get_url(dataset)`!
 >
 > - See
->   [get_url](https://kyleGrealis.com/nhanesdata/articles/.docs/reference/get_url.md)
+>   [get_url](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md)
 >   documentation.

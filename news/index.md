@@ -57,9 +57,9 @@ Released: Jan. 2026
 ### Breaking Changes
 
 - `read_r2()` renamed to
-  [`read_nhanes()`](https://kyleGrealis.com/nhanesdata/reference/read_nhanes.md).
+  [`read_nhanes()`](https://www.kyleGrealis.com/nhanesdata/reference/read_nhanes.md).
 - `pull_nhanes()` no longer exported; use
-  [`read_nhanes()`](https://kyleGrealis.com/nhanesdata/reference/read_nhanes.md)
+  [`read_nhanes()`](https://www.kyleGrealis.com/nhanesdata/reference/read_nhanes.md)
   to load data.
 
 ### Improvements
@@ -67,7 +67,7 @@ Released: Jan. 2026
 - Reduced required dependencies (moved 7 packages to Suggests).
 - Dataset names are now case-insensitive.
 - Improved error messages and
-  [`get_url()`](https://kyleGrealis.com/nhanesdata/reference/get_url.md)
+  [`get_url()`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md)
   reliability.
 
 ### Bug Fixes
@@ -76,9 +76,9 @@ Released: Jan. 2026
   [`save()`](https://rdrr.io/r/base/save.html) failed with “object not
   found” error.
 - Fixed NULL handling in
-  [`term_search()`](https://kyleGrealis.com/nhanesdata/reference/term_search.md)
+  [`term_search()`](https://www.kyleGrealis.com/nhanesdata/reference/term_search.md)
   and
-  [`var_search()`](https://kyleGrealis.com/nhanesdata/reference/var_search.md).
+  [`var_search()`](https://www.kyleGrealis.com/nhanesdata/reference/var_search.md).
 - Fixed `Begin.Year` column not converting to numeric.
 
 ------------------------------------------------------------------------
