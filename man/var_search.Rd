@@ -11,10 +11,9 @@ var_search(var)
 converted to uppercase. Not case-sensitive.}
 }
 \value{
-A data.frame showing all occurrences of the variable across
-survey cycles, including variable descriptions, data file names, and
-years available. Returns an empty data.frame with appropriate structure
-if the variable is not found.
+A character vector of CDC table names containing the variable
+(e.g., \code{"DEMO"}, \code{"DEMO_B"}, \code{"DEMO_C"}).
+Returns \code{character(0)} if the variable is not found.
 }
 \description{
 A convenience wrapper around \code{nhanesA::nhanesSearchVarName} that
@@ -26,11 +25,8 @@ text-based searches.
 \examples{
 \donttest{
 # Search for specific variable (case-insensitive)
-var_search("RIAGENDR") # Gender variable
-var_search("ridageyr") # Age variable (auto-converted to uppercase)
-
-# See where glucose variables appear
-var_search("LBXGLU")
+var_search("RIDAGEYR") # Age variable across all DEMO cycles
+var_search("BPXSY1")   # Systolic blood pressure
 }
 
 }

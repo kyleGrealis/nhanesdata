@@ -37,13 +37,11 @@ datasets, misspelled names). Error messages include the attempted URL and
 suggestions for troubleshooting.
 }
 \examples{
+\donttest{
 # All case variations work identically:
 trigly <- read_nhanes("trigly") # Lowercase
-demo <- read_nhanes("DEMO") # Uppercase
-acq <- read_nhanes("Acq") # Mixed case
-
-# Load multiple datasets
-datasets <- c("demo", "BPX", "bmx") |>
-  purrr::map(read_nhanes)
+demo <- read_nhanes("DEMO")    # Uppercase
+acq <- read_nhanes("Acq")      # Mixed case
+}
 
 }

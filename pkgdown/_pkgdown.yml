@@ -27,6 +27,7 @@ articles:
     contents:
       - getting-started
       - the-datasets
+      - covid-data-exclusion
 
 reference:
   - title: "Load Data"
@@ -55,10 +56,10 @@ navbar:
     articles:
       text: Articles
       menu:
-        - text: Getting Started
-          href: articles/getting-started.html
         - text: Dataset Catalog
           href: articles/the-datasets.html
+        - text: "COVID-19 Data Exclusion"
+          href: articles/covid-data-exclusion.html
     news:
       text: Changelog
       href: news/index.html

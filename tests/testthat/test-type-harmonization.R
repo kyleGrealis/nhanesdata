@@ -478,7 +478,7 @@ test_that("continuous variables with Range of Values are not translated", {
 
   result <- nhanesdata:::.translate_numeric_columns(df, ref)
 
-  # Column should stay numeric — NOT converted to character
+  # Column should stay numeric, NOT converted to character
   expect_type(result$ridageyr, "double")
   expect_equal(result$ridageyr, c(25, 53, 80, 79, NA))
 })

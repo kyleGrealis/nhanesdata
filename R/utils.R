@@ -169,7 +169,7 @@ utils::globalVariables(c("year", "seqn", "Begin.Year", "Variable.Name"))
     # cannot simply skip and let bind_rows() handle it because bind_rows()
     # is strict about type matching (e.g., character NA vs double will
     # error). This commonly occurs when a column (like BMIHEAD) exists in
-    # some NHANES cycles but not others — bind_rows() fills the missing
+    # some NHANES cycles but not others. bind_rows() fills the missing
     # column with typed NAs that may clash with the column's real type in
     # a later cycle.
     if (all(is.na(existing_df[[col]]))) {
