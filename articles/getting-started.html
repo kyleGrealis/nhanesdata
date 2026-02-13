@@ -38,8 +38,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/getting-started.html">Getting Started</a></li>
-    <li><a class="dropdown-item" href="../articles/the-datasets.html">Dataset Catalog</a></li>
+<li><a class="dropdown-item" href="../articles/the-datasets.html">Dataset Catalog</a></li>
+    <li><a class="dropdown-item" href="../articles/covid-data-exclusion.html">COVID-19 Data Exclusion</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -72,49 +72,34 @@
 
 
 
-    <section class="level2"><h2 id="why-nhanes-data-matters-and-why-its-been-frustrating-to-use">Why NHANES Data Matters (And Why It’s Been Frustrating to Use)<a class="anchor" aria-label="anchor" href="#why-nhanes-data-matters-and-why-its-been-frustrating-to-use"></a>
+    <section class="level2"><h2 id="motivation">Motivation<a class="anchor" aria-label="anchor" href="#motivation"></a>
 </h2>
-<p>The National Health and Nutrition Examination Survey (NHANES) is one of the most comprehensive public health datasets available. With data on tens of thousands of Americans spanning over two decades, it’s an invaluable resource for understanding trends in health, nutrition, disease, and demographics.</p>
-<p>If you’ve tried to work with NHANES data before, you’ve likely encountered two major pain points:</p>
+<p>The National Health and Nutrition Examination Survey (NHANES) is one of the most widely used public health datasets in the U.S., spanning over two decades of continuous data collection. Working with NHANES data directly from the CDC presents two recurring problems:</p>
 <ol type="1">
 <li>
-<strong>CDC server reliability</strong>: The CDC’s data servers can be slow, unresponsive, or down entirely. This makes reproducible research difficult when you can’t count on data availability.</li>
+<strong>Server reliability.</strong> The CDC’s data servers are frequently slow or unresponsive, which breaks reproducible workflows.</li>
 <li>
-<strong>Cycle suffix confusion</strong>: The CDC publishes data in two-year cycles, each with a different letter suffix. Want demographics data? You’ll need to work with <code>DEMO</code>, <code>DEMO_B</code>, <code>DEMO_C</code>, all the way through <code>DEMO_L</code>. Finding the right documentation becomes a scavenger hunt, and combining cycles requires careful data wrangling.</li>
+<strong>Cycle management.</strong> The CDC publishes data in two-year cycles with letter suffixes (<code>DEMO</code>, <code>DEMO_B</code>, …, <code>DEMO_L</code>). Combining cycles requires tracking naming conventions and reconciling type differences across waves.</li>
 </ol>
-<p>The <strong>nhanesdata</strong> package solves both problems:</p>
-<ul>
-<li>
-<strong>Reliable access</strong>: All datasets are hosted on Cloudflare R2 with a public URL, giving you fast, dependable access anytime.</li>
-<li>
-<strong>Simplified naming</strong>: We’ve already merged all cycles for you. Just ask for <code>demo</code> and you get all demographics data from 1999-2023, with a <code>year</code> column to track which cycle each observation belongs to.</li>
-</ul>
-<p>Let’s get you from zero to your first NHANES analysis in the next 10 minutes.</p>
+<p><strong>nhanesdata</strong> addresses both issues by hosting pre-merged, type-harmonized datasets on Cloudflare R2 with public access. A single call to <code>read_nhanes("demo")</code> returns all demographics data from 1999-2023 with a <code>year</code> column identifying each survey cycle.</p>
 </section><section class="level2"><h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
 </h2>
-<p>This package builds on the excellent <strong>nhanesA</strong> package, which provides the foundation for accessing NHANES data through R. We’re grateful for the <strong>nhanesA</strong> developers’ work in making CDC data accessible.</p>
-<p>The <strong>nhanesdata</strong> package extends <strong>nhanesA</strong> by providing:</p>
-<ul>
-<li>Pre-processed datasets for fast access</li>
-<li>Automatic harmonization across survey cycles (1999-2023)</li>
-<li>Convenient search and discovery functions</li>
-</ul></section><section class="level2"><h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+<p>This package builds on the <a href="https://cran.r-project.org/package=nhanesA" class="external-link"><strong>nhanesA</strong></a> package, which provides the underlying interface to NHANES data in R.</p>
+</section><section class="level2"><h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Install the package from GitHub:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"kyleGrealis/nhanesdata"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"kyleGrealis/nhanesdata"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<p>Then load the package:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.kyleGrealis.com/nhanesdata/">nhanesdata</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span> <span class="co"># for data manipulation</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span> <span class="co"># for visualization</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 </div>
-</section><section class="level2"><h2 id="your-first-dataset-in-30-seconds">Your First Dataset in 30 Seconds<a class="anchor" aria-label="anchor" href="#your-first-dataset-in-30-seconds"></a>
+</section><section class="level2"><h2 id="loading-data">Loading Data<a class="anchor" aria-label="anchor" href="#loading-data"></a>
 </h2>
-<p>Let’s load the demographics dataset, which contains age, gender, race/ethnicity, income, and other demographic variables:</p>
 <div class="cell">
 <pre><code><span><span class="co">#&gt; Loading: DEMO</span></span>
 <span><span class="co">#&gt; DEMO complete! (113,249 rows)</span></span></code></pre>
@@ -122,22 +107,18 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Take a look at what we have</span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">demo</span><span class="op">)</span></span></code></pre></div>
 </div>
-<p>Notice the <code>year</code> and <code>seqn</code> columns:</p>
+<p>Every dataset includes two key columns:</p>
 <ul>
 <li>
-<code>year</code>: The survey cycle start year (1999, 2001, 2003, …, 2017, 2021)</li>
+<code>year</code>: Survey cycle start year (1999, 2001, 2003, …, 2017, 2021)</li>
 <li>
-<code>seqn</code>: The respondent sequence number (unique within a cycle, used for joining datasets)</li>
+<code>seqn</code>: Respondent sequence number (unique within a cycle, used for joining)</li>
 </ul>
-<p>With this one simple call, you now have over 100,000 observations spanning 11 survey cycles. No server timeouts, no wrestling with cycle suffixes.</p>
-<p><strong>Note:</strong> Dataset names are case-insensitive - use <code>'demo'</code>, <code>'DEMO'</code>, or <code>'Demo'</code> interchangeably!</p>
-</section><section class="level2"><h2 id="quick-analysis-age-distribution-over-time">Quick Analysis: Age Distribution Over Time<a class="anchor" aria-label="anchor" href="#quick-analysis-age-distribution-over-time"></a>
+<p>Dataset names are case-insensitive: <code>"demo"</code>, <code>"DEMO"</code>, and <code>"Demo"</code> all work.</p>
+</section><section class="level2"><h2 id="example-age-distribution-over-time">Example: Age Distribution Over Time<a class="anchor" aria-label="anchor" href="#example-age-distribution-over-time"></a>
 </h2>
-<p>Let’s examine how the age distribution of NHANES participants has evolved:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demo</span> <span class="op">|&gt;</span></span>
@@ -158,112 +139,76 @@
 </div>
 </div>
 </div>
-<p>In just a few lines, you’ve visualized trends across more than 20 years of public health data. That’s the power of simplified access.</p>
-</section><section class="level2"><h2 id="understanding-cdc-dataset-names-important">Understanding CDC Dataset Names (Important!)<a class="anchor" aria-label="anchor" href="#understanding-cdc-dataset-names-important"></a>
+</section><section class="level2"><h2 id="cdc-dataset-naming">CDC Dataset Naming<a class="anchor" aria-label="anchor" href="#cdc-dataset-naming"></a>
 </h2>
-<p>Here’s where the CDC’s naming system can trip you up. When you use <code>read_nhanes('demo')</code>, you’re getting data that the CDC publishes across multiple tables:</p>
+<p>When you call <code>read_nhanes("demo")</code>, you receive data that the CDC publishes across multiple cycle-specific tables:</p>
 <table class="table caption-top">
-<colgroup>
-<col style="width: 28%">
-<col style="width: 25%">
-<col style="width: 46%">
-</colgroup>
 <thead><tr class="header">
-<th><strong>CDC Table Name</strong></th>
-<th><strong>Survey Years</strong></th>
-<th><strong>What nhanesdata Does</strong></th>
+<th>CDC Table</th>
+<th>Survey Years</th>
+<th>Package Behavior</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td>DEMO</td>
 <td>1999-2000</td>
-<td>Merges all of these into a</td>
+<td>Merged into a single <code>demo</code> dataset</td>
 </tr>
 <tr class="even">
 <td>DEMO_B</td>
 <td>2001-2002</td>
-<td>single dataset called <code>demo</code>,</td>
+<td>with a <code>year</code> column and</td>
 </tr>
 <tr class="odd">
 <td>DEMO_C</td>
 <td>2003-2004</td>
-<td>adds a <code>year</code> column, and</td>
+<td>harmonized data types</td>
 </tr>
 <tr class="even">
 <td>…</td>
 <td>…</td>
-<td>harmonizes data types across</td>
+<td>across all cycles.</td>
 </tr>
 <tr class="odd">
 <td>DEMO_L</td>
 <td>2021-2023</td>
-<td>cycles so you can analyze them</td>
-</tr>
-<tr class="even">
 <td></td>
-<td></td>
-<td>together without any extra work</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Why does this matter?</strong></p>
-<p>When you need to look up what a variable means, you’ll still need to reference the CDC’s documentation, which uses the cycle-specific names. For example, if you’re working with 2015-2016 data, you’ll want the <code>DEMO_I</code> codebook.</p>
-<p>The <code><a href="../reference/get_url.html">get_url()</a></code> function helps with this:</p>
+<p>This matters when you need CDC documentation for a specific variable. Use <code><a href="../reference/get_url.html">get_url()</a></code> to retrieve the codebook URL for any cycle-specific table:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Get documentation for the original DEMO table (1999-2000)</span></span>
-<span><span class="fu"><a href="../reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">"DEMO"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Get documentation for DEMO_I (2015-2016)</span></span>
-<span><span class="fu"><a href="../reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">"DEMO_I"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">"DEMO"</span><span class="op">)</span> <span class="co"># 1999-2000 codebook</span></span>
+<span><span class="fu"><a href="../reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">"DEMO_I"</span><span class="op">)</span> <span class="co"># 2015-2016 codebook</span></span></code></pre></div>
 </div>
-<p>This will return the full URL to the CDC’s documentation page where you can find variable descriptions, value codes, and survey methodology notes.</p>
-<section class="level3"><h3 id="important-2019-2020-survey-cycle">Important: 2019-2020 Survey Cycle<a class="anchor" aria-label="anchor" href="#important-2019-2020-survey-cycle"></a>
-</h3>
-<p>The 2019-2020 survey cycle (suffix K) is <strong>not included</strong> in the datasets provided by this package.</p>
-<p>The COVID-19 pandemic disrupted data collection during this cycle, and the CDC determined that the data quality was insufficient for standard NHANES analysis. The CDC combined partial 2019-2020 data with 2021-2023 data and released it as a special pre-pandemic dataset.</p>
-<p><strong>Reference:</strong> <a href="https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?BeginYear=2019" class="external-link">CDC NHANES 2019-2020 Data Documentation</a></p>
-<p><strong>What this means:</strong> Datasets jump from suffix J (2017-2018) to suffix L (2021-2023), skipping K entirely.</p>
-</section></section><section class="level2"><h2 id="working-with-multiple-datasets">Working with Multiple Datasets<a class="anchor" aria-label="anchor" href="#working-with-multiple-datasets"></a>
+<p>The 2019-2020 cycle (suffix K) is excluded from all datasets. See <code><a href="../articles/covid-data-exclusion.html">vignette("covid-data-exclusion")</a></code> for details.</p>
+</section><section class="level2"><h2 id="joining-multiple-datasets">Joining Multiple Datasets<a class="anchor" aria-label="anchor" href="#joining-multiple-datasets"></a>
 </h2>
-<p>A common workflow is to load and join multiple related datasets. NHANES data becomes powerful when you combine information from different examinations and questionnaires.</p>
+<p>Combine datasets using <code>seqn</code> and <code>year</code> as join keys:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load three related datasets</span></span>
-<span><span class="co"># Dataset names are case-insensitive - use whichever style you prefer</span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span> <span class="co"># Demographics (age, gender, etc.)</span></span>
-<span><span class="va">bpx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"BPX"</span><span class="op">)</span> <span class="co"># Blood pressure measurements</span></span>
-<span><span class="va">bmx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"Bmx"</span><span class="op">)</span> <span class="co"># Body measurements (height, weight, BMI)</span></span>
+<code class="sourceCode R"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span></span>
+<span><span class="va">bpx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"bpx"</span><span class="op">)</span></span>
+<span><span class="va">bmx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"bmx"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Combine the datasets using inner_join()</span></span>
-<span><span class="co"># inner_join() keeps only participants who appear in ALL datasets</span></span>
-<span><span class="co"># We join by 'seqn' (participant ID) and 'year' (survey cycle)</span></span>
 <span><span class="va">analysis_data</span> <span class="op">&lt;-</span> <span class="va">demo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">bpx</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"seqn"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">bmx</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"seqn"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">seqn</span>, <span class="va">ridageyr</span>, <span class="va">riagendr</span>, <span class="va">bpxsy1</span>, <span class="va">bmxbmi</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># View the first few rows</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">analysis_data</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">seqn</span>, <span class="va">ridageyr</span>, <span class="va">riagendr</span>, <span class="va">bpxsy1</span>, <span class="va">bmxbmi</span><span class="op">)</span></span></code></pre></div>
 </div>
-<p><strong>Important joining principles:</strong></p>
-<ul>
-<li>Always join on BOTH <code>seqn</code> AND <code>year</code> together</li>
-<li>The <code>seqn</code> column is the participant ID (unique within a cycle)</li>
-<li>The <code>year</code> column ensures you only join observations from the same survey cycle</li>
-</ul></section><section class="level2"><h2 id="filtering-by-survey-year">Filtering by Survey Year<a class="anchor" aria-label="anchor" href="#filtering-by-survey-year"></a>
+<p>Always join on <strong>both</strong> <code>seqn</code> and <code>year</code>. Each <code>seqn</code> is unique within its cycle, and joining on both columns ensures participants are matched within the same survey period.</p>
+</section><section class="level2"><h2 id="filtering-by-survey-year">Filtering by Survey Year<a class="anchor" aria-label="anchor" href="#filtering-by-survey-year"></a>
 </h2>
-<p>Since datasets include all cycles, you can filter to specific time periods:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load demographics</span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Filter to recent cycles only (2015 and later)</span></span>
-<span><span class="va">recent_demo</span> <span class="op">&lt;-</span> <span class="va">demo</span> <span class="op">|&gt;</span></span>
+<span><span class="co"># Recent cycles only</span></span>
+<span><span class="va">recent</span> <span class="op">&lt;-</span> <span class="va">demo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">&gt;=</span> <span class="fl">2015</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Compare across time periods</span></span>
+<span><span class="co"># Compare time periods</span></span>
 <span><span class="va">demo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    period <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
@@ -273,101 +218,63 @@
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">period</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>n_participants <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-</section><section class="level2"><h2 id="finding-variables-working-backwards-from-your-question">Finding Variables: Working Backwards from Your Question<a class="anchor" aria-label="anchor" href="#finding-variables-working-backwards-from-your-question"></a>
+</section><section class="level2"><h2 id="finding-variables">Finding Variables<a class="anchor" aria-label="anchor" href="#finding-variables"></a>
 </h2>
-<p>Let’s say you want to study hypertension. You know NHANES collects blood pressure data, but which dataset contains it?</p>
-<section class="level3"><h3 id="method-1-search-by-term">Method 1: Search by Term<a class="anchor" aria-label="anchor" href="#method-1-search-by-term"></a>
+<section class="level3"><h3 id="by-keyword">By keyword<a class="anchor" aria-label="anchor" href="#by-keyword"></a>
 </h3>
-<p>Use <code><a href="../reference/term_search.html">term_search()</a></code> to find variables related to a topic:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Find variables related to blood pressure</span></span>
-<span><span class="va">bp_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/term_search.html">term_search</a></span><span class="op">(</span><span class="st">"blood pressure"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">bp_vars</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_search.html">term_search</a></span><span class="op">(</span><span class="st">"blood pressure"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<p>This returns a dataset showing:</p>
-<ul>
-<li>
-<code>Variable.Name</code>: The variable code (e.g., <code>BPXSY1</code> for systolic blood pressure)</li>
-<li>
-<code>Data.File.Name</code>: Which CDC table it’s in (e.g., <code>BPX_J</code>)</li>
-<li>
-<code>Data.File.Description</code>: What the table contains</li>
-<li>
-<code>Begin.Year</code>: When this data was collected</li>
-</ul>
-<p>From this, you can see that blood pressure data lives in the <code>BPX</code> tables. In <strong>nhanesdata</strong>, that means you want <code>read_nhanes('bpx')</code>.</p>
-<p><strong>Note:</strong> All search functions are case-insensitive!</p>
-</section><section class="level3"><h3 id="method-2-search-by-variable-name">Method 2: Search by Variable Name<a class="anchor" aria-label="anchor" href="#method-2-search-by-variable-name"></a>
+<p>Returns variable names, table names, descriptions, and collection years. From there you can identify the base table name (e.g., <code>BPX</code>) for use with <code><a href="../reference/read_nhanes.html">read_nhanes()</a></code>.</p>
+</section><section class="level3"><h3 id="by-variable-name">By variable name<a class="anchor" aria-label="anchor" href="#by-variable-name"></a>
 </h3>
-<p>If you know the specific variable you need, use <code><a href="../reference/var_search.html">var_search()</a></code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Find all occurrences of the BPXSY1 variable</span></span>
-<span><span class="fu"><a href="../reference/var_search.html">var_search</a></span><span class="op">(</span><span class="st">"BPXSY1"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/var_search.html">var_search</a></span><span class="op">(</span><span class="st">"BPXSY1"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<p>This shows you every cycle where that variable appears, which is helpful for understanding data availability over time.</p>
-</section><section class="level3"><h3 id="method-3-verify-variables-in-your-loaded-data">Method 3: Verify Variables in Your Loaded Data<a class="anchor" aria-label="anchor" href="#method-3-verify-variables-in-your-loaded-data"></a>
+<p>Shows which cycles contain a specific variable.</p>
+</section><section class="level3"><h3 id="in-loaded-data">In loaded data<a class="anchor" aria-label="anchor" href="#in-loaded-data"></a>
 </h3>
-<p>If you’ve already loaded a dataset and want to confirm it contains the variable you need:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load a dataset</span></span>
-<span><span class="va">bmx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"bmx"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Check if it contains the height variable</span></span>
-<span><span class="st">"bmxht"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bmx</span><span class="op">)</span> <span class="co"># TRUE</span></span>
-<span></span>
-<span><span class="co"># Or see all available columns</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bmx</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; Loading: BMX</span></span>
+<span><span class="co">#&gt; BMX complete! (96,288 rows)</span></span></code></pre>
 </div>
-<p>This approach helps you verify that variables from the CDC documentation are actually present in the merged dataset.</p>
-</section></section><section class="level2"><h2 id="a-complete-example-blood-pressure-by-age-group">A Complete Example: Blood Pressure by Age Group<a class="anchor" aria-label="anchor" href="#a-complete-example-blood-pressure-by-age-group"></a>
-</h2>
-<p>Let’s put it all together with a realistic analysis examining how blood pressure varies by age. This example will include one rendered plot showing the results:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Step 1: Load required datasets</span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="st">"bmxht"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bmx</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+</div>
+<p>All search functions are case-insensitive.</p>
+</section></section><section class="level2"><h2 id="complete-example-blood-pressure-by-age-group">Complete Example: Blood Pressure by Age Group<a class="anchor" aria-label="anchor" href="#complete-example-blood-pressure-by-age-group"></a>
+</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span></span>
 <span><span class="va">bpx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"bpx"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Step 2: Select demographic variables for adults</span></span>
-<span><span class="va">demo_adults</span> <span class="op">&lt;-</span> <span class="va">demo</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ridageyr</span> <span class="op">&gt;=</span> <span class="fl">18</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># adults only</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">seqn</span>, <span class="va">year</span>, <span class="va">ridageyr</span>, <span class="va">riagendr</span>, <span class="va">ridreth1</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Step 3: Select blood pressure variables</span></span>
-<span><span class="va">bp_vars</span> <span class="op">&lt;-</span> <span class="va">bpx</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">seqn</span>, <span class="va">year</span>, <span class="va">bpxsy1</span>, <span class="va">bpxdi1</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Step 4: Combine the datasets using inner_join()</span></span>
-<span><span class="co"># inner_join() matches rows that appear in BOTH datasets</span></span>
-<span><span class="co"># We join by 'seqn' (participant ID) and 'year' (survey cycle)</span></span>
-<span><span class="va">bp_combined</span> <span class="op">&lt;-</span> <span class="va">demo_adults</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">bp_vars</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"seqn"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Step 5: Filter to valid blood pressure readings and create age groups</span></span>
-<span><span class="va">bp_analysis</span> <span class="op">&lt;-</span> <span class="va">bp_combined</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
-<span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">bpxsy1</span><span class="op">)</span>, <span class="co"># valid systolic BP</span></span>
-<span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">bpxdi1</span><span class="op">)</span>, <span class="co"># valid diastolic BP</span></span>
-<span>    <span class="va">bpxsy1</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="co"># exclude special codes</span></span>
-<span>    <span class="va">bpxdi1</span> <span class="op">&gt;</span> <span class="fl">0</span></span>
+<span><span class="va">bp_analysis</span> <span class="op">&lt;-</span> <span class="va">demo</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ridageyr</span> <span class="op">&gt;=</span> <span class="fl">18</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">seqn</span>, <span class="va">year</span>, <span class="va">ridageyr</span>, <span class="va">riagendr</span>, <span class="va">ridreth1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span></span>
+<span>    <span class="va">bpx</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">seqn</span>, <span class="va">year</span>, <span class="va">bpxsy1</span>, <span class="va">bpxdi1</span><span class="op">)</span>,</span>
+<span>    by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"seqn"</span>, <span class="st">"year"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">bpxsy1</span><span class="op">)</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">bpxdi1</span><span class="op">)</span>, <span class="va">bpxsy1</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="va">bpxdi1</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    age_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span></span>
 <span>      <span class="va">ridageyr</span>,</span>
 <span>      breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">30</span>, <span class="fl">40</span>, <span class="fl">50</span>, <span class="fl">60</span>, <span class="fl">70</span>, <span class="fl">80</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
-<span>      labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"18-29"</span>, <span class="st">"30-39"</span>, <span class="st">"40-49"</span>, <span class="st">"50-59"</span>, <span class="st">"60-69"</span>, <span class="st">"70-79"</span>, <span class="st">"80+"</span><span class="op">)</span>,</span>
+<span>      labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>        <span class="st">"18-29"</span>, <span class="st">"30-39"</span>, <span class="st">"40-49"</span>, <span class="st">"50-59"</span>,</span>
+<span>        <span class="st">"60-69"</span>, <span class="st">"70-79"</span>, <span class="st">"80+"</span></span>
+<span>      <span class="op">)</span>,</span>
 <span>      right <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Step 6: Calculate mean BP by age group</span></span>
-<span><span class="co"># group_by() creates groups for each age category</span></span>
-<span><span class="co"># summarize() calculates summary statistics within each group</span></span>
 <span><span class="va">bp_summary</span> <span class="op">&lt;-</span> <span class="va">bp_analysis</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">age_group</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
@@ -378,9 +285,8 @@
 <span>  <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Step 7: Visualize the results</span></span>
-<span><span class="va">bp_summary</span> <span class="op">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bp_summary</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age_group</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">mean_systolic</span><span class="op">)</span>, fill <span class="op">=</span> <span class="st">"coral"</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">mean_diastolic</span><span class="op">)</span>, fill <span class="op">=</span> <span class="st">"steelblue"</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
@@ -399,40 +305,16 @@
 </div>
 </div>
 </div>
-<p>This analysis combines data from over 100,000 individuals across multiple survey cycles to reveal the well-known pattern of increasing blood pressure with age. You did this without dealing with a single CDC server timeout or cycle suffix.</p>
-</section><section class="level2"><h2 id="summary-what-youve-learned">Summary: What You’ve Learned<a class="anchor" aria-label="anchor" href="#summary-what-youve-learned"></a>
-</h2>
-<p>In this vignette, you’ve learned how to:</p>
-<ol type="1">
-<li>Load NHANES datasets instantly with <code><a href="../reference/read_nhanes.html">read_nhanes()</a></code>
-</li>
-<li>Understand the relationship between CDC cycle-specific tables and <strong>nhanesdata</strong>’s merged datasets</li>
-<li>Join multiple datasets using <code>seqn</code> and <code>year</code>
-</li>
-<li>Filter data by survey year to analyze specific time periods</li>
-<li>Work with multiple datasets simultaneously</li>
-<li>Find variables using <code><a href="../reference/term_search.html">term_search()</a></code> and <code><a href="../reference/var_search.html">var_search()</a></code>
-</li>
-<li>Access CDC documentation with <code><a href="../reference/get_url.html">get_url()</a></code>
-</li>
-<li>Conduct real analyses combining demographic, anthropometric, and examination data</li>
-</ol>
-<p>The <strong>nhanesdata</strong> package removes the traditional friction from working with NHANES data. You can now focus on answering your research questions instead of fighting with data infrastructure.</p>
 </section><section class="level2"><h2 id="next-steps">Next Steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
 </h2>
-<p>Ready to dive deeper? Here are some ideas for your own analyses:</p>
 <ul>
-<li>Examine trends in diabetes prevalence using the <code>diq</code> (diabetes questionnaire) dataset<br>
+<li>Browse the <a href="the-datasets.html">dataset catalog</a> for the full list of available tables</li>
+<li>Read about the <a href="covid-data-exclusion.html">2019-2020 cycle exclusion</a>
 </li>
-<li>Analyze changes in dietary patterns with <code>dr1tot</code> and <code>dr2tot</code> (dietary interview data)<br>
+<li>Use <code><a href="../reference/read_nhanes.html">?read_nhanes</a></code> for function documentation</li>
+<li>File issues or feature requests on <a href="https://github.com/kyleGrealis/nhanesdata/issues" class="external-link">GitHub</a>
 </li>
-<li>Study relationships between physical activity (<code>paq</code>) and health outcomes<br>
-</li>
-<li>Explore prescription medication use patterns with <code>rxq_rx</code> data</li>
-</ul>
-<p>All of these datasets are available through <code><a href="../reference/read_nhanes.html">read_nhanes()</a></code>. Use the search functions to explore what’s available, and don’t hesitate to combine multiple datasets to answer complex questions.</p>
-<p>The data is waiting for you. Happy analyzing!</p>
-</section><script id="quarto-html-after-body" type="application/javascript">
+</ul></section><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);

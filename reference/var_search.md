@@ -23,9 +23,8 @@ var_search(var)
 
 ## Value
 
-A data.frame showing all occurrences of the variable across survey
-cycles, including variable descriptions, data file names, and years
-available. Returns an empty data.frame with appropriate structure if the
+A character vector of CDC table names containing the variable (e.g.,
+`"DEMO"`, `"DEMO_B"`, `"DEMO_C"`). Returns `character(0)` if the
 variable is not found.
 
 ## See also
@@ -46,21 +45,11 @@ Other search and lookup functions:
 ``` r
 # \donttest{
 # Search for specific variable (case-insensitive)
-var_search("RIAGENDR") # Gender variable
-#>  [1] "BFRPOL_D" "BFRPOL_E" "BFRPOL_F" "BFRPOL_G" "BFRPOL_H" "BFRPOL_I"
-#>  [7] "DEMO"     "DEMO_B"   "DEMO_C"   "DEMO_D"   "DEMO_E"   "DEMO_F"  
-#> [13] "DEMO_G"   "DEMO_H"   "DEMO_I"   "DEMO_J"   "DEMO_L"   "DOXPOL_D"
-#> [19] "DOXPOL_E" "DOXPOL_F" "DOXPOL_G" "DOXPOL_H" "DOXPOL_I" "PCBPOL_D"
-#> [25] "PCBPOL_E" "PCBPOL_F" "PCBPOL_G" "PCBPOL_H" "PCBPOL_I" "PSTPOL_D"
-#> [31] "PSTPOL_E" "PSTPOL_F" "PSTPOL_G" "PSTPOL_H" "PSTPOL_I" "P_DEMO"  
-#> [37] "SSBFR_B"  "SSPCB_B"  "SSPST_B" 
-var_search("ridageyr") # Age variable (auto-converted to uppercase)
+var_search("RIDAGEYR") # Age variable across all DEMO cycles
 #>  [1] "DEMO"   "DEMO_B" "DEMO_C" "DEMO_D" "DEMO_E" "DEMO_F" "DEMO_G" "DEMO_H"
 #>  [9] "DEMO_I" "DEMO_J" "DEMO_L" "P_DEMO"
-
-# See where glucose variables appear
-var_search("LBXGLU")
-#>  [1] "GLU_D"   "GLU_E"   "GLU_F"   "GLU_G"   "GLU_H"   "GLU_I"   "GLU_J"  
-#>  [8] "GLU_L"   "L10AM_B" "L10AM_C" "LAB10AM" "P_GLU"  
+var_search("BPXSY1")   # Systolic blood pressure
+#>  [1] "BPX"   "BPX_B" "BPX_C" "BPX_D" "BPX_E" "BPX_F" "BPX_G" "BPX_H" "BPX_I"
+#> [10] "BPX_J"
 # }
 ```

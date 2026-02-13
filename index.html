@@ -40,8 +40,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/getting-started.html">Getting Started</a></li>
-    <li><a class="dropdown-item" href="articles/the-datasets.html">Dataset Catalog</a></li>
+<li><a class="dropdown-item" href="articles/the-datasets.html">Dataset Catalog</a></li>
+    <li><a class="dropdown-item" href="articles/covid-data-exclusion.html">COVID-19 Data Exclusion</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -63,80 +63,55 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The National Health and Nutrition Examination Survey (NHANES) is one of the most comprehensive public health datasets available, spanning over two decades of U.S. health data. But working with it has been frustrating. If you’ve tried using NHANES before, you’ve likely hit two major problems: (1) CDC server reliability issues that break reproducible research, and (2) cycle suffix confusion—finding <code>DEMO</code>, <code>DEMO_B</code>, <code>DEMO_C</code>, all the way through <code>DEMO_L</code> makes data discovery a scavenger hunt.</p>
-<p><strong>nhanesdata</strong> solves both problems. All datasets are hosted on reliable cloud storage with fast access, and we’ve already merged all survey cycles for you. Just use <code>read_nhanes('demo')</code> and you get demographics data from 1999-2023 with a <code>year</code> column tracking which cycle each observation belongs to—no CDC server timeouts, no suffix confusion.</p>
+<p>The National Health and Nutrition Examination Survey (NHANES) is one of the most comprehensive public health datasets available, spanning over two decades of U.S. health data. But working with it has been frustrating. If you’ve tried using NHANES before, you’ve likely hit two major problems: (1) CDC server reliability issues that break reproducible research, and (2) cycle suffix confusion, where finding <code>DEMO</code>, <code>DEMO_B</code>, <code>DEMO_C</code>, all the way through <code>DEMO_L</code> makes data discovery a scavenger hunt.</p>
+<p><strong>nhanesdata</strong> solves both problems. All datasets are hosted on reliable cloud storage with fast access, and all survey cycles are already merged. Just use <code>read_nhanes("demo")</code> and you get demographics data from 1999-2023 with a <code>year</code> column tracking which cycle each observation belongs to. No CDC server timeouts, no suffix confusion.</p>
 <blockquote>
 <p>All processed datasets are publicly available at <code>https://nhanes.kylegrealis.com/</code> with no authentication required.</p>
 </blockquote>
 <div class="section level2">
 <h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
 </h2>
-<p>This package builds on the excellent work of the <a href="https://cran.r-project.org/package=nhanesA" class="external-link"><strong>nhanesA</strong></a> package developers. We’re grateful for their efforts in making NHANES data accessible through R.</p>
-<p><strong>nhanesdata</strong> extends <strong>nhanesA</strong> by:</p>
-<ul>
-<li>Automatically harmonizing data across survey cycles<br>
-</li>
-<li>Providing pre-processed datasets for faster access<br>
-</li>
-<li>Handling type inconsistencies between cycles<br>
-</li>
-<li>Offering convenient search and discovery functions</li>
-</ul>
-</div>
-<div class="section level2">
-<h2 id="quick-navigation">Quick Navigation<a class="anchor" aria-label="anchor" href="#quick-navigation"></a>
-</h2>
-<ul>
-<li>
-<a href="#installation">Installation</a> - Get the package<br>
-</li>
-<li>
-<a href="#finding-variables">Finding Variables</a> - Search for data you need<br>
-</li>
-<li>
-<a href="#working-with-multiple-datasets">Working with Multiple Datasets</a> - Join datasets together<br>
-</li>
-<li>
-<a href="#understanding-nhanes-dataset-names">Understanding Dataset Names</a> - Learn CDC naming conventions<br>
-</li>
-<li>
-<a href="#getting-help">Getting Help</a> - Resources and support</li>
-</ul>
+<p>This package builds on the <a href="https://cran.r-project.org/package=nhanesA" class="external-link"><strong>nhanesA</strong></a> package, which provides the foundation for accessing NHANES data through R.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Install from GitHub using <strong>pak</strong> (recommended):</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"kyleGrealis/nhanesdata"</span><span class="op">)</span></span></code></pre></div>
-<p>Or using <strong>remotes</strong>:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"kyleGrealis/nhanesdata"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.kyleGrealis.com/nhanesdata/">nhanesdata</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Load NHANES data (all survey cycles pre-merged)</span></span>
-<span><span class="co"># Dataset names are case-insensitive!</span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'demo'</span><span class="op">)</span>        <span class="co"># Demographics - lowercase</span></span>
-<span><span class="va">bpx</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'BPX'</span><span class="op">)</span>          <span class="co"># Blood pressure - uppercase</span></span>
-<span><span class="va">trigly</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'TRIGLY'</span><span class="op">)</span>    <span class="co"># Triglycerides - uppercase</span></span>
+<span><span class="co"># Load any dataset (case-insensitive)</span></span>
+<span><span class="va">demo</span>   <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span>    <span class="co"># Demographics</span></span>
+<span><span class="va">bpx</span>    <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"BPX"</span><span class="op">)</span>     <span class="co"># Blood pressure</span></span>
+<span><span class="va">trigly</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"TRIGLY"</span><span class="op">)</span>   <span class="co"># Triglycerides</span></span>
 <span></span>
 <span><span class="co"># Search for variables</span></span>
-<span><span class="fu"><a href="reference/term_search.html">term_search</a></span><span class="op">(</span><span class="st">'diabetes'</span><span class="op">)</span>            <span class="co"># Search by keyword</span></span>
-<span><span class="fu"><a href="reference/var_search.html">var_search</a></span><span class="op">(</span><span class="st">'LBXGLU'</span><span class="op">)</span>               <span class="co"># Search by variable name</span></span>
-<span><span class="fu"><a href="reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">'DEMO_J'</span><span class="op">)</span>                  <span class="co"># Get CDC documentation</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/term_search.html">term_search</a></span><span class="op">(</span><span class="st">"diabetes"</span><span class="op">)</span> <span class="co"># By keyword</span></span>
+<span><span class="fu"><a href="reference/var_search.html">var_search</a></span><span class="op">(</span><span class="st">"RIDAGEYR"</span><span class="op">)</span>  <span class="co"># By variable name</span></span>
+<span></span>
+<span><span class="co"># Get CDC documentation</span></span>
+<span><span class="fu"><a href="reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">"DEMO_J"</span><span class="op">)</span></span></code></pre></div>
+<p>All datasets include a <code>year</code> column (survey cycle start year) and <code>seqn</code> (participant ID). Join datasets on both columns:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"bpx"</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"seqn"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="user-functions">User Functions<a class="anchor" aria-label="anchor" href="#user-functions"></a>
+<h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
 </h2>
-<p><strong>All functions are case-insensitive</strong> - use <code>'demo'</code>, <code>'DEMO'</code>, or <code>'Demo'</code> interchangeably!</p>
 <table class="table">
+<colgroup>
+<col width="52%">
+<col width="47%">
+</colgroup>
 <thead><tr class="header">
 <th>Function</th>
 <th>Purpose</th>
@@ -144,7 +119,7 @@
 <tbody>
 <tr class="odd">
 <td><code>read_nhanes(dataset)</code></td>
-<td>Load NHANES data (all cycles pre-merged)</td>
+<td>Load a pre-merged NHANES dataset from cloud storage</td>
 </tr>
 <tr class="even">
 <td><code>term_search(var)</code></td>
@@ -156,358 +131,56 @@
 </tr>
 <tr class="even">
 <td><code>get_url(table)</code></td>
-<td>Get CDC documentation URL for a dataset</td>
+<td>Get CDC codebook URL for a specific table</td>
 </tr>
 </tbody>
 </table>
-<p>Quarterly checks ensure the package always has the most recently available NHANES data. If you notice an update before we do, we would love the feedback!</p>
-<blockquote>
-<p><strong>Note on Data Harmonization:</strong> This package reconciles data types (integers and floats are now consistent) across NHANES cycles, but variable names remain unchanged from the original CDC data. Users should verify the CDC/NHANES documentation to understand how variable names and usage may have changed from cycle to cycle.</p>
-</blockquote>
+<p>All functions are case-insensitive.</p>
 </div>
 <div class="section level2">
 <h2 id="available-datasets">Available Datasets<a class="anchor" aria-label="anchor" href="#available-datasets"></a>
 </h2>
-<p>This package currently includes 71 datasets (with more coming) across two categories:</p>
-<p><strong>Questionnaire/Interview Tables (50):</strong></p>
+<p>71 datasets across two categories, with more planned:</p>
 <ul>
 <li>
-<code>demo</code> - Demographics<br>
-</li>
+<strong>Questionnaire/Interview (50):</strong> <code>demo</code>, <code>bpq</code>, <code>diq</code>, <code>smq</code>, <code>alq</code>, and 45 more</li>
 <li>
-<code>bpq</code> - Blood Pressure &amp; Cholesterol Questionnaire<br>
-</li>
+<strong>Examination (16):</strong> <code>bmx</code>, <code>bpx</code>, <code>cbc</code>, <code>trigly</code>, and 12 more</li>
 <li>
-<code>diq</code> - Diabetes<br>
+<strong>Laboratory (5):</strong> <code>dxxag</code>, <code>l10</code>, <code>l10am</code>, <code>lab10</code>, <code>lab10am</code>
 </li>
-<li>
-<code>smq</code> - Smoking<br>
-</li>
-<li>
-<code>alq</code> - Alcohol<br>
-</li>
-<li>… and 45 more (see <code>inst/extdata/datasets.yml</code> for full list)</li>
 </ul>
-<p><strong>Examination Tables (16):</strong></p>
+<p>See the <a href="https://www.kyleGrealis.com/nhanesdata/articles/the-datasets.html">dataset catalog</a> for the full list, or browse <code>inst/extdata/datasets.yml</code> in the source.</p>
+</div>
+<div class="section level2">
+<h2 id="important-notes">Important Notes<a class="anchor" aria-label="anchor" href="#important-notes"></a>
+</h2>
 <ul>
-<li>
-<code>bmx</code> - Body Measures<br>
-</li>
-<li>
-<code>bpx</code> - Blood Pressure (Examination)<br>
-</li>
-<li>
-<code>cbc</code> - Blood Counts<br>
-</li>
-<li>
-<code>trigly</code> - Triglycerides<br>
-</li>
-<li>… and 12 more</li>
+<li>The <strong>2019-2020 survey cycle</strong> (suffix K) is excluded due to COVID-19 data collection disruptions. See <code><a href="articles/covid-data-exclusion.html">vignette("covid-data-exclusion")</a></code> for details.</li>
+<li>Variable names match CDC documentation. Always verify definitions with <code><a href="reference/get_url.html">get_url()</a></code> since variable usage may differ across cycles.</li>
+<li>Data types are automatically harmonized across cycles (integer vs. double, factor vs. character).</li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="key-functions">Key Functions<a class="anchor" aria-label="anchor" href="#key-functions"></a>
+<h2 id="direct-access-without-the-package">Direct Access (Without the Package)<a class="anchor" aria-label="anchor" href="#direct-access-without-the-package"></a>
 </h2>
-<div class="section level3">
-<h3 id="data-loading">Data Loading<a class="anchor" aria-label="anchor" href="#data-loading"></a>
-</h3>
-<p><strong><code>read_nhanes(dataset)</code></strong></p>
-<p>Loads pre-processed NHANES data from cloud storage. All dataset names are <strong>case-insensitive</strong>.</p>
-<ul>
-<li>
-<strong>Fast access</strong>: Hosted on cloud storage for worldwide reliability<br>
-</li>
-<li>
-<strong>All cycles pre-merged</strong>: 1999-2023 data automatically combined<br>
-</li>
-<li>
-<strong>No authentication needed</strong>: Public access to all datasets<br>
-</li>
-<li>
-<strong>Case-insensitive</strong>: Use ‘demo’, ‘DEMO’, or ‘Demo’ - all work!<br>
-</li>
-<li>
-<strong>Graceful error handling</strong>: Helpful messages if the API is unavailable</li>
-</ul>
-<p>Example:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># All case variations work identically:</span></span>
-<span><span class="va">trigly</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'trigly'</span><span class="op">)</span>    <span class="co"># Lowercase</span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'DEMO'</span><span class="op">)</span>        <span class="co"># Uppercase</span></span>
-<span><span class="va">acq</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'Acq'</span><span class="op">)</span>          <span class="co"># Mixed case</span></span></code></pre></div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="helper-functions">Helper Functions<a class="anchor" aria-label="anchor" href="#helper-functions"></a>
-</h3>
-<p>All helper functions are <strong>case-insensitive</strong>:</p>
-<ul>
-<li>
-<strong><code>get_url(table)</code></strong>: Returns the CDC codebook URL for a given table<br>
-</li>
-<li>
-<strong><code>term_search(var)</code></strong>: Search for variables by keyword or phrase (wraps <code><a href="https://rdrr.io/pkg/nhanesA/man/nhanesSearch.html" class="external-link">nhanesA::nhanesSearch()</a></code>)<br>
-</li>
-<li>
-<strong><code>var_search(var)</code></strong>: Search for variables by exact name (wraps <code><a href="https://rdrr.io/pkg/nhanesA/man/nhanesSearchVarName.html" class="external-link">nhanesA::nhanesSearchVarName()</a></code>)</li>
-</ul>
-</div>
-</div>
-<div class="section level2">
-<h2 id="understanding-nhanes-dataset-names">Understanding NHANES Dataset Names<a class="anchor" aria-label="anchor" href="#understanding-nhanes-dataset-names"></a>
-</h2>
-<p>This is <strong>critical</strong> to understand before using the package:</p>
-<div class="section level3">
-<h3 id="how-cdc-names-datasets">How CDC Names Datasets<a class="anchor" aria-label="anchor" href="#how-cdc-names-datasets"></a>
-</h3>
-<p>The CDC releases NHANES data in 2-year cycles, with each cycle getting a <strong>letter suffix</strong>:</p>
-<table class="table">
-<thead><tr class="header">
-<th>CDC Table Name</th>
-<th>Survey Cycle</th>
-<th>Years</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td><code>DEMO</code></td>
-<td>1999-2000</td>
-<td>No suffix (first cycle)</td>
-</tr>
-<tr class="even">
-<td><code>DEMO_B</code></td>
-<td>2001-2002</td>
-<td>B</td>
-</tr>
-<tr class="odd">
-<td><code>DEMO_C</code></td>
-<td>2003-2004</td>
-<td>C</td>
-</tr>
-<tr class="even">
-<td><code>DEMO_D</code></td>
-<td>2005-2006</td>
-<td>D</td>
-</tr>
-<tr class="odd">
-<td>…</td>
-<td>…</td>
-<td>…</td>
-</tr>
-<tr class="even">
-<td><code>DEMO_J</code></td>
-<td>2017-2018</td>
-<td>J</td>
-</tr>
-<tr class="odd">
-<td><code>DEMO_L</code></td>
-<td>2021-2023</td>
-<td>L (skips K)</td>
-</tr>
-</tbody>
-</table>
-<p>This pattern applies to <strong>all NHANES datasets</strong>: <code>BPX</code>, <code>BPX_B</code>, <code>BPX_C</code>, …, <code>BPX_L</code> for blood pressure examination data, and so on.</p>
-<blockquote>
-<p>Do note that there are mild inconsistencies in the suffix naming convention, particularly with COVID-era data.</p>
-</blockquote>
-</div>
-<div class="section level3">
-<h3 id="how-this-package-names-datasets">How This Package Names Datasets<a class="anchor" aria-label="anchor" href="#how-this-package-names-datasets"></a>
-</h3>
-<p>We <strong>combine all cycles</strong> and store them by <strong>base name only</strong> (no suffixes):</p>
-<ul>
-<li>CDC has: <code>DEMO</code>, <code>DEMO_B</code>, <code>DEMO_C</code>, …, <code>DEMO_L</code> (11 separate files)<br>
-</li>
-<li>We store: <code>demo</code> (1 merged file with all cycles)<br>
-</li>
-<li>A <code>year</code> column automatically tracks which cycle each row came from</li>
-</ul>
-<p>This means:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># You call this:</span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'demo'</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># You get: All 11 cycles merged together</span></span>
-<span><span class="co"># - 1999-2000 data (from DEMO)</span></span>
-<span><span class="co"># - 2001-2002 data (from DEMO_B)</span></span>
-<span><span class="co"># - 2003-2004 data (from DEMO_C)</span></span>
-<span><span class="co"># - ... through 2021-2023 (from DEMO_L)</span></span>
-<span><span class="co"># - Each row has a 'year' column showing its cycle</span></span></code></pre></div>
-<p><strong>Important Note on the <code>year</code> Variable:</strong> The <code>year</code> column represents the <strong>start year</strong> of each 2-year survey cycle. For example, <code>year = 1999</code> indicates the 1999-2000 cycle, and <code>year = 2017</code> indicates the 2017-2018 cycle. Refer to the <a href="https://www.cdc.gov/nchs/nhanes/" class="external-link">NHANES documentation</a> for more details on survey cycles and year representation.</p>
-</div>
-<div class="section level3">
-<h3 id="important-2019-2020-cycle-covid-19">Important: 2019-2020 Cycle (COVID-19)<a class="anchor" aria-label="anchor" href="#important-2019-2020-cycle-covid-19"></a>
-</h3>
-<p>The 2019-2020 survey cycle (suffix K) is <strong>NOT included</strong> in this package’s datasets.</p>
-<p><strong>Why?</strong> The COVID-19 pandemic disrupted data collection, and the CDC determined the data quality was insufficient for standard NHANES analysis. The CDC combined partial 2019-2020 data with 2021-2023 data and released it as a special pre-pandemic dataset.</p>
-<p><strong>Reference:</strong> <a href="https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?BeginYear=2019" class="external-link">CDC NHANES 2019-2020 Data Documentation</a></p>
-<p><strong>Impact:</strong> Datasets jump from suffix J (2017-2018) to suffix L (2021-2023), skipping K entirely.</p>
-</div>
-<div class="section level3">
-<h3 id="why-this-matters">Why This Matters<a class="anchor" aria-label="anchor" href="#why-this-matters"></a>
-</h3>
-<p>When searching CDC documentation, you’ll see table names with suffixes (e.g., <code>DEMO_J</code> for 2017-2018 demographics). But when using this package, you use the <strong>base name</strong> (<code>demo</code>) and get <strong>all cycles automatically merged</strong>.</p>
-<p>This design: - Simplifies data access (one name instead of tracking 11 suffix codes)<br>
-- Enables longitudinal analysis (all years in one dataset)<br>
-- Handles type mismatches between cycles automatically<br>
-- Adds temporal context via the <code>year</code> column</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="finding-variables">Finding Variables<a class="anchor" aria-label="anchor" href="#finding-variables"></a>
-</h2>
-<p>Let’s say you want to study hypertension but don’t know which dataset contains blood pressure variables. <strong>nhanesdata</strong> provides search functions to help you discover variables.</p>
-<div class="section level3">
-<h3 id="method-1-search-by-term">Method 1: Search by Term<a class="anchor" aria-label="anchor" href="#method-1-search-by-term"></a>
-</h3>
-<p>Use <code><a href="reference/term_search.html">term_search()</a></code> to find variables by keyword:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.kyleGrealis.com/nhanesdata/">nhanesdata</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Find variables related to blood pressure</span></span>
-<span><span class="fu"><a href="reference/term_search.html">term_search</a></span><span class="op">(</span><span class="st">"blood pressure"</span><span class="op">)</span></span></code></pre></div>
-<p>This returns a data frame showing variable names, which datasets they appear in, and descriptions. For example, you’ll see that <code>BPXSY1</code> (systolic blood pressure) is in the <code>BPX</code> tables, so you’d use <code>read_nhanes('bpx')</code>.</p>
-</div>
-<div class="section level3">
-<h3 id="method-2-search-by-variable-name">Method 2: Search by Variable Name<a class="anchor" aria-label="anchor" href="#method-2-search-by-variable-name"></a>
-</h3>
-<p>If you know the exact variable name, use <code><a href="reference/var_search.html">var_search()</a></code>:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Find all occurrences of BPXSY1 across cycles</span></span>
-<span><span class="fu"><a href="reference/var_search.html">var_search</a></span><span class="op">(</span><span class="st">"BPXSY1"</span><span class="op">)</span></span></code></pre></div>
-<p>This shows which survey cycles contain that variable, which is helpful for understanding data availability over time.</p>
-</div>
-<div class="section level3">
-<h3 id="method-3-verify-variables-in-loaded-data">Method 3: Verify Variables in Loaded Data<a class="anchor" aria-label="anchor" href="#method-3-verify-variables-in-loaded-data"></a>
-</h3>
-<p>After loading a dataset, check if it contains the variables you need:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load body measures data</span></span>
-<span><span class="va">bmx</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'bmx'</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Check for the height variable</span></span>
-<span><span class="st">'bmxht'</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bmx</span><span class="op">)</span>  <span class="co"># Returns TRUE or FALSE</span></span>
-<span></span>
-<span><span class="co"># View all available columns</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bmx</span><span class="op">)</span></span></code></pre></div>
-<p>All search functions are <strong>case-insensitive</strong>, so <code><a href="reference/term_search.html">term_search()</a></code>, <code><a href="reference/var_search.html">var_search()</a></code>, and other functions work with any capitalization.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="working-with-multiple-datasets">Working with Multiple Datasets<a class="anchor" aria-label="anchor" href="#working-with-multiple-datasets"></a>
-</h2>
-<p>The real power of NHANES comes from linking datasets together. You can join data from different examinations and questionnaires using the <code>seqn</code> (participant ID) and <code>year</code> (survey cycle) columns.</p>
-<div class="section level3">
-<h3 id="basic-single-dataset-loading">Basic Single Dataset Loading<a class="anchor" aria-label="anchor" href="#basic-single-dataset-loading"></a>
-</h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.kyleGrealis.com/nhanesdata/">nhanesdata</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Load demographics</span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'demo'</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Check the year distribution</span></span>
-<span><span class="va">demo</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="joining-multiple-datasets">Joining Multiple Datasets<a class="anchor" aria-label="anchor" href="#joining-multiple-datasets"></a>
-</h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.kyleGrealis.com/nhanesdata/">nhanesdata</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Load related datasets</span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'demo'</span><span class="op">)</span>        <span class="co"># Demographics</span></span>
-<span><span class="va">bpx</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'BPX'</span><span class="op">)</span>          <span class="co"># Blood pressure measurements</span></span>
-<span><span class="va">bmx</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">'Bmx'</span><span class="op">)</span>          <span class="co"># Body measurements</span></span>
-<span></span>
-<span><span class="co"># Combine datasets using inner_join()</span></span>
-<span><span class="co"># Always join on BOTH seqn AND year</span></span>
-<span><span class="va">analysis_data</span> <span class="op">&lt;-</span> <span class="va">demo</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">bpx</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'seqn'</span>, <span class="st">'year'</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">bmx</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'seqn'</span>, <span class="st">'year'</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">seqn</span>, <span class="va">ridageyr</span>, <span class="va">riagendr</span>, <span class="va">bpxsy1</span>, <span class="va">bmxbmi</span><span class="op">)</span></span></code></pre></div>
-<p><strong>Key joining principle:</strong> Always join on both <code>seqn</code> (participant ID) AND <code>year</code> (survey cycle). The same participant can appear in multiple survey cycles, and the same sequence number can be reused across cycles.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="data-storage-format">Data Storage Format<a class="anchor" aria-label="anchor" href="#data-storage-format"></a>
-</h2>
-<p>All datasets are stored remotely as <code>.parquet</code> files for optimal performance and cross-platform compatibility. <strong>Note:</strong> The storage format does not affect how you read the data - simply use <code><a href="reference/read_nhanes.html">read_nhanes()</a></code> and the function handles everything. You are not writing <code>.parquet</code> files to your local environment unless you explicitly choose to save them locally.</p>
-</div>
-<div class="section level2">
-<h2 id="notes-on-nhanes-data-quality">Notes on NHANES Data Quality<a class="anchor" aria-label="anchor" href="#notes-on-nhanes-data-quality"></a>
-</h2>
-<div class="section level3">
-<h3 id="survey-cycle-details">Survey Cycle Details<a class="anchor" aria-label="anchor" href="#survey-cycle-details"></a>
-</h3>
-<ul>
-<li>
-<strong>2-year cycles</strong>: Data released biannually (1999-2000, 2001-2002, etc.)<br>
-</li>
-<li>
-<strong>2019-2020 cycle</strong>: Interrupted by COVID-19 pandemic and not released<br>
-</li>
-<li>
-<strong>Suffix pattern</strong>: Letters B through L, skipping K (so J → L between 2017-2018 and 2021-2023)</li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="type-harmonization">Type Harmonization<a class="anchor" aria-label="anchor" href="#type-harmonization"></a>
-</h3>
-<p>Older cycles sometimes use different variable types (e.g., factor vs. character, integer vs. double). The <code>pull_nhanes()</code> function detects and resolves these conflicts automatically:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># This handles type mismatches transparently</span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu">pull_nhanes</span><span class="op">(</span><span class="st">'demo'</span><span class="op">)</span></span>
-<span><span class="co"># Type mismatch in riagendr: integer vs double... converting types now...</span></span>
-<span><span class="co"># Type mismatch in ridreth1: factor vs character... converting types now...</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="special-cases">Special Cases<a class="anchor" aria-label="anchor" href="#special-cases"></a>
-</h3>
-<p><strong>DXX Tables (Body Composition)</strong>: The 2005-2006 cycle contains repeated measures that shouldn’t be merged blindly with other cycles. Read the CDC documentation carefully before using these datasets.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="public-data-access">Public Data Access<a class="anchor" aria-label="anchor" href="#public-data-access"></a>
-</h2>
-<p>All pre-processed datasets are hosted publicly at:</p>
-<pre><code>https://nhanes.kylegrealis.com/{dataset_name}.parquet</code></pre>
-<p>You can access them directly without the package using <strong>arrow</strong>:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Direct download (without nhanesdata package)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/apache/arrow/" class="external-link">arrow</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu">arrow</span><span class="fu">::</span><span class="fu"><a href="https://arrow.apache.org/docs/r/reference/read_parquet.html" class="external-link">read_parquet</a></span><span class="op">(</span><span class="st">'https://nhanes.kylegrealis.com/demo.parquet'</span><span class="op">)</span></span>
-<span><span class="va">trigly</span> <span class="op">&lt;-</span> <span class="fu">arrow</span><span class="fu">::</span><span class="fu"><a href="https://arrow.apache.org/docs/r/reference/read_parquet.html" class="external-link">read_parquet</a></span><span class="op">(</span><span class="st">'https://nhanes.kylegrealis.com/trigly.parquet'</span><span class="op">)</span></span></code></pre></div>
-<p><strong>Note:</strong> Dataset names in URLs are lowercase. The <code><a href="reference/read_nhanes.html">read_nhanes()</a></code> function handles case conversion automatically.</p>
-<p>This direct access is useful for:</p>
-<ul>
-<li>Sharing data with collaborators who don’t need the full package<br>
-</li>
-<li>Accessing data from Python, Julia, or other <strong>arrow</strong>-compatible languages<br>
-</li>
-<li>Quick data exploration without installing dependencies</li>
-</ul>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/apache/arrow/" class="external-link">arrow</a></span><span class="op">)</span></span>
+<span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu">arrow</span><span class="fu">::</span><span class="fu"><a href="https://arrow.apache.org/docs/r/reference/read_parquet.html" class="external-link">read_parquet</a></span><span class="op">(</span><span class="st">"https://nhanes.kylegrealis.com/demo.parquet"</span><span class="op">)</span></span></code></pre></div>
+<p>This works from any language with Arrow support (Python, Julia, etc.). Dataset names in URLs are lowercase.</p>
 </div>
 <div class="section level2">
 <h2 id="getting-help">Getting Help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
 </h2>
 <ul>
 <li>
-<strong>Bug reports &amp; feature requests</strong>: <a href="https://github.com/kyleGrealis/nhanesdata/issues" class="external-link">GitHub Issues</a><br>
+<strong>Documentation:</strong> <code><a href="reference/read_nhanes.html">?read_nhanes</a></code>, <code>browseVignettes("nhanesdata")</code>
 </li>
 <li>
-<strong>Function documentation</strong>: <code>?function_name</code> (e.g., <code><a href="reference/read_nhanes.html">?read_nhanes</a></code>, <code><a href="reference/term_search.html">?term_search</a></code>)<br>
+<strong>Bug reports:</strong> <a href="https://github.com/kyleGrealis/nhanesdata/issues" class="external-link">GitHub Issues</a>
 </li>
 <li>
-<strong>Package vignettes</strong>: <code>browseVignettes("nhanesdata")</code> for detailed guides<br>
-</li>
-<li>
-<strong>CDC NHANES resources</strong>: <a href="https://www.cdc.gov/nchs/nhanes/" class="external-link">NHANES Website</a><br>
-</li>
-<li>
-<strong>nhanesA package</strong>: For direct CDC API access, see <a href="https://cran.r-project.org/package=nhanesA" class="external-link"><strong>nhanesA</strong> on CRAN</a>
+<strong>CDC NHANES:</strong> <a href="https://www.cdc.gov/nchs/nhanes/" class="external-link">nhanes.cdc.gov</a>
 </li>
 </ul>
 </div>
@@ -516,27 +189,21 @@
 </h2>
 <ul>
 <li>
-<strong><a href="https://cran.r-project.org/package=nhanesA" class="external-link">nhanesA</a></strong>: Direct interface to NHANES API<br>
-</li>
+<a href="https://cran.r-project.org/package=nhanesA" class="external-link"><strong>nhanesA</strong></a>: Direct interface to the NHANES API</li>
 <li>
-<strong><a href="https://cran.r-project.org/package=survey" class="external-link">survey</a></strong>: Complex survey analysis with proper weighting<br>
-</li>
+<a href="https://cran.r-project.org/package=survey" class="external-link"><strong>survey</strong></a>: Complex survey analysis with proper weighting</li>
 <li>
-<strong><a href="https://cran.r-project.org/package=srvyr" class="external-link">srvyr</a></strong>: Tidy survey analysis using <strong>dplyr</strong> syntax<br>
-</li>
+<a href="https://cran.r-project.org/package=srvyr" class="external-link"><strong>srvyr</strong></a>: Tidy survey analysis using <strong>dplyr</strong> syntax</li>
 <li>
-<strong><a href="https://cran.r-project.org/package=gtsummary" class="external-link">gtsummary</a></strong>: Publication-ready summary tables</li>
+<a href="https://cran.r-project.org/package=gtsummary" class="external-link"><strong>gtsummary</strong></a>: Publication-ready summary tables</li>
+<li>
+<a href="https://www.kylegrealis.com/sumExtras" class="external-link"><strong>sumExtras</strong></a>: Extended summary statistics and helpers</li>
 </ul>
-</div>
-<div class="section level2">
-<h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
-</h2>
-<p>This is a personal data project, but feel free to fork it if you find it useful.</p>
 </div>
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
-<p>NHANES data is public domain (U.S. government). This processing code is provided as-is.</p>
+<p>NHANES data is public domain (U.S. government). This processing code is MIT licensed.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">

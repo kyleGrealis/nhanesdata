@@ -43,5 +43,5 @@ or visit the [CDC NHANES website](https://wwwn.cdc.gov/nchs/nhanes/).
 > `nhanesdata::get_url(dataset)`!
 >
 > - See
->   [get_url](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md)
+>   [`get_url()`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md)
 >   documentation.

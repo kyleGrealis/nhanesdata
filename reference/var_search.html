@@ -27,8 +27,8 @@ text-based searches."></head><body>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/getting-started.html">Getting Started</a></li>
-    <li><a class="dropdown-item" href="../articles/the-datasets.html">Dataset Catalog</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/the-datasets.html">Dataset Catalog</a></li>
+    <li><a class="dropdown-item" href="../articles/covid-data-exclusion.html">COVID-19 Data Exclusion</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -71,10 +71,9 @@ converted to uppercase. Not case-sensitive.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data.frame showing all occurrences of the variable across
-survey cycles, including variable descriptions, data file names, and
-years available. Returns an empty data.frame with appropriate structure
-if the variable is not found.</p>
+    <p>A character vector of CDC table names containing the variable
+(e.g., <code>"DEMO"</code>, <code>"DEMO_B"</code>, <code>"DEMO_C"</code>).
+Returns <code>character(0)</code> if the variable is not found.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -90,22 +89,12 @@ if the variable is not found.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Search for specific variable (case-insensitive)</span></span></span>
-<span class="r-in"><span><span class="fu">var_search</span><span class="op">(</span><span class="st">"RIAGENDR"</span><span class="op">)</span> <span class="co"># Gender variable</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "BFRPOL_D" "BFRPOL_E" "BFRPOL_F" "BFRPOL_G" "BFRPOL_H" "BFRPOL_I"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "DEMO"     "DEMO_B"   "DEMO_C"   "DEMO_D"   "DEMO_E"   "DEMO_F"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "DEMO_G"   "DEMO_H"   "DEMO_I"   "DEMO_J"   "DEMO_L"   "DOXPOL_D"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "DOXPOL_E" "DOXPOL_F" "DOXPOL_G" "DOXPOL_H" "DOXPOL_I" "PCBPOL_D"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "PCBPOL_E" "PCBPOL_F" "PCBPOL_G" "PCBPOL_H" "PCBPOL_I" "PSTPOL_D"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [31] "PSTPOL_E" "PSTPOL_F" "PSTPOL_G" "PSTPOL_H" "PSTPOL_I" "P_DEMO"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [37] "SSBFR_B"  "SSPCB_B"  "SSPST_B" </span>
-<span class="r-in"><span><span class="fu">var_search</span><span class="op">(</span><span class="st">"ridageyr"</span><span class="op">)</span> <span class="co"># Age variable (auto-converted to uppercase)</span></span></span>
+<span class="r-in"><span><span class="fu">var_search</span><span class="op">(</span><span class="st">"RIDAGEYR"</span><span class="op">)</span> <span class="co"># Age variable across all DEMO cycles</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "DEMO"   "DEMO_B" "DEMO_C" "DEMO_D" "DEMO_E" "DEMO_F" "DEMO_G" "DEMO_H"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "DEMO_I" "DEMO_J" "DEMO_L" "P_DEMO"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># See where glucose variables appear</span></span></span>
-<span class="r-in"><span><span class="fu">var_search</span><span class="op">(</span><span class="st">"LBXGLU"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "GLU_D"   "GLU_E"   "GLU_F"   "GLU_G"   "GLU_H"   "GLU_I"   "GLU_J"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "GLU_L"   "L10AM_B" "L10AM_C" "LAB10AM" "P_GLU"  </span>
+<span class="r-in"><span><span class="fu">var_search</span><span class="op">(</span><span class="st">"BPXSY1"</span><span class="op">)</span>   <span class="co"># Systolic blood pressure</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "BPX"   "BPX_B" "BPX_C" "BPX_D" "BPX_E" "BPX_F" "BPX_G" "BPX_H" "BPX_I"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "BPX_J"</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
