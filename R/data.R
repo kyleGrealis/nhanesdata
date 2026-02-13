@@ -88,15 +88,12 @@ get_url <- function(table) {
 #'   Returns an empty data.frame with correct structure if no matches found.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Search for diabetes-related variables
 #' term_search("diabetes")
 #'
 #' # Search for blood pressure measurements
 #' term_search("blood pressure")
-#'
-#' # Search for demographic variables
-#' term_search("age")
 #'
 #' # Handles special characters safely
 #' term_search("weight (kg)")
@@ -208,19 +205,15 @@ term_search <- function(var) {
 #' @param var Character. Variable name to search for. Will be automatically
 #'   converted to uppercase. Not case-sensitive.
 #'
-#' @return A data.frame showing all occurrences of the variable across
-#'   survey cycles, including variable descriptions, data file names, and
-#'   years available. Returns an empty data.frame with appropriate structure
-#'   if the variable is not found.
+#' @return A character vector of CDC table names containing the variable
+#'   (e.g., \code{"DEMO"}, \code{"DEMO_B"}, \code{"DEMO_C"}).
+#'   Returns \code{character(0)} if the variable is not found.
 #'
 #' @examples
 #' \donttest{
 #' # Search for specific variable (case-insensitive)
-#' var_search("RIAGENDR") # Gender variable
-#' var_search("ridageyr") # Age variable (auto-converted to uppercase)
-#'
-#' # See where glucose variables appear
-#' var_search("LBXGLU")
+#' var_search("RIDAGEYR") # Age variable across all DEMO cycles
+#' var_search("BPXSY1") # Systolic blood pressure
 #' }
 #'
 #' @family search and lookup functions
@@ -690,14 +683,12 @@ pull_nhanes <- function(nhanes_table, selected_variables = NULL, save = TRUE) {
 #'   columns plus dataset-specific variables.
 #'
 #' @examples
+#' \donttest{
 #' # All case variations work identically:
 #' trigly <- read_nhanes("trigly") # Lowercase
 #' demo <- read_nhanes("DEMO") # Uppercase
 #' acq <- read_nhanes("Acq") # Mixed case
-#'
-#' # Load multiple datasets
-#' datasets <- c("demo", "BPX", "bmx") |>
-#'   purrr::map(read_nhanes)
+#' }
 #'
 #' @export
 read_nhanes <- function(dataset) {

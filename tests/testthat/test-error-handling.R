@@ -88,7 +88,7 @@ test_that("pull_nhanes retries on errors and tracks skipped cycles", {
 })
 
 test_that("pull_nhanes does NOT retry or flag when nhanes() returns NULL", {
-  # NULL means "table doesn't exist" — not a transient error.
+  # NULL means "table doesn't exist", not a transient error.
   # Should skip immediately without retry or flagging as skipped.
   call_count <- 0
   local_mocked_bindings(
@@ -104,7 +104,7 @@ test_that("pull_nhanes does NOT retry or flag when nhanes() returns NULL", {
   )
   withr::local_options(nhanesdata.retry_delay = 0)
 
-  # No skipped_cycles warning — NULL is normal "not found"
+  # No skipped_cycles warning because NULL is normal "not found"
   expect_warning(
     result <- suppressMessages(
       nhanesdata:::pull_nhanes("DEMO", save = FALSE)

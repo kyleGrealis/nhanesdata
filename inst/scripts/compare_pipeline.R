@@ -108,7 +108,7 @@ compare_dataset <- function(dataset_name) {
       new_rows = nrow(new_data),
       new_cols = ncol(new_data),
       new_col_names = names(new_data),
-      note = "No baseline parquet file — new dataset"
+      note = "No baseline parquet file (new dataset)"
     ))
   }
 
@@ -210,7 +210,7 @@ for (i in seq_along(all_datasets)) {
   ds <- all_datasets[i]
 
   if (ds %in% completed) {
-    message(sprintf("[%d/%d] %s — already completed, skipping", i, total, ds))
+    message(sprintf("[%d/%d] %s - already completed, skipping", i, total, ds))
     next
   }
 
@@ -285,12 +285,12 @@ for (ds in names(results)) {
   old_rows <- if (!is.null(r$old_rows)) {
     format(r$old_rows, big.mark = ",")
   } else {
-    "—"
+    "-"
   }
   new_rows <- if (!is.null(r$new_rows)) {
     format(r$new_rows, big.mark = ",")
   } else {
-    "—"
+    "-"
   }
   tc <- if (!is.null(r$type_change_count)) r$type_change_count else 0
   add(sprintf(
