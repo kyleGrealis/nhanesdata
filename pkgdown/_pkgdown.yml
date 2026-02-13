@@ -20,9 +20,6 @@ home:
     automatic type reconciliation across survey cycles.
   sidebar:
     structure: [links, license, community, citation, authors, dev]
-    components:
-      authors:
-        roles: [aut, cre, ctb]
 
 articles:
   - title: Get Started
@@ -78,3 +75,5 @@ footer:
 authors:
   Kyle Grealis:
     href: https://www.kylegrealis.com
+  sidebar:
+    roles: [aut, cre, ctb]
