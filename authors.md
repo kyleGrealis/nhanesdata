@@ -5,14 +5,14 @@
 - **[Kyle Grealis](https://www.kylegrealis.com)**. Author, maintainer.
   [](https://orcid.org/0000-0002-9223-8854)
 
-- **Amrit Baral**. Contributor.
+- **[Amrit Baral](https://dramritbaral.com.np)**. Contributor.
   [](https://orcid.org/0000-0002-0961-9665)
 
 - **Natalie Neugaard**. Contributor.
   [](https://orcid.org/0009-0008-0820-5111)
 
-- **Johannes Thrul**. Contributor.
-  [](https://orcid.org/0000-0001-8929-9579)
+- **[Johannes Thrul](https://www.thrulresearchlab.com/team)**.
+  Contributor. [](https://orcid.org/0000-0001-8929-9579)
 
 - **Janardan Devkota**. Contributor.
   [](https://orcid.org/0009-0007-6734-777X)
