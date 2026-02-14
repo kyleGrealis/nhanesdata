@@ -1,6 +1,7 @@
 # nhanesdata
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/kyleGrealis/nhanesdata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kyleGrealis/nhanesdata/actions/workflows/R-CMD-check.yaml)
 [![Update NHANES Data](https://github.com/kyleGrealis/nhanesdata/actions/workflows/update-nhanes-data.yml/badge.svg)](https://github.com/kyleGrealis/nhanesdata/actions/workflows/update-nhanes-data.yml)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
