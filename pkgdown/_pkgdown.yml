@@ -1,16 +1,22 @@
 url: https://www.kyleGrealis.com/nhanesdata/
 
+development:
+  mode: auto
+
+repo:
+  url:
+    home: https://github.com/kyleGrealis/nhanesdata/
+    source: https://github.com/kyleGrealis/nhanesdata/blob/HEAD/
+    issue: https://github.com/kyleGrealis/nhanesdata/issues/
+    user: https://github.com/
+
 template:
   bootstrap: 5
   light-switch: true
   bslib:
-    base_font: {google: "Inter"}
-    heading_font: {google: "Inter"}
-    code_font: {google: "JetBrains Mono"}
     font-size: 0.9rem
     border-radius: 0.5rem
     btn-border-radius: 0.25rem
-    primary: "#0d6efd"
 
 home:
   title: "nhanesdata: Pre-processed NHANES Data with Automated Updates"
@@ -21,38 +27,14 @@ home:
   sidebar:
     structure: [links, license, community, citation, authors, dev]
 
-articles:
-  - title: Get Started
-    navbar: ~
-    contents:
-      - getting-started
-      - the-datasets
-      - covid-data-exclusion
-
-reference:
-  - title: "Load Data"
-    desc: "Access pre-processed NHANES datasets from cloud storage."
-    contents:
-      - read_nhanes
-
-  - title: "Search & Discovery"
-    desc: "Find variables and documentation across NHANES datasets."
-    contents:
-      - term_search
-      - var_search
-      - get_url
-
 navbar:
   structure:
     left: [intro, reference, articles, news]
-    right: [search, github]
+    right: [search, lightswitch, github]
   components:
     intro:
       text: Get Started
       href: articles/getting-started.html
-    reference:
-      text: Reference
-      href: reference/index.html
     articles:
       text: Articles
       menu:
@@ -68,6 +50,26 @@ navbar:
       href: https://github.com/kyleGrealis/nhanesdata
       aria-label: GitHub
 
+articles:
+  - title: Get Started
+    navbar: ~
+    contents:
+      - getting-started
+      - the-datasets
+      - covid-data-exclusion
+
+reference:
+  - title: "Load Data"
+    desc: "Access pre-processed NHANES datasets from cloud storage."
+    contents:
+      - read_nhanes
+  - title: "Search & Discovery"
+    desc: "Find variables and documentation across NHANES datasets."
+    contents:
+      - term_search
+      - var_search
+      - get_url
+
 footer:
   structure:
     left: developed_by
@@ -77,4 +79,4 @@ authors:
   Kyle Grealis:
     href: https://www.kylegrealis.com
   sidebar:
-    roles: [aut, cre, ctb]
+    roles: [aut, cre]
