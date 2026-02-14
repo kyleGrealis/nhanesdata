@@ -42,6 +42,7 @@ Authors@R: c(
 Description: Instant access to harmonized National Health and Nutrition Examination Survey (NHANES) data spanning 1999-2023. Retrieve pre-processed datasets from reliable cloud storage with automatic type reconciliation and integrated search tools for variables and datasets. Simplifies NHANES data workflows by handling cycle management and maintaining data consistency across survey waves.
 License: MIT + file LICENSE
 URL: https://www.kyleGrealis.com/nhanesdata/
+Language: en-US
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

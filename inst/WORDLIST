@@ -8,6 +8,7 @@ BPXDI
 BPXSY
 callout
 CDC
+cdc
 CDC's
 Cloudflare
 codebook
@@ -27,6 +28,7 @@ kylegrealis
 LBXGLU
 Lifecycle
 mmHg
+NCHS
 Neugaard
 nhanes
 nhanesA
@@ -45,6 +47,7 @@ RIDRETH
 seqn
 SEQN
 srvyr
+sumExtras
 Thrul
 tibble
 tidyverse
