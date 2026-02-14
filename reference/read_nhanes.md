@@ -49,10 +49,10 @@ the attempted URL and suggestions for troubleshooting.
 trigly <- read_nhanes("trigly") # Lowercase
 #> Loading: TRIGLY
 #> TRIGLY complete! (27,039 rows)
-demo <- read_nhanes("DEMO")    # Uppercase
+demo <- read_nhanes("DEMO") # Uppercase
 #> Loading: DEMO
 #> DEMO complete! (113,249 rows)
-acq <- read_nhanes("Acq")      # Mixed case
+acq <- read_nhanes("Acq") # Mixed case
 #> Loading: ACQ
 #> ACQ complete! (89,381 rows)
 # }
