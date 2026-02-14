@@ -1,9 +1,9 @@
 ---
 title: "Available NHANES Datasets"
-format: html
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Available NHANES Datasets}
-  %\VignetteEngine{quarto::html}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -16,7 +16,7 @@ library(reactable)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
-  eval = FALSE, # Default: don't evaluate most chunks
+  eval = FALSE,
   comment = "#>"
 )
 
@@ -77,10 +77,9 @@ catalog |>
 
 For detailed variable information, use `term_search()` or visit the [CDC NHANES website](https://wwwn.cdc.gov/nchs/nhanes/).
 
-::: callout-warning
-CDC may change data periodically. The data was aggregated as best as possible to reconcile
-variable types that changed across cycles. **ALWAYS** reference the CDC documentation
-with `nhanesdata::get_url(dataset)`!
-
-+ See `get_url()` documentation.
-:::
+> **Warning:** CDC may change data periodically. The data was aggregated as
+> best as possible to reconcile variable types that changed across cycles.
+> **ALWAYS** reference the CDC documentation with
+> `nhanesdata::get_url(dataset)`!
+>
+> See `get_url()` documentation.

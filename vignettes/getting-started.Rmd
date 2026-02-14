@@ -1,9 +1,9 @@
 ---
 title: "Getting Started with NHANES Data"
-format: html
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Getting Started with NHANES Data}
-  %\VignetteEngine{quarto::html}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 

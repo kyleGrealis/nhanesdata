@@ -1,9 +1,9 @@
 ---
 title: "COVID-19 and the 2019-2020 NHANES Cycle"
-format: html
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{COVID-19 and the 2019-2020 NHANES Cycle}
-  %\VignetteEngine{quarto::html}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
