@@ -19,6 +19,9 @@
 
 ## Citation
 
+Source:
+[`inst/CITATION`](https://github.com/kyleGrealis/nhanesdata/blob/HEAD/inst/CITATION)
+
 Grealis K, Baral A, Neugaard N, Thrul J, Devkota J (2026). *nhanesdata:
 An R Package to Access and Manage NHANES Data*. R package version 0.2.0,
 <https://www.kyleGrealis.com/nhanesdata/>.
