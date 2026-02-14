@@ -26,7 +26,7 @@ text-based searches.
 \donttest{
 # Search for specific variable (case-insensitive)
 var_search("RIDAGEYR") # Age variable across all DEMO cycles
-var_search("BPXSY1")   # Systolic blood pressure
+var_search("BPXSY1") # Systolic blood pressure
 }
 
 }

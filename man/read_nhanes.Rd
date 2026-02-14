@@ -40,8 +40,8 @@ suggestions for troubleshooting.
 \donttest{
 # All case variations work identically:
 trigly <- read_nhanes("trigly") # Lowercase
-demo <- read_nhanes("DEMO")    # Uppercase
-acq <- read_nhanes("Acq")      # Mixed case
+demo <- read_nhanes("DEMO") # Uppercase
+acq <- read_nhanes("Acq") # Mixed case
 }
 
 }

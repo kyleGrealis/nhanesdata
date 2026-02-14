@@ -25,7 +25,25 @@ home:
     from CDC servers. Provides fast data loading, search functions, and
     automatic type reconciliation across survey cycles.
   sidebar:
-    structure: [links, license, community, citation, authors, dev]
+    structure:
+      - links
+      - license
+      - community
+      - citation
+      - authors
+      - badges
+      - dev
+    components:
+      badges:
+        title: ~
+        text: |
+          [![Update NHANES Data](https://github.com/kyleGrealis/nhanesdata/actions/workflows/update-nhanes-data.yml/badge.svg)](https://github.com/kyleGrealis/nhanesdata/actions/workflows/update-nhanes-data.yml)
+
+          [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+
+          [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+          [![CRAN downloads](https://cranlogs.r-pkg.org/badges/nhanesdata)](https://cran.r-project.org/package=nhanesdata)
 
 navbar:
   structure:
@@ -78,5 +96,7 @@ footer:
 authors:
   Kyle Grealis:
     href: https://www.kylegrealis.com
+  Raymond Balise:
+    href: https://github.com/RaymondBalise
   sidebar:
     roles: [aut, cre]
