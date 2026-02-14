@@ -10,9 +10,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="covid-data-exclusion_files/libs/quarto-html/popper.min.js"></script><script src="covid-data-exclusion_files/libs/quarto-html/tippy.umd.min.js"></script><link href="covid-data-exclusion_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="covid-data-exclusion_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="COVID-19 and the 2019-2020 NHANES Cycle">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="COVID-19 and the 2019-2020 NHANES Cycle">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhanesdata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,36 +58,52 @@
 
 
   </div>
-</nav><div class="container template-quarto">
+</nav><div class="container template-article">
+
+
+
+
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>COVID-19 and the 2019-2020 NHANES Cycle</h1>
-
-
-
-
-      <small class="dont-index">Source: <a href="https://github.com/kyleGrealis/nhanesdata/blob/HEAD/vignettes/covid-data-exclusion.qmd" class="external-link"><code>vignettes/covid-data-exclusion.qmd</code></a></small>
-      <div class="d-none name"><code></code></div>
+            
+      
+      <small class="dont-index">Source: <a href="https://github.com/kyleGrealis/nhanesdata/blob/HEAD/vignettes/covid-data-exclusion.Rmd" class="external-link"><code>vignettes/covid-data-exclusion.Rmd</code></a></small>
+      <div class="d-none name"><code>covid-data-exclusion.Rmd</code></div>
     </div>
 
-
-
-
-
-
-    <section class="level2"><h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+    
+    
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The 2019-2020 NHANES survey cycle (suffix K) is <strong>not included</strong> in the datasets provided by this package. This vignette explains why and what it means for your analyses.</p>
-</section><section class="level2"><h2 id="what-happened">What Happened<a class="anchor" aria-label="anchor" href="#what-happened"></a>
+<p>The 2019-2020 NHANES survey cycle (suffix K) is <strong>not
+included</strong> in the datasets provided by this package. This
+vignette explains why and what it means for your analyses.</p>
+</div>
+<div class="section level2">
+<h2 id="what-happened">What Happened<a class="anchor" aria-label="anchor" href="#what-happened"></a>
 </h2>
-<p>NHANES data collection operates on a continuous two-year cycle. The 2019-2020 cycle began on schedule but was suspended in March 2020 due to the COVID-19 pandemic. Only partial data were collected before fieldwork stopped.</p>
-<p>The CDC determined that the incomplete 2019-2020 data could not be treated as a standard NHANES cycle. Instead, the agency released it separately as a “pre-pandemic” dataset and combined some components with the subsequent 2021-2023 cycle.</p>
-</section><section class="level2"><h2 id="how-this-affects-dataset-naming">How This Affects Dataset Naming<a class="anchor" aria-label="anchor" href="#how-this-affects-dataset-naming"></a>
+<p>NHANES data collection operates on a continuous two-year cycle. The
+2019-2020 cycle began on schedule but was suspended in March 2020 due to
+the COVID-19 pandemic. Only partial data were collected before fieldwork
+stopped.</p>
+<p>The CDC determined that the incomplete 2019-2020 data could not be
+treated as a standard NHANES cycle. Instead, the agency released it
+separately as a “pre-pandemic” dataset and combined some components with
+the subsequent 2021-2023 cycle.</p>
+</div>
+<div class="section level2">
+<h2 id="how-this-affects-dataset-naming">How This Affects Dataset Naming<a class="anchor" aria-label="anchor" href="#how-this-affects-dataset-naming"></a>
 </h2>
-<p>NHANES cycles use alphabetical suffixes: <code>DEMO</code> (1999-2000), <code>DEMO_B</code> (2001-2002), <code>DEMO_C</code> (2003-2004), and so on through <code>DEMO_J</code> (2017-2018). The 2019-2020 cycle would have been suffix K.</p>
-<p>Because this cycle is excluded, datasets skip from suffix J directly to suffix L (2021-2023):</p>
-<table class="table caption-top">
+<p>NHANES cycles use alphabetical suffixes: <code>DEMO</code>
+(1999-2000), <code>DEMO_B</code> (2001-2002), <code>DEMO_C</code>
+(2003-2004), and so on through <code>DEMO_J</code> (2017-2018). The
+2019-2020 cycle would have been suffix K.</p>
+<p>Because this cycle is excluded, datasets skip from suffix J directly
+to suffix L (2021-2023):</p>
+<table class="table">
 <thead><tr class="header">
 <th>Suffix</th>
 <th>Cycle</th>
@@ -113,122 +127,68 @@
 </tr>
 </tbody>
 </table>
-<p>When you load any dataset with <code><a href="../reference/read_nhanes.html">read_nhanes()</a></code>, the <code>year</code> column will show values from 1999 through 2017, then jump to 2021. There is no <code>year == 2019</code> in any dataset.</p>
-</section><section class="level2"><h2 id="why-we-exclude-it">Why We Exclude It<a class="anchor" aria-label="anchor" href="#why-we-exclude-it"></a>
+<p>When you load any dataset with <code><a href="../reference/read_nhanes.html">read_nhanes()</a></code>, the
+<code>year</code> column will show values from 1999 through 2017, then
+jump to 2021. There is no <code>year == 2019</code> in any dataset.</p>
+</div>
+<div class="section level2">
+<h2 id="why-we-exclude-it">Why We Exclude It<a class="anchor" aria-label="anchor" href="#why-we-exclude-it"></a>
 </h2>
-<ol type="1">
+<ol style="list-style-type: decimal">
 <li>
-<strong>Incomplete data collection.</strong> The CDC suspended fieldwork partway through the cycle, so the sample is not representative of the U.S. population in the way that complete NHANES cycles are.</li>
+<strong>Incomplete data collection.</strong> The CDC suspended
+fieldwork partway through the cycle, so the sample is not representative
+of the U.S. population in the way that complete NHANES cycles are.</li>
 <li>
-<strong>Non-standard release format.</strong> The CDC published these data with different naming conventions and file structures than standard NHANES cycles, which complicates automated processing.</li>
+<strong>Non-standard release format.</strong> The CDC published
+these data with different naming conventions and file structures than
+standard NHANES cycles, which complicates automated processing.</li>
 <li>
-<strong>Analytical validity.</strong> The CDC explicitly advises against combining the partial 2019-2020 data with standard two-year cycles for most analyses.</li>
-</ol></section><section class="level2"><h2 id="cdc-documentation">CDC Documentation<a class="anchor" aria-label="anchor" href="#cdc-documentation"></a>
+<strong>Analytical validity.</strong> The CDC explicitly advises
+against combining the partial 2019-2020 data with standard two-year
+cycles for most analyses.</li>
+</ol>
+</div>
+<div class="section level2">
+<h2 id="cdc-documentation">CDC Documentation<a class="anchor" aria-label="anchor" href="#cdc-documentation"></a>
 </h2>
-<p>For full details on the 2019-2020 data release and the CDC’s guidance on its use, see:</p>
+<p>For full details on the 2019-2020 data release and the CDC’s guidance
+on its use, see:</p>
 <ul>
-<li><a href="https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?BeginYear=2019" class="external-link">NHANES 2019-2020 Overview</a></li>
-<li><a href="https://www.cdc.gov/nchs/nhanes/" class="external-link">NCHS Data Brief on the pandemic’s impact on NHANES</a></li>
-</ul></section><section class="level2"><h2 id="future-plans">Future Plans<a class="anchor" aria-label="anchor" href="#future-plans"></a>
+<li><a href="https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?BeginYear=2019" class="external-link">NHANES
+2019-2020 Overview</a></li>
+<li><a href="https://www.cdc.gov/nchs/nhanes/" class="external-link">NCHS Data Brief on the
+pandemic’s impact on NHANES</a></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="future-plans">Future Plans<a class="anchor" aria-label="anchor" href="#future-plans"></a>
 </h2>
-<p>We plan to incorporate the 2019-2020 pre-pandemic data in a future release. This requires careful handling of the non-standard naming conventions and clear documentation so users understand the limitations of that cycle. When available, these data will be clearly flagged so they are not inadvertently mixed with standard cycles.</p>
-</section><section class="level2"><h2 id="what-to-do-in-the-meantime">What to Do in the Meantime<a class="anchor" aria-label="anchor" href="#what-to-do-in-the-meantime"></a>
+<p>We plan to incorporate the 2019-2020 pre-pandemic data in a future
+release. This requires careful handling of the non-standard naming
+conventions and clear documentation so users understand the limitations
+of that cycle. When available, these data will be clearly flagged so
+they are not inadvertently mixed with standard cycles.</p>
+</div>
+<div class="section level2">
+<h2 id="what-to-do-in-the-meantime">What to Do in the Meantime<a class="anchor" aria-label="anchor" href="#what-to-do-in-the-meantime"></a>
 </h2>
-<p>If your analysis requires 2019-2020 data, you can access the pre-pandemic files directly from the CDC using the <a href="https://cran.r-project.org/package=nhanesA" class="external-link"><strong>nhanesA</strong></a> package:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
+<p>If your analysis requires 2019-2020 data, you can access the
+pre-pandemic files directly from the CDC using the <a href="https://cran.r-project.org/package=nhanesA" class="external-link"><strong>nhanesA</strong></a>
+package:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cran.r-project.org/package=nhanesA" class="external-link">nhanesA</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Access 2019-2020 pre-pandemic demographics</span></span>
 <span><span class="va">demo_k</span> <span class="op">&lt;-</span> <span class="fu">nhanesA</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nhanesA/man/nhanes.html" class="external-link">nhanes</a></span><span class="op">(</span><span class="st">"P_DEMO"</span><span class="op">)</span></span></code></pre></div>
+<p>Note that the CDC uses a <code>P_</code> prefix (rather than the
+<code>_K</code> suffix) for some of these pre-pandemic tables. Consult
+the CDC documentation linked above for the correct table names.</p>
 </div>
-<p>Note that the CDC uses a <code>P_</code> prefix (rather than the <code>_K</code> suffix) for some of these pre-pandemic tables. Consult the CDC documentation linked above for the correct table names.</p>
-</section><script id="quarto-html-after-body" type="application/javascript">
-  window.document.addEventListener("DOMContentLoaded", function (event) {
-      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
-      var isInternal = (href) => {
-          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-      }
-      // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-      for (var i=0; i<links.length; i++) {
-        const link = links[i];
-        if (!isInternal(link.href)) {
-          // undo the damage that might have been done by quarto-nav.js in the case of
-          // links that we want to consider external
-          if (link.dataset.originalHref !== undefined) {
-            link.href = link.dataset.originalHref;
-          }
-        }
-      }
-    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-      const config = {
-        allowHTML: true,
-        maxWidth: 500,
-        delay: 100,
-        arrow: false,
-        appendTo: function(el) {
-            return el.parentElement;
-        },
-        interactive: true,
-        interactiveBorder: 10,
-        theme: 'light-border',
-        placement: 'bottom-start',
-      };
-      if (contentFn) {
-        config.content = contentFn;
-      }
-      if (onTriggerFn) {
-        config.onTrigger = onTriggerFn;
-      }
-      if (onUntriggerFn) {
-        config.onUntrigger = onUntriggerFn;
-      }
-      window.tippy(el, config);
-    }
-    const findCites = (el) => {
-      const parentEl = el.parentElement;
-      if (parentEl) {
-        const cites = parentEl.dataset.cites;
-        if (cites) {
-          return {
-            el,
-            cites: cites.split(' ')
-          };
-        } else {
-          return findCites(el.parentElement)
-        }
-      } else {
-        return undefined;
-      }
-    };
-    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-    for (var i=0; i<bibliorefs.length; i++) {
-      const ref = bibliorefs[i];
-      const citeInfo = findCites(ref);
-      if (citeInfo) {
-        tippyHover(citeInfo.el, function() {
-          var popup = window.document.createElement('div');
-          citeInfo.cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
-            }
-            popup.appendChild(citeDiv);
-          });
-          return popup.innerHTML;
-        });
-      }
-    }
-  });
-  </script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
+
 
 
     <footer><div class="pkgdown-footer-left">

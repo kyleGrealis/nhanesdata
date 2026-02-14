@@ -10,9 +10,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="getting-started_files/libs/quarto-html/popper.min.js"></script><script src="getting-started_files/libs/quarto-html/tippy.umd.min.js"></script><link href="getting-started_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="getting-started_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting Started with NHANES Data">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting Started with NHANES Data">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhanesdata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,73 +58,90 @@
 
 
   </div>
-</nav><div class="container template-quarto">
+</nav><div class="container template-article">
+
+
+
+
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Getting Started with NHANES Data</h1>
-
-
-
-
-      <small class="dont-index">Source: <a href="https://github.com/kyleGrealis/nhanesdata/blob/HEAD/vignettes/getting-started.qmd" class="external-link"><code>vignettes/getting-started.qmd</code></a></small>
-      <div class="d-none name"><code></code></div>
+            
+      
+      <small class="dont-index">Source: <a href="https://github.com/kyleGrealis/nhanesdata/blob/HEAD/vignettes/getting-started.Rmd" class="external-link"><code>vignettes/getting-started.Rmd</code></a></small>
+      <div class="d-none name"><code>getting-started.Rmd</code></div>
     </div>
 
-
-
-
-
-
-    <section class="level2"><h2 id="motivation">Motivation<a class="anchor" aria-label="anchor" href="#motivation"></a>
+    
+    
+<div class="section level2">
+<h2 id="motivation">Motivation<a class="anchor" aria-label="anchor" href="#motivation"></a>
 </h2>
-<p>The National Health and Nutrition Examination Survey (NHANES) is one of the most widely used public health datasets in the U.S., spanning over two decades of continuous data collection. Working with NHANES data directly from the CDC presents two recurring problems:</p>
-<ol type="1">
+<p>The National Health and Nutrition Examination Survey (NHANES) is one
+of the most widely used public health datasets in the U.S., spanning
+over two decades of continuous data collection. Working with NHANES data
+directly from the CDC presents two recurring problems:</p>
+<ol style="list-style-type: decimal">
 <li>
-<strong>Server reliability.</strong> The CDC’s data servers are frequently slow or unresponsive, which breaks reproducible workflows.</li>
+<strong>Server reliability.</strong> The CDC’s data servers are
+frequently slow or unresponsive, which breaks reproducible
+workflows.</li>
 <li>
-<strong>Cycle management.</strong> The CDC publishes data in two-year cycles with letter suffixes (<code>DEMO</code>, <code>DEMO_B</code>, …, <code>DEMO_L</code>). Combining cycles requires tracking naming conventions and reconciling type differences across waves.</li>
+<strong>Cycle management.</strong> The CDC publishes data in
+two-year cycles with letter suffixes (<code>DEMO</code>,
+<code>DEMO_B</code>, …, <code>DEMO_L</code>). Combining cycles requires
+tracking naming conventions and reconciling type differences across
+waves.</li>
 </ol>
-<p><strong>nhanesdata</strong> addresses both issues by hosting pre-merged, type-harmonized datasets on Cloudflare R2 with public access. A single call to <code>read_nhanes("demo")</code> returns all demographics data from 1999-2023 with a <code>year</code> column identifying each survey cycle.</p>
-</section><section class="level2"><h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
+<p><strong>nhanesdata</strong> addresses both issues by hosting
+pre-merged, type-harmonized datasets on Cloudflare R2 with public
+access. A single call to <code>read_nhanes("demo")</code> returns all
+demographics data from 1999-2023 with a <code>year</code> column
+identifying each survey cycle.</p>
+</div>
+<div class="section level2">
+<h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
 </h2>
-<p>This package builds on the <a href="https://cran.r-project.org/package=nhanesA" class="external-link"><strong>nhanesA</strong></a> package, which provides the underlying interface to NHANES data in R.</p>
-</section><section class="level2"><h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+<p>This package builds on the <a href="https://cran.r-project.org/package=nhanesA" class="external-link"><strong>nhanesA</strong></a>
+package, which provides the underlying interface to NHANES data in
+R.</p>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"kyleGrealis/nhanesdata"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.kyleGrealis.com/nhanesdata/">nhanesdata</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kyleGrealis/nhanesdata" class="external-link">nhanesdata</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 </div>
-</section><section class="level2"><h2 id="loading-data">Loading Data<a class="anchor" aria-label="anchor" href="#loading-data"></a>
+<div class="section level2">
+<h2 id="loading-data">Loading Data<a class="anchor" aria-label="anchor" href="#loading-data"></a>
 </h2>
-<div class="cell">
 <pre><code><span><span class="co">#&gt; Loading: DEMO</span></span>
 <span><span class="co">#&gt; DEMO complete! (113,249 rows)</span></span></code></pre>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">demo</span><span class="op">)</span></span></code></pre></div>
-</div>
 <p>Every dataset includes two key columns:</p>
 <ul>
 <li>
-<code>year</code>: Survey cycle start year (1999, 2001, 2003, …, 2017, 2021)</li>
+<code>year</code>: Survey cycle start year (1999, 2001, 2003, …,
+2017, 2021)</li>
 <li>
-<code>seqn</code>: Respondent sequence number (unique within a cycle, used for joining)</li>
+<code>seqn</code>: Respondent sequence number (unique within a
+cycle, used for joining)</li>
 </ul>
-<p>Dataset names are case-insensitive: <code>"demo"</code>, <code>"DEMO"</code>, and <code>"Demo"</code> all work.</p>
-</section><section class="level2"><h2 id="example-age-distribution-over-time">Example: Age Distribution Over Time<a class="anchor" aria-label="anchor" href="#example-age-distribution-over-time"></a>
+<p>Dataset names are case-insensitive: <code>"demo"</code>,
+<code>"DEMO"</code>, and <code>"Demo"</code> all work.</p>
+</div>
+<div class="section level2">
+<h2 id="example-age-distribution-over-time">Example: Age Distribution Over Time<a class="anchor" aria-label="anchor" href="#example-age-distribution-over-time"></a>
 </h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ridageyr</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">ridageyr</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -138,17 +153,14 @@
 <span>    y <span class="op">=</span> <span class="st">"Count"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/age-analysis-1.png" width="768"></p>
-</figure>
+<p><img src="getting-started_files/figure-html/age-analysis-1.png" class="r-plt" alt="" width="768"></p>
 </div>
-</div>
-</div>
-</section><section class="level2"><h2 id="cdc-dataset-naming">CDC Dataset Naming<a class="anchor" aria-label="anchor" href="#cdc-dataset-naming"></a>
+<div class="section level2">
+<h2 id="cdc-dataset-naming">CDC Dataset Naming<a class="anchor" aria-label="anchor" href="#cdc-dataset-naming"></a>
 </h2>
-<p>When you call <code>read_nhanes("demo")</code>, you receive data that the CDC publishes across multiple cycle-specific tables:</p>
-<table class="table caption-top">
+<p>When you call <code>read_nhanes("demo")</code>, you receive data that
+the CDC publishes across multiple cycle-specific tables:</p>
+<table class="table">
 <thead><tr class="header">
 <th>CDC Table</th>
 <th>Survey Years</th>
@@ -182,18 +194,21 @@
 </tr>
 </tbody>
 </table>
-<p>This matters when you need CDC documentation for a specific variable. Use <code><a href="../reference/get_url.html">get_url()</a></code> to retrieve the codebook URL for any cycle-specific table:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
+<p>This matters when you need CDC documentation for a specific variable.
+Use <code><a href="../reference/get_url.html">get_url()</a></code> to retrieve the codebook URL for any
+cycle-specific table:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">"DEMO"</span><span class="op">)</span> <span class="co"># 1999-2000 codebook</span></span>
 <span><span class="fu"><a href="../reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">"DEMO_I"</span><span class="op">)</span> <span class="co"># 2015-2016 codebook</span></span></code></pre></div>
+<p>The 2019-2020 cycle (suffix K) is excluded from all datasets. See
+<code><a href="../articles/covid-data-exclusion.html">vignette("covid-data-exclusion")</a></code> for details.</p>
 </div>
-<p>The 2019-2020 cycle (suffix K) is excluded from all datasets. See <code><a href="../articles/covid-data-exclusion.html">vignette("covid-data-exclusion")</a></code> for details.</p>
-</section><section class="level2"><h2 id="joining-multiple-datasets">Joining Multiple Datasets<a class="anchor" aria-label="anchor" href="#joining-multiple-datasets"></a>
+<div class="section level2">
+<h2 id="joining-multiple-datasets">Joining Multiple Datasets<a class="anchor" aria-label="anchor" href="#joining-multiple-datasets"></a>
 </h2>
-<p>Combine datasets using <code>seqn</code> and <code>year</code> as join keys:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
+<p>Combine datasets using <code>seqn</code> and <code>year</code> as
+join keys:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span></span>
 <span><span class="va">bpx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"bpx"</span><span class="op">)</span></span>
 <span><span class="va">bmx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"bmx"</span><span class="op">)</span></span>
@@ -202,12 +217,15 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">bpx</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"seqn"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">bmx</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"seqn"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">seqn</span>, <span class="va">ridageyr</span>, <span class="va">riagendr</span>, <span class="va">bpxsy1</span>, <span class="va">bmxbmi</span><span class="op">)</span></span></code></pre></div>
+<p>Always join on <strong>both</strong> <code>seqn</code> and
+<code>year</code>. Each <code>seqn</code> is unique within its cycle,
+and joining on both columns ensures participants are matched within the
+same survey period.</p>
 </div>
-<p>Always join on <strong>both</strong> <code>seqn</code> and <code>year</code>. Each <code>seqn</code> is unique within its cycle, and joining on both columns ensures participants are matched within the same survey period.</p>
-</section><section class="level2"><h2 id="filtering-by-survey-year">Filtering by Survey Year<a class="anchor" aria-label="anchor" href="#filtering-by-survey-year"></a>
+<div class="section level2">
+<h2 id="filtering-by-survey-year">Filtering by Survey Year<a class="anchor" aria-label="anchor" href="#filtering-by-survey-year"></a>
 </h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Recent cycles only</span></span>
@@ -226,38 +244,40 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">period</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-</section><section class="level2"><h2 id="finding-variables">Finding Variables<a class="anchor" aria-label="anchor" href="#finding-variables"></a>
+<div class="section level2">
+<h2 id="finding-variables">Finding Variables<a class="anchor" aria-label="anchor" href="#finding-variables"></a>
 </h2>
-<section class="level3"><h3 id="by-keyword">By keyword<a class="anchor" aria-label="anchor" href="#by-keyword"></a>
+<div class="section level3">
+<h3 id="by-keyword">By keyword<a class="anchor" aria-label="anchor" href="#by-keyword"></a>
 </h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/term_search.html">term_search</a></span><span class="op">(</span><span class="st">"blood pressure"</span><span class="op">)</span></span></code></pre></div>
+<p>Returns variable names, table names, descriptions, and collection
+years. From there you can identify the base table name (e.g.,
+<code>BPX</code>) for use with <code><a href="../reference/read_nhanes.html">read_nhanes()</a></code>.</p>
 </div>
-<p>Returns variable names, table names, descriptions, and collection years. From there you can identify the base table name (e.g., <code>BPX</code>) for use with <code><a href="../reference/read_nhanes.html">read_nhanes()</a></code>.</p>
-</section><section class="level3"><h3 id="by-variable-name">By variable name<a class="anchor" aria-label="anchor" href="#by-variable-name"></a>
+<div class="section level3">
+<h3 id="by-variable-name">By variable name<a class="anchor" aria-label="anchor" href="#by-variable-name"></a>
 </h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/var_search.html">var_search</a></span><span class="op">(</span><span class="st">"BPXSY1"</span><span class="op">)</span></span></code></pre></div>
-</div>
 <p>Shows which cycles contain a specific variable.</p>
-</section><section class="level3"><h3 id="in-loaded-data">In loaded data<a class="anchor" aria-label="anchor" href="#in-loaded-data"></a>
+</div>
+<div class="section level3">
+<h3 id="in-loaded-data">In loaded data<a class="anchor" aria-label="anchor" href="#in-loaded-data"></a>
 </h3>
-<div class="cell">
 <pre><code><span><span class="co">#&gt; Loading: BMX</span></span>
 <span><span class="co">#&gt; BMX complete! (96,288 rows)</span></span></code></pre>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="st">"bmxht"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bmx</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
-</div>
 <p>All search functions are case-insensitive.</p>
-</section></section><section class="level2"><h2 id="complete-example-blood-pressure-by-age-group">Complete Example: Blood Pressure by Age Group<a class="anchor" aria-label="anchor" href="#complete-example-blood-pressure-by-age-group"></a>
+</div>
+</div>
+<div class="section level2">
+<h2 id="complete-example-blood-pressure-by-age-group">Complete Example: Blood Pressure by Age Group<a class="anchor" aria-label="anchor" href="#complete-example-blood-pressure-by-age-group"></a>
 </h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span></span>
 <span><span class="va">bpx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"bpx"</span><span class="op">)</span></span>
 <span></span>
@@ -289,9 +309,7 @@
 <span>    mean_diastolic <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">bpxdi1</span><span class="op">)</span>,</span>
 <span>    .groups <span class="op">=</span> <span class="st">"drop"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bp_summary</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age_group</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">mean_systolic</span><span class="op">)</span>, fill <span class="op">=</span> <span class="st">"coral"</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
@@ -304,108 +322,26 @@
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/complete-example-plot-1.png" width="672"></p>
-</figure>
+<p><img src="getting-started_files/figure-html/complete-example-plot-1.png" class="r-plt" alt="" width="672"></p>
 </div>
-</div>
-</div>
-</section><section class="level2"><h2 id="next-steps">Next Steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
+<div class="section level2">
+<h2 id="next-steps">Next Steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
 </h2>
 <ul>
-<li>Browse the <a href="the-datasets.html">dataset catalog</a> for the full list of available tables</li>
-<li>Read about the <a href="covid-data-exclusion.html">2019-2020 cycle exclusion</a>
+<li>Browse the <a href="the-datasets.html">dataset catalog</a> for the
+full list of available tables</li>
+<li>Read about the <a href="covid-data-exclusion.html">2019-2020 cycle
+exclusion</a>
 </li>
 <li>Use <code><a href="../reference/read_nhanes.html">?read_nhanes</a></code> for function documentation</li>
 <li>File issues or feature requests on <a href="https://github.com/kyleGrealis/nhanesdata/issues" class="external-link">GitHub</a>
 </li>
-</ul></section><script id="quarto-html-after-body" type="application/javascript">
-  window.document.addEventListener("DOMContentLoaded", function (event) {
-      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
-      var isInternal = (href) => {
-          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-      }
-      // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-      for (var i=0; i<links.length; i++) {
-        const link = links[i];
-        if (!isInternal(link.href)) {
-          // undo the damage that might have been done by quarto-nav.js in the case of
-          // links that we want to consider external
-          if (link.dataset.originalHref !== undefined) {
-            link.href = link.dataset.originalHref;
-          }
-        }
-      }
-    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-      const config = {
-        allowHTML: true,
-        maxWidth: 500,
-        delay: 100,
-        arrow: false,
-        appendTo: function(el) {
-            return el.parentElement;
-        },
-        interactive: true,
-        interactiveBorder: 10,
-        theme: 'light-border',
-        placement: 'bottom-start',
-      };
-      if (contentFn) {
-        config.content = contentFn;
-      }
-      if (onTriggerFn) {
-        config.onTrigger = onTriggerFn;
-      }
-      if (onUntriggerFn) {
-        config.onUntrigger = onUntriggerFn;
-      }
-      window.tippy(el, config);
-    }
-    const findCites = (el) => {
-      const parentEl = el.parentElement;
-      if (parentEl) {
-        const cites = parentEl.dataset.cites;
-        if (cites) {
-          return {
-            el,
-            cites: cites.split(' ')
-          };
-        } else {
-          return findCites(el.parentElement)
-        }
-      } else {
-        return undefined;
-      }
-    };
-    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-    for (var i=0; i<bibliorefs.length; i++) {
-      const ref = bibliorefs[i];
-      const citeInfo = findCites(ref);
-      if (citeInfo) {
-        tippyHover(citeInfo.el, function() {
-          var popup = window.document.createElement('div');
-          citeInfo.cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
-            }
-            popup.appendChild(citeDiv);
-          });
-          return popup.innerHTML;
-        });
-      }
-    }
-  });
-  </script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+</ul>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
+
 
 
     <footer><div class="pkgdown-footer-left">

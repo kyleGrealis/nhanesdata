@@ -35,13 +35,11 @@ For detailed variable information, use
 [`term_search()`](https://www.kyleGrealis.com/nhanesdata/reference/term_search.md)
 or visit the [CDC NHANES website](https://wwwn.cdc.gov/nchs/nhanes/).
 
-> **Warning**
->
-> CDC may change data periodically. The data was aggregated as best as
-> possible to reconcile variable types that changed across cycles.
-> **ALWAYS** reference the CDC documentation with
+> **Warning:** CDC may change data periodically. The data was aggregated
+> as best as possible to reconcile variable types that changed across
+> cycles. **ALWAYS** reference the CDC documentation with
 > `nhanesdata::get_url(dataset)`!
 >
-> - See
->   [`get_url()`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md)
->   documentation.
+> See
+> [`get_url()`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md)
+> documentation.

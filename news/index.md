@@ -1,5 +1,12 @@
 # Changelog
 
+## nhanesdata 0.2.1
+
+- Converted vignettes from Quarto (.qmd) to R Markdown (.Rmd) to fix
+  vignette build failures on Windows CI.
+
+------------------------------------------------------------------------
+
 ## nhanesdata 0.2.0
 
 Released: Feb. 2026
