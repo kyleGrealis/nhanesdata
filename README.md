@@ -4,6 +4,7 @@
 [![Update NHANES Data](https://github.com/kyleGrealis/nhanesdata/actions/workflows/update-nhanes-data.yml/badge.svg)](https://github.com/kyleGrealis/nhanesdata/actions/workflows/update-nhanes-data.yml)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/nhanesdata)](https://cran.r-project.org/package=nhanesdata)
 <!-- badges: end -->
 
 The National Health and Nutrition Examination Survey (NHANES) is one of the most comprehensive public health datasets available, spanning over two decades of U.S. health data. But working with it has been frustrating. If you've tried using NHANES before, you've likely hit two major problems: (1) CDC server reliability issues that break reproducible research, and (2) cycle suffix confusion, where finding `DEMO`, `DEMO_B`, `DEMO_C`, all the way through `DEMO_L` makes data discovery a scavenger hunt.

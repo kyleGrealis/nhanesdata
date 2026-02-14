@@ -27,3 +27,5 @@
 CLAUDE.md
 ^\.pre-commit-config\.yaml$
 ^\.lintr$
+^CRAN-SUBMISSION$
+^cran-comments.md$

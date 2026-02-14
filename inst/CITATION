@@ -11,6 +11,9 @@ bibentry(
     person("Natalie", "Neugaard",
       comment = c(ORCID = "0009-0008-0820-5111")
     ),
+    person("Raymond", "Balise",
+      comment = c(ORCID = "0000-0002-9856-5901")
+    ),
     person("Johannes", "Thrul",
       comment = c(ORCID = "0000-0001-8929-9579")
     ),
