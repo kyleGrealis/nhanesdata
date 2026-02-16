@@ -1,3 +1,13 @@
+# nhanesdata 0.2.0.9000 (developement version)
+
+## New Features
+
+* Adding `create_design` function to return survey-weighted design data
+  for use in downstream analyses. Combines cycles and properly accounts
+  for weight type (interview, MEC, fasting) and adhere's to CDC guidelines
+  for use with earlier cycles. See [CDC Weighting Guidelines](https://wwwn.cdc.gov/nchs/nhanes/tutorials/Weighting.aspx)
+  for more information.
+
 # nhanesdata 0.2.0
 
 Released: Feb. 2026
