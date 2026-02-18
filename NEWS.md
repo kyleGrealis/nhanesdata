@@ -1,4 +1,9 @@
-# nhanesdata 0.2.0.9000 (developement version)
+# nhanesdata 0.2.1
+
+## Bug Fixes
+
+* Converted vignettes from Quarto (.qmd) to R Markdown (.Rmd) to fix
+  vignette build failures on Windows CI.
 
 ## New Features
 
