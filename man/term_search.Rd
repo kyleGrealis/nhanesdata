@@ -29,15 +29,12 @@ and survey years. Results are sorted by year (most recent first) and
 then by variable name.
 }
 \examples{
-\dontrun{
-# Search for diabetes-related variables
-term_search("diabetes")
+\donttest{
+# Search for diabetes-related variables (showing first 5 results)
+term_search("diabetes") |> head(5)
 
-# Search for blood pressure measurements
-term_search("blood pressure")
-
-# Handles special characters safely
-term_search("weight (kg)")
+# Search for blood pressure measurements (showing first 5 results)
+term_search("blood pressure") |> head(5)
 }
 
 }

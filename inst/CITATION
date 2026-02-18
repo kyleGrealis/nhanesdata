@@ -1,6 +1,6 @@
 bibentry(
   bibtype = "Manual",
-  title = "nhanesdata: An R Package to Access and Manage NHANES Data",
+  title = "nhanesdata: Harmonized Access to NHANES Survey Data",
   author = c(
     person("Kyle", "Grealis",
       comment = c(ORCID = "0000-0002-9223-8854")
@@ -22,6 +22,6 @@ bibentry(
     )
   ),
   year = "2026",
-  url = "https://www.kyleGrealis.com/nhanesdata/",
-  note = "R package version 0.2.0"
+  url = "https://www.kylegrealis.com/nhanesdata/",
+  note = "R package version 0.2.1"
 )

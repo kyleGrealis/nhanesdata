@@ -88,23 +88,18 @@ get_url <- function(table) {
 #'   Returns an empty data.frame with correct structure if no matches found.
 #'
 #' @examples
-#' \dontrun{
-#' # Search for diabetes-related variables
-#' term_search("diabetes")
+#' \donttest{
+#' # Search for diabetes-related variables (showing first 5 results)
+#' term_search("diabetes") |> head(5)
 #'
-#' # Search for blood pressure measurements
-#' term_search("blood pressure")
-#'
-#' # Handles special characters safely
-#' term_search("weight (kg)")
+#' # Search for blood pressure measurements (showing first 5 results)
+#' term_search("blood pressure") |> head(5)
 #' }
 #'
 #' @family search and lookup functions
 #' @seealso \code{\link{var_search}} for searching by exact variable name,
 #'   \code{\link{get_url}} for getting documentation URLs,
 #'   \code{\link[nhanesA]{nhanesSearch}} for the underlying search function
-#' @importFrom nhanesA nhanesSearch
-#' @importFrom dplyr select arrange desc mutate
 #' @export
 term_search <- function(var) {
   # Input validation
@@ -220,8 +215,6 @@ term_search <- function(var) {
 #' @seealso \code{\link{term_search}} for text-based searches,
 #'   \code{\link{get_url}} for documentation URLs,
 #'   \code{\link[nhanesA]{nhanesSearchVarName}} for the underlying function
-#' @importFrom nhanesA nhanesSearchVarName
-#' @importFrom stringr str_to_upper
 #' @export
 var_search <- function(var) {
   # Input validation
@@ -369,21 +362,6 @@ var_search <- function(var) {
 #'     \item \code{seqn}: Integer. Respondent sequence number (unique ID)
 #'     \item Additional columns from the requested NHANES table (lowercase names)
 #'   }
-#'
-#' @examples
-#' \dontrun{
-#' # Internal use only - called via nhanesdata:::pull_nhanes()
-#' demo_data <- pull_nhanes("DEMO")
-#'
-#' # Pull specific variables only
-#' bmi_data <- pull_nhanes(
-#'   nhanes_table = "BMX",
-#'   selected_variables = c("SEQN", "BMXWT", "BMXHT", "BMXBMI")
-#' )
-#'
-#' # Pull without saving files
-#' temp_data <- pull_nhanes("DIQ", save = FALSE)
-#' }
 #'
 #' @noRd
 pull_nhanes <- function(nhanes_table, selected_variables = NULL, save = TRUE) {

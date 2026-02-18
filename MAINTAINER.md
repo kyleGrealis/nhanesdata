@@ -48,7 +48,7 @@ The workflow picks up all datasets listed there. That's it.
 ## Data Workflow
 
 1. `pull_nhanes(dataset)` - Downloads from CDC, merges cycles, returns data
-2. `nhanes_pin_write(data, name, bucket)` - Uploads to R2 (pinning is automatic)
+2. `nhanes_r2_upload(data, name, bucket)` - Uploads to R2 via paws.storage
 3. `detect_data_changes(dataset)` - Checks if data changed via MD5
 4. `update_checksum(dataset, hash)` - Updates `.checksums.json`
 

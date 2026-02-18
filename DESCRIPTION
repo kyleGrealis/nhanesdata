@@ -1,5 +1,5 @@
 Package: nhanesdata
-Title: An R Package to Access and Manage NHANES Data
+Title: Harmonized Access to NHANES Survey Data
 Version: 0.2.1
 Authors@R: c(
     person(
@@ -39,10 +39,10 @@ Authors@R: c(
         comment = c(ORCID = "0009-0007-6734-777X")
     )
     )
-Description: Instant access to harmonized National Health and Nutrition Examination Survey (NHANES) data spanning 1999-2023. Retrieve pre-processed datasets from reliable cloud storage with automatic type reconciliation and integrated search tools for variables and datasets. Simplifies NHANES data workflows by handling cycle management and maintaining data consistency across survey waves.
+Description: Instant access to harmonized National Health and Nutrition Examination Survey (NHANES) data spanning 1999-2023. Retrieve pre-processed datasets from reliable cloud storage with automatic type reconciliation and integrated search tools for variables and datasets. Simplifies NHANES data workflows by handling cycle management and maintaining data consistency across survey waves. Data is sourced from <https://www.cdc.gov/nchs/nhanes/>.
 License: MIT + file LICENSE
 URL: https://github.com/kyleGrealis/nhanesdata,
-    https://www.kyleGrealis.com/nhanesdata/
+    https://www.kylegrealis.com/nhanesdata/
 BugReports: https://github.com/kyleGrealis/nhanesdata/issues
 Language: en-US
 Encoding: UTF-8
@@ -54,8 +54,10 @@ Imports:
     arrow,
     dplyr,
     nhanesA,
+    rlang,
     scales,
     stringr,
+    srvyr,
     tibble
 Suggests:
     cli,
@@ -67,7 +69,6 @@ Suggests:
     janitor,
     jsonlite,
     knitr,
-    pins,
     paws.storage,
     purrr,
     reactable,

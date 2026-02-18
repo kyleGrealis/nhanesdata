@@ -116,7 +116,7 @@ This matters when you need CDC documentation for a specific variable. Use `get_u
 #| label: get-url
 #| eval: false
 
-get_url("DEMO") # 1999-2000 codebook
+get_url("DEMO")   # 1999-2000 codebook
 get_url("DEMO_I") # 2015-2016 codebook
 ```
 
@@ -310,6 +310,7 @@ bp_summary |>
 ## Next Steps
 
 - Browse the [dataset catalog](the-datasets.html) for the full list of available tables
+- Learn about [creating survey design objects](survey-design.html) with proper weighting for multi-cycle analyses
 - Read about the [2019-2020 cycle exclusion](covid-data-exclusion.html)
 - Use `?read_nhanes` for function documentation
 - File issues or feature requests on [GitHub](https://github.com/kyleGrealis/nhanesdata/issues)

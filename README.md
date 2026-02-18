@@ -3,7 +3,7 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/kyleGrealis/nhanesdata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kyleGrealis/nhanesdata/actions/workflows/R-CMD-check.yaml)
 [![Update NHANES Data](https://github.com/kyleGrealis/nhanesdata/actions/workflows/update-nhanes-data.yml/badge.svg)](https://github.com/kyleGrealis/nhanesdata/actions/workflows/update-nhanes-data.yml)
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![CRAN status](https://www.r-pkg.org/badges/version/nhanesdata)](https://CRAN.R-project.org/package=nhanesdata)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/nhanesdata)](https://cran.r-project.org/package=nhanesdata)
@@ -22,7 +22,10 @@ This package builds on the [**nhanesA**](https://cran.r-project.org/package=nhan
 ## Installation
 
 ```r
-# install.packages("pak")
+# From CRAN (submitted for approval Feb. 18, 2026)
+install.packages("nhanesdata")
+
+# Development version from GitHub
 pak::pak("kyleGrealis/nhanesdata")
 ```
 
@@ -57,10 +60,11 @@ analysis <- read_nhanes("demo") |>
 
 | Function | Purpose |
 |----------|---------|
-| `read_nhanes(dataset)` | Load a pre-merged NHANES dataset from cloud storage |
-| `term_search(var)` | Search variables by keyword or phrase |
-| `var_search(var)` | Search variables by exact name |
-| `get_url(table)` | Get CDC codebook URL for a specific table |
+| `read_nhanes()` | Load a pre-merged NHANES dataset from cloud storage |
+| `create_design()` | Create survey design objects with proper weighting for multiple cycles |
+| `term_search()` | Search variables by keyword or phrase |
+| `var_search()` | Search variables by exact name |
+| `get_url()` | Get CDC codebook URL for a specific table |
 
 All functions are case-insensitive.
 
@@ -72,7 +76,7 @@ All functions are case-insensitive.
 - **Examination (16):** `bmx`, `bpx`, `cbc`, `trigly`, and 12 more
 - **Laboratory (5):** `dxxag`, `l10`, `l10am`, `lab10`, `lab10am`
 
-See the [dataset catalog](https://www.kyleGrealis.com/nhanesdata/articles/the-datasets.html) for the full list, or browse `inst/extdata/datasets.yml` in the source.
+See the [dataset catalog](https://www.kylegrealis.com/nhanesdata/articles/the-datasets.html) for the full list, or browse `inst/extdata/datasets.yml` in the source.
 
 ## Important Notes
 
@@ -87,7 +91,7 @@ library(arrow)
 demo <- arrow::read_parquet("https://nhanes.kylegrealis.com/demo.parquet")
 ```
 
-This works from any language with Arrow support (Python, Julia, etc.). Dataset names in URLs are lowercase.
+This works from any language with Arrow support. Dataset names in URLs are lowercase.
 
 ## Getting Help
 

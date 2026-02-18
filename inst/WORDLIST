@@ -27,6 +27,8 @@ Johannes
 kylegrealis
 LBXGLU
 Lifecycle
+Lumley
+MEC
 mmHg
 NCHS
 Neugaard
@@ -38,6 +40,8 @@ ORCID
 pak
 parquet
 pkgdown
+PSU
+PSUs
 pre
 Pre
 reactable
@@ -46,9 +50,16 @@ RIDAGEYR
 RIDRETH
 seqn
 SEQN
+SDMVPSU
+SDMVSTRA
 srvyr
+subsample
+subsamples
 sumExtras
 Thrul
 tibble
 tidyverse
 trigly
+WTINT
+WTMEC
+WTSAF

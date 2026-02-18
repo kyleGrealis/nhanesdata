@@ -7,9 +7,9 @@
 
 ## New Features
 
-* Adding `create_design` function to return survey-weighted design data
+* Adding `create_design()` function to return survey-weighted design data
   for use in downstream analyses. Combines cycles and properly accounts
-  for weight type (interview, MEC, fasting) and adhere's to CDC guidelines
+  for weight type (interview, MEC, fasting) and adheres to CDC guidelines
   for use with earlier cycles. See [CDC Weighting Guidelines](https://wwwn.cdc.gov/nchs/nhanes/tutorials/Weighting.aspx)
   for more information.
 

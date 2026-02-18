@@ -1,7 +1,10 @@
-url: https://www.kyleGrealis.com/nhanesdata/
+url: https://www.kylegrealis.com/nhanesdata/
 
 development:
   mode: auto
+
+code:
+  run_dont_test: false
 
 repo:
   url:
@@ -41,7 +44,7 @@ home:
 
           [![Update NHANES Data](https://github.com/kyleGrealis/nhanesdata/actions/workflows/update-nhanes-data.yml/badge.svg)](https://github.com/kyleGrealis/nhanesdata/actions/workflows/update-nhanes-data.yml)
 
-          [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+          [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
 
           [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -62,6 +65,8 @@ navbar:
       menu:
         - text: Dataset Catalog
           href: articles/the-datasets.html
+        - text: Survey Design Objects
+          href: articles/survey-design.html
         - text: "COVID-19 Data Exclusion"
           href: articles/covid-data-exclusion.html
     news:
@@ -79,12 +84,17 @@ articles:
       - getting-started
       - the-datasets
       - covid-data-exclusion
+      - survey-design
 
 reference:
   - title: "Load Data"
     desc: "Access pre-processed NHANES datasets from cloud storage."
     contents:
       - read_nhanes
+  - title: "Survey Design"
+    desc: "Create survey design objects with proper weighting for NHANES analyses."
+    contents:
+      - create_design
   - title: "Search & Discovery"
     desc: "Find variables and documentation across NHANES datasets."
     contents:
