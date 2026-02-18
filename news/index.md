@@ -2,10 +2,19 @@
 
 ## nhanesdata 0.2.1
 
+### Bug Fixes
+
 - Converted vignettes from Quarto (.qmd) to R Markdown (.Rmd) to fix
   vignette build failures on Windows CI.
 
-------------------------------------------------------------------------
+### New Features
+
+- Adding `create_design` function to return survey-weighted design data
+  for use in downstream analyses. Combines cycles and properly accounts
+  for weight type (interview, MEC, fasting) and adhere’s to CDC
+  guidelines for use with earlier cycles. See [CDC Weighting
+  Guidelines](https://wwwn.cdc.gov/nchs/nhanes/tutorials/Weighting.aspx)
+  for more information.
 
 ## nhanesdata 0.2.0
 
