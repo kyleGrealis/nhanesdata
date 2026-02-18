@@ -90,16 +90,16 @@ publishes across multiple cycle-specific tables:
 
 This matters when you need CDC documentation for a specific variable.
 Use
-[`get_url()`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md)
+[`get_url()`](https://www.kylegrealis.com/nhanesdata/reference/get_url.md)
 to retrieve the codebook URL for any cycle-specific table:
 
 ``` r
-get_url("DEMO") # 1999-2000 codebook
+get_url("DEMO")   # 1999-2000 codebook
 get_url("DEMO_I") # 2015-2016 codebook
 ```
 
 The 2019-2020 cycle (suffix K) is excluded from all datasets. See
-[`vignette("covid-data-exclusion")`](https://www.kyleGrealis.com/nhanesdata/articles/covid-data-exclusion.md)
+[`vignette("covid-data-exclusion")`](https://www.kylegrealis.com/nhanesdata/articles/covid-data-exclusion.md)
 for details.
 
 ## Joining Multiple Datasets
@@ -154,7 +154,7 @@ term_search("blood pressure")
 Returns variable names, table names, descriptions, and collection years.
 From there you can identify the base table name (e.g., `BPX`) for use
 with
-[`read_nhanes()`](https://www.kyleGrealis.com/nhanesdata/reference/read_nhanes.md).
+[`read_nhanes()`](https://www.kylegrealis.com/nhanesdata/reference/read_nhanes.md).
 
 ### By variable name
 
@@ -232,12 +232,15 @@ bp_summary |>
 ## Next Steps
 
 - Browse the [dataset
-  catalog](https://www.kyleGrealis.com/nhanesdata/articles/the-datasets.md)
+  catalog](https://www.kylegrealis.com/nhanesdata/articles/the-datasets.md)
   for the full list of available tables
+- Learn about [creating survey design
+  objects](https://www.kylegrealis.com/nhanesdata/articles/survey-design.md)
+  with proper weighting for multi-cycle analyses
 - Read about the [2019-2020 cycle
-  exclusion](https://www.kyleGrealis.com/nhanesdata/articles/covid-data-exclusion.md)
+  exclusion](https://www.kylegrealis.com/nhanesdata/articles/covid-data-exclusion.md)
 - Use
-  [`?read_nhanes`](https://www.kyleGrealis.com/nhanesdata/reference/read_nhanes.md)
+  [`?read_nhanes`](https://www.kylegrealis.com/nhanesdata/reference/read_nhanes.md)
   for function documentation
 - File issues or feature requests on
   [GitHub](https://github.com/kyleGrealis/nhanesdata/issues)

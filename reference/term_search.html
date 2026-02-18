@@ -26,6 +26,7 @@ then by variable name."></head><body>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/the-datasets.html">Dataset Catalog</a></li>
+    <li><a class="dropdown-item" href="../articles/survey-design.html">Survey Design Objects</a></li>
     <li><a class="dropdown-item" href="../articles/covid-data-exclusion.html">COVID-19 Data Exclusion</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -94,16 +95,49 @@ Returns an empty data.frame with correct structure if no matches found.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co"># Search for diabetes-related variables</span></span></span>
-<span class="r-in"><span><span class="fu">term_search</span><span class="op">(</span><span class="st">"diabetes"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="co"># Search for diabetes-related variables (showing first 5 results)</span></span></span>
+<span class="r-in"><span><span class="fu">term_search</span><span class="op">(</span><span class="st">"diabetes"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Variable.Name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        DID040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        DIQ010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        DIQ160</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        DIQ180</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        DID040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                               Variable.Description</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 How old {was SP/were you} when a doctor or other health professional first told {you/him/her} that {you/he/she} had diabetes or </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 The next questions are about specific medical conditions. {Other than during pregnancy, {have you/has SP}/{Have you/Has SP}} eve</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 {Have you/Has SP} ever been told by a doctor or other health professional that {you have/SP has} any of the following:  prediabe</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                 {Have you/Has SP} had a blood test for high blood sugar or diabetes within the past three years?</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 How old {was SP/were you} when a doctor or other health professional first told {you/him/her} that {you/he/she} had diabetes or </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Data.File.Name Begin.Year</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          DIQ_L       2021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          DIQ_L       2021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          DIQ_L       2021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          DIQ_L       2021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          DIQ_J       2017</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Search for blood pressure measurements</span></span></span>
-<span class="r-in"><span><span class="fu">term_search</span><span class="op">(</span><span class="st">"blood pressure"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Handles special characters safely</span></span></span>
-<span class="r-in"><span><span class="fu">term_search</span><span class="op">(</span><span class="st">"weight (kg)"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="co"># Search for blood pressure measurements (showing first 5 results)</span></span></span>
+<span class="r-in"><span><span class="fu">term_search</span><span class="op">(</span><span class="st">"blood pressure"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Variable.Name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        BPQ020</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        BPQ030</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        BPQ150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      BPAOMNTS</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        BPD035</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                               Variable.Description</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 {Have you/Has SP} ever been told by a doctor or other health professional that {you/s/he} had hypertension, also called high blo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          {Were you/Was SP} told on 2 or more different visits that {you/s/he} had hypertension, also called high blood pressure?</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                    {Are you/Is SP} now taking any medication prescribed by a doctor for {your/his/her/SP's} high blood pressure?</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Difference in minutes between blood pressure obtained by a physician with a mercury sphygmomanometer (legacy) and blood pressure</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       How old {were you/was SP} when {you were/he/she was} first told that {you/he/she} had hypertension or high blood pressure?</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Data.File.Name Begin.Year</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          BPQ_L       2021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          BPQ_L       2021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          BPQ_L       2021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         BPXO_J       2017</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          BPQ_J       2017</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

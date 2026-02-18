@@ -34,7 +34,7 @@ suffix L (2021-2023):
 | L      | 2021-2023 | Included     |
 
 When you load any dataset with
-[`read_nhanes()`](https://www.kyleGrealis.com/nhanesdata/reference/read_nhanes.md),
+[`read_nhanes()`](https://www.kylegrealis.com/nhanesdata/reference/read_nhanes.md),
 the `year` column will show values from 1999 through 2017, then jump to
 2021. There is no `year == 2019` in any dataset.
 

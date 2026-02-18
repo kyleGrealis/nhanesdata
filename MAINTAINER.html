@@ -20,6 +20,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="articles/the-datasets.html">Dataset Catalog</a></li>
+    <li><a class="dropdown-item" href="articles/survey-design.html">Survey Design Objects</a></li>
     <li><a class="dropdown-item" href="articles/covid-data-exclusion.html">COVID-19 Data Exclusion</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -94,7 +95,7 @@
 <ol style="list-style-type: decimal"><li>
 <code>pull_nhanes(dataset)</code> - Downloads from CDC, merges cycles, returns data</li>
 <li>
-<code>nhanes_pin_write(data, name, bucket)</code> - Uploads to R2 (pinning is automatic)</li>
+<code>nhanes_r2_upload(data, name, bucket)</code> - Uploads to R2 via paws.storage</li>
 <li>
 <code>detect_data_changes(dataset)</code> - Checks if data changed via MD5</li>
 <li>

@@ -26,13 +26,13 @@ Source:
 [`inst/CITATION`](https://github.com/kyleGrealis/nhanesdata/blob/HEAD/inst/CITATION)
 
 Grealis K, Baral A, Neugaard N, Balise R, Thrul J, Devkota J (2026).
-*nhanesdata: An R Package to Access and Manage NHANES Data*. R package
-version 0.2.0, <https://www.kyleGrealis.com/nhanesdata/>.
+*nhanesdata: Harmonized Access to NHANES Survey Data*. R package version
+0.2.1, <https://www.kylegrealis.com/nhanesdata/>.
 
     @Manual{,
-      title = {nhanesdata: An R Package to Access and Manage NHANES Data},
+      title = {nhanesdata: Harmonized Access to NHANES Survey Data},
       author = {Kyle Grealis and Amrit Baral and Natalie Neugaard and Raymond Balise and Johannes Thrul and Janardan Devkota},
       year = {2026},
-      url = {https://www.kyleGrealis.com/nhanesdata/},
-      note = {R package version 0.2.0},
+      url = {https://www.kylegrealis.com/nhanesdata/},
+      note = {R package version 0.2.1},
     }

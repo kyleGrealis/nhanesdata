@@ -27,7 +27,10 @@ provides the foundation for accessing NHANES data through R.
 ## Installation
 
 ``` r
-# install.packages("pak")
+# From CRAN (submitted for approval Feb. 18, 2026)
+install.packages("nhanesdata")
+
+# Development version from GitHub
 pak::pak("kyleGrealis/nhanesdata")
 ```
 
@@ -61,12 +64,13 @@ analysis <- read_nhanes("demo") |>
 
 ## Functions
 
-| Function               | Purpose                                             |
-|------------------------|-----------------------------------------------------|
-| `read_nhanes(dataset)` | Load a pre-merged NHANES dataset from cloud storage |
-| `term_search(var)`     | Search variables by keyword or phrase               |
-| `var_search(var)`      | Search variables by exact name                      |
-| `get_url(table)`       | Get CDC codebook URL for a specific table           |
+| Function                                                                               | Purpose                                                                |
+|----------------------------------------------------------------------------------------|------------------------------------------------------------------------|
+| [`read_nhanes()`](https://www.kylegrealis.com/nhanesdata/reference/read_nhanes.md)     | Load a pre-merged NHANES dataset from cloud storage                    |
+| [`create_design()`](https://www.kylegrealis.com/nhanesdata/reference/create_design.md) | Create survey design objects with proper weighting for multiple cycles |
+| [`term_search()`](https://www.kylegrealis.com/nhanesdata/reference/term_search.md)     | Search variables by keyword or phrase                                  |
+| [`var_search()`](https://www.kylegrealis.com/nhanesdata/reference/var_search.md)       | Search variables by exact name                                         |
+| [`get_url()`](https://www.kylegrealis.com/nhanesdata/reference/get_url.md)             | Get CDC codebook URL for a specific table                              |
 
 All functions are case-insensitive.
 
@@ -80,17 +84,17 @@ All functions are case-insensitive.
 - **Laboratory (5):** `dxxag`, `l10`, `l10am`, `lab10`, `lab10am`
 
 See the [dataset
-catalog](https://www.kyleGrealis.com/nhanesdata/articles/the-datasets.html)
+catalog](https://www.kylegrealis.com/nhanesdata/articles/the-datasets.html)
 for the full list, or browse `inst/extdata/datasets.yml` in the source.
 
 ## Important Notes
 
 - The **2019-2020 survey cycle** (suffix K) is excluded due to COVID-19
   data collection disruptions. See
-  [`vignette("covid-data-exclusion")`](https://www.kyleGrealis.com/nhanesdata/articles/covid-data-exclusion.md)
+  [`vignette("covid-data-exclusion")`](https://www.kylegrealis.com/nhanesdata/articles/covid-data-exclusion.md)
   for details.
 - Variable names match CDC documentation. Always verify definitions with
-  [`get_url()`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md)
+  [`get_url()`](https://www.kylegrealis.com/nhanesdata/reference/get_url.md)
   since variable usage may differ across cycles.
 - Data types are automatically harmonized across cycles (integer
   vs. double, factor vs. character).
@@ -102,13 +106,13 @@ library(arrow)
 demo <- arrow::read_parquet("https://nhanes.kylegrealis.com/demo.parquet")
 ```
 
-This works from any language with Arrow support (Python, Julia, etc.).
-Dataset names in URLs are lowercase.
+This works from any language with Arrow support. Dataset names in URLs
+are lowercase.
 
 ## Getting Help
 
 - **Documentation:**
-  [`?read_nhanes`](https://www.kyleGrealis.com/nhanesdata/reference/read_nhanes.md),
+  [`?read_nhanes`](https://www.kylegrealis.com/nhanesdata/reference/read_nhanes.md),
   `browseVignettes("nhanesdata")`
 - **Bug reports:** [GitHub
   Issues](https://github.com/kyleGrealis/nhanesdata/issues)

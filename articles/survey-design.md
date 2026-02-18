@@ -1,0 +1,272 @@
+# Creating Survey Design Objects
+
+## Why Survey Weights Matter
+
+NHANES uses a complex, multistage probability sampling design to select
+participants who represent the non-institutionalized U.S. population.
+Without proper survey weights, analyses will produce biased estimates.
+The
+[`create_design()`](https://www.kylegrealis.com/nhanesdata/reference/create_design.md)
+function automates the calculation of appropriate weights when combining
+multiple NHANES cycles, following [CDC weighting
+guidelines](https://wwwn.cdc.gov/nchs/nhanes/tutorials/Weighting.aspx).
+
+## Understanding NHANES Weights
+
+NHANES provides three categories of sampling weights, each reflecting
+different levels of participation:
+
+1.  **Interview weights** (`wtint2yr`, `wtint4yr`): Used when all
+    variables come from the household interview (demographics,
+    questionnaires).
+2.  **Mobile Exam Center (MEC) weights** (`wtmec2yr`, `wtmec4yr`): Used
+    when any variable requires a physical exam (laboratory tests, body
+    measurements, DEXA scans).
+3.  **Fasting weights** (`wtsaf2yr`): Used when any variable requires
+    fasting laboratory tests (glucose, insulin, lipids).
+
+The probability of being sampled decreases from interview to MEC to
+fasting subsamples. When combining variables across categories, always
+use the weight with the lowest probability of selection. For example, if
+your analysis includes both demographics (interview) and body
+measurements (MEC), use MEC weights.
+
+## Weight Calculation Logic
+
+CDC recommendations for combining cycles are based on the number of
+cycles present in your data, not the timespan covered. This distinction
+matters when you have gaps in your data.
+
+### Early Cycles (1999-2002)
+
+NHANES provides 4-year weights (`wtint4yr`, `wtmec4yr`) for 1999-2000
+and 2001-2002 cycles, while all subsequent cycles provide only 2-year
+weights. When combining multiple cycles:
+
+- **Cycles 1999 or 2001**: Use 4-year weight × (2/n) The numerator is 2
+  because the 4-year weight represents two 2-year cycles.
+
+- **Cycles 2003+**: Use 2-year weight × (1/n)
+
+- **Denominator n**: Total number of cycles in your analysis
+
+### Example Calculation
+
+Combining 4 cycles (1999, 2001, 2003, 2005) with MEC weights:
+
+- 1999 & 2001: `wtmec4yr * 2/4 = wtmec4yr * 0.5`
+- 2003 & 2005: `wtmec2yr * 1/4 = wtmec2yr * 0.25`
+
+If you excluded the 2003 cycle, you would have 3 cycles total, so:
+
+- 1999 & 2001: `wtmec4yr * 2/3`
+- 2005: `wtmec2yr * 1/3`
+
+The key principle: **n is the number of cycles present**, not the
+timespan.
+
+## Basic Usage
+
+``` r
+library(nhanesdata)
+library(dplyr)
+library(srvyr)
+```
+
+### Example 1: Interview Weights
+
+When analyzing demographics and questionnaire data only:
+
+``` r
+# Load demographics data
+demo <- read_nhanes("demo")
+
+# Create design with interview weights
+design_int <- create_design(
+  dsn = demo,
+  start_yr = 1999,
+  end_yr = 2011,
+  wt_type = "interview"
+)
+
+# Calculate weighted means
+design_int |>
+  summarize(
+    mean_age = survey_mean(ridageyr, na.rm = TRUE),
+    pct_female = survey_mean(riagendr == 2, na.rm = TRUE)
+  )
+```
+
+### Example 2: MEC Weights
+
+When including any examination or laboratory data:
+
+``` r
+# Load demographics and body measures
+demo <- read_nhanes("demo")
+bmx <- read_nhanes("bmx")
+
+combined <- demo |>
+  left_join(bmx, by = c("seqn", "year"))
+
+# Use MEC weights because body measures require exam participation
+design_mec <- create_design(
+  dsn = combined,
+  start_yr = 2007,
+  end_yr = 2017,
+  wt_type = "mec"
+)
+
+# Weighted BMI analysis
+design_mec |>
+  filter(!is.na(bmxbmi)) |>
+  summarize(
+    mean_bmi = survey_mean(bmxbmi, na.rm = TRUE),
+    pct_obese = survey_mean(bmxbmi >= 30, na.rm = TRUE)
+  )
+```
+
+### Example 3: Fasting Weights
+
+When including fasting laboratory measurements:
+
+``` r
+# Load demographics and fasting lab data
+demo <- read_nhanes("demo")
+glu <- read_nhanes("glu")
+
+combined <- demo |>
+  left_join(glu, by = c("seqn", "year"))
+
+# Use fasting weights for glucose analysis
+design_fast <- create_design(
+  dsn = combined,
+  start_yr = 2005,
+  end_yr = 2015,
+  wt_type = "fasting"
+)
+
+# Analyze fasting glucose
+design_fast |>
+  filter(!is.na(lbxglu)) |>
+  summarize(
+    mean_glucose = survey_mean(lbxglu, na.rm = TRUE)
+  )
+```
+
+## Handling Edge Cases
+
+### Non-Sequential Cycles
+
+You can specify a wide year range even if some cycles are missing from
+your data. The function calculates weights based only on cycles actually
+present:
+
+``` r
+# Data might be missing 2007-2010 cycles
+# Weights calculated on cycles present, not timespan
+design <- create_design(
+  dsn = demo,
+  start_yr = 1999,
+  end_yr = 2017,
+  wt_type = "interview"
+)
+```
+
+### Participants Without Valid Weights
+
+When creating a survey design, some participants may lack the weight
+variable needed for your analysis. This happens naturally in NHANES
+because not everyone completes every component.
+
+**How
+[`create_design()`](https://www.kylegrealis.com/nhanesdata/reference/create_design.md)
+handles this:**
+
+- Participants without valid weights for your chosen weight type are
+  **automatically filtered out** before creating the design object
+- You’ll see a message indicating how many participants were removed and
+  why
+- The message includes links to CDC guidance and this vignette for
+  reference
+
+Example message you might see:
+
+    Filtered out 150 participants without valid mec weights.
+    These participants were not in the subsample for this weight category.
+    Learn more:
+      + CDC weighting guidance:
+        https://wwwn.cdc.gov/nchs/nhanes/tutorials/Weighting.aspx
+      + Survey design vignette: vignette('survey-design', package = 'nhanesdata')
+
+**Zero weights** are different from missing weights:
+
+- Participants with **zero weights** are retained in the design object
+- These participants weren’t selected for a particular subsample
+- They’re automatically excluded from analyses by the {survey} package
+- This is the correct behavior per CDC guidelines
+
+## Variance Estimation and Lonely PSUs
+
+NHANES uses a stratified, multistage sampling design with Primary
+Sampling Units (PSUs) nested within strata. Variance estimation requires
+at least 2 PSUs per stratum. When subsetting data (e.g., filtering to
+diabetes patients only), you may create strata with only one PSU.
+
+The
+[`create_design()`](https://www.kylegrealis.com/nhanesdata/reference/create_design.md)
+function sets `options(survey.lonely.psu = "adjust")`, which handles
+this conservatively by centering single-PSU strata at the sample grand
+mean rather than the stratum mean. This approach:
+
+- Prevents errors when encountering lonely PSUs
+- Provides conservative variance estimates
+- Follows best practices for subset analyses
+
+For more details on lonely PSU handling, see Thomas Lumley’s [{survey}
+package
+documentation](https://r-survey.r-forge.r-project.org/survey/exmample-lonely.html).
+
+## Required Variables
+
+The function validates that your dataset contains:
+
+- `year`: NHANES cycle start year (odd years: 1999, 2001, 2003, …, 2021)
+- `sdmvpsu`: Primary sampling units
+- `sdmvstra`: Sampling strata
+- Appropriate weight variables based on `wt_type`:
+  - Interview: `wtint2yr` (and `wtint4yr` if 1999/2001 cycles present)
+  - MEC: `wtmec2yr` (and `wtmec4yr` if 1999/2001 cycles present)
+  - Fasting: `wtsaf2yr`
+
+These variables are automatically included in datasets loaded via
+[`read_nhanes()`](https://www.kylegrealis.com/nhanesdata/reference/read_nhanes.md).
+
+## Workflow Recommendations
+
+1.  **Load and combine datasets** using
+    [`read_nhanes()`](https://www.kylegrealis.com/nhanesdata/reference/read_nhanes.md)
+    and {dplyr} joins
+2.  **Preprocess variables** (recode, create derived variables, apply
+    exclusions)
+3.  **Create the design object** with
+    [`create_design()`](https://www.kylegrealis.com/nhanesdata/reference/create_design.md)
+4.  **Perform weighted analyses** using {srvyr} or {survey} functions
+
+Preprocessing before design creation is strongly recommended. Once the
+design object is created, filtering and recoding become more complex due
+to the survey structure.
+
+## Additional Resources
+
+- [CDC NHANES
+  Tutorials](https://wwwn.cdc.gov/nchs/nhanes/tutorials/default.aspx):
+  Official guidance on survey weighting and variance estimation
+- [CDC Weighting
+  Module](https://wwwn.cdc.gov/nchs/nhanes/tutorials/Weighting.aspx):
+  Specific information on combining survey cycles
+- [{survey} package
+  documentation](https://r-survey.r-forge.r-project.org/survey/):
+  Comprehensive guide to complex survey analysis in R
+- [{srvyr} package](https://github.com/gergness/srvyr):
+  Tidyverse-friendly wrapper for {survey} package functions

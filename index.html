@@ -39,6 +39,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="articles/the-datasets.html">Dataset Catalog</a></li>
+    <li><a class="dropdown-item" href="articles/survey-design.html">Survey Design Objects</a></li>
     <li><a class="dropdown-item" href="articles/covid-data-exclusion.html">COVID-19 Data Exclusion</a></li>
   </ul>
 </li>
@@ -83,7 +84,10 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
+<code class="sourceCode R"><span><span class="co"># From CRAN (submitted for approval Feb. 18, 2026)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"nhanesdata"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Development version from GitHub</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"kyleGrealis/nhanesdata"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -124,19 +128,23 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><code>read_nhanes(dataset)</code></td>
+<td><code><a href="reference/read_nhanes.html">read_nhanes()</a></code></td>
 <td>Load a pre-merged NHANES dataset from cloud storage</td>
 </tr>
 <tr class="even">
-<td><code>term_search(var)</code></td>
-<td>Search variables by keyword or phrase</td>
+<td><code><a href="reference/create_design.html">create_design()</a></code></td>
+<td>Create survey design objects with proper weighting for multiple cycles</td>
 </tr>
 <tr class="odd">
-<td><code>var_search(var)</code></td>
-<td>Search variables by exact name</td>
+<td><code><a href="reference/term_search.html">term_search()</a></code></td>
+<td>Search variables by keyword or phrase</td>
 </tr>
 <tr class="even">
-<td><code>get_url(table)</code></td>
+<td><code><a href="reference/var_search.html">var_search()</a></code></td>
+<td>Search variables by exact name</td>
+</tr>
+<tr class="odd">
+<td><code><a href="reference/get_url.html">get_url()</a></code></td>
 <td>Get CDC codebook URL for a specific table</td>
 </tr>
 </tbody>
@@ -156,7 +164,7 @@
 <strong>Laboratory (5):</strong> <code>dxxag</code>, <code>l10</code>, <code>l10am</code>, <code>lab10</code>, <code>lab10am</code>
 </li>
 </ul>
-<p>See the <a href="https://www.kyleGrealis.com/nhanesdata/articles/the-datasets.html">dataset catalog</a> for the full list, or browse <code>inst/extdata/datasets.yml</code> in the source.</p>
+<p>See the <a href="https://www.kylegrealis.com/nhanesdata/articles/the-datasets.html">dataset catalog</a> for the full list, or browse <code>inst/extdata/datasets.yml</code> in the source.</p>
 </div>
 <div class="section level2">
 <h2 id="important-notes">Important Notes<a class="anchor" aria-label="anchor" href="#important-notes"></a>
@@ -173,7 +181,7 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/apache/arrow/" class="external-link">arrow</a></span><span class="op">)</span></span>
 <span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu">arrow</span><span class="fu">::</span><span class="fu"><a href="https://arrow.apache.org/docs/r/reference/read_parquet.html" class="external-link">read_parquet</a></span><span class="op">(</span><span class="st">"https://nhanes.kylegrealis.com/demo.parquet"</span><span class="op">)</span></span></code></pre></div>
-<p>This works from any language with Arrow support (Python, Julia, etc.). Dataset names in URLs are lowercase.</p>
+<p>This works from any language with Arrow support. Dataset names in URLs are lowercase.</p>
 </div>
 <div class="section level2">
 <h2 id="getting-help">Getting Help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
@@ -251,7 +259,7 @@
 <li>
 <p><a href="https://github.com/kyleGrealis/nhanesdata/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/kyleGrealis/nhanesdata/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></p>
 <p><a href="https://github.com/kyleGrealis/nhanesdata/actions/workflows/update-nhanes-data.yml" class="external-link"><img src="https://github.com/kyleGrealis/nhanesdata/actions/workflows/update-nhanes-data.yml/badge.svg" alt="Update NHANES Data"></a></p>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#maturing" class="external-link"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></p>
 <p><a href="https://opensource.org/licenses/MIT" class="external-link"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a></p>
 <p><a href="https://CRAN.R-project.org/package=nhanesdata" class="external-link"><img src="https://www.r-pkg.org/badges/version/nhanesdata" alt="CRAN status"></a></p>
 <p><a href="https://cran.r-project.org/package=nhanesdata" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/nhanesdata" alt="CRAN downloads"></a></p>

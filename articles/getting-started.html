@@ -35,6 +35,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/the-datasets.html">Dataset Catalog</a></li>
+    <li><a class="dropdown-item" href="../articles/survey-design.html">Survey Design Objects</a></li>
     <li><a class="dropdown-item" href="../articles/covid-data-exclusion.html">COVID-19 Data Exclusion</a></li>
   </ul>
 </li>
@@ -198,7 +199,7 @@ the CDC publishes across multiple cycle-specific tables:</p>
 Use <code><a href="../reference/get_url.html">get_url()</a></code> to retrieve the codebook URL for any
 cycle-specific table:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">"DEMO"</span><span class="op">)</span> <span class="co"># 1999-2000 codebook</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">"DEMO"</span><span class="op">)</span>   <span class="co"># 1999-2000 codebook</span></span>
 <span><span class="fu"><a href="../reference/get_url.html">get_url</a></span><span class="op">(</span><span class="st">"DEMO_I"</span><span class="op">)</span> <span class="co"># 2015-2016 codebook</span></span></code></pre></div>
 <p>The 2019-2020 cycle (suffix K) is excluded from all datasets. See
 <code><a href="../articles/covid-data-exclusion.html">vignette("covid-data-exclusion")</a></code> for details.</p>
@@ -330,6 +331,8 @@ years. From there you can identify the base table name (e.g.,
 <ul>
 <li>Browse the <a href="the-datasets.html">dataset catalog</a> for the
 full list of available tables</li>
+<li>Learn about <a href="survey-design.html">creating survey design
+objects</a> with proper weighting for multi-cycle analyses</li>
 <li>Read about the <a href="covid-data-exclusion.html">2019-2020 cycle
 exclusion</a>
 </li>

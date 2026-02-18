@@ -27,12 +27,12 @@ console via message() for interactive use.
 
 ## See also
 
-[`term_search`](https://www.kyleGrealis.com/nhanesdata/reference/term_search.md),
-[`var_search`](https://www.kyleGrealis.com/nhanesdata/reference/var_search.md)
+[`term_search`](https://www.kylegrealis.com/nhanesdata/reference/term_search.md),
+[`var_search`](https://www.kylegrealis.com/nhanesdata/reference/var_search.md)
 
 Other search and lookup functions:
-[`term_search()`](https://www.kyleGrealis.com/nhanesdata/reference/term_search.md),
-[`var_search()`](https://www.kyleGrealis.com/nhanesdata/reference/var_search.md)
+[`term_search()`](https://www.kylegrealis.com/nhanesdata/reference/term_search.md),
+[`var_search()`](https://www.kylegrealis.com/nhanesdata/reference/var_search.md)
 
 ## Examples
 

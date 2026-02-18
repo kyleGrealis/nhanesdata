@@ -37,28 +37,61 @@ Returns an empty data.frame with correct structure if no matches found.
 
 ## See also
 
-[`var_search`](https://www.kyleGrealis.com/nhanesdata/reference/var_search.md)
+[`var_search`](https://www.kylegrealis.com/nhanesdata/reference/var_search.md)
 for searching by exact variable name,
-[`get_url`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md)
+[`get_url`](https://www.kylegrealis.com/nhanesdata/reference/get_url.md)
 for getting documentation URLs,
 [`nhanesSearch`](https://rdrr.io/pkg/nhanesA/man/nhanesSearch.html) for
 the underlying search function
 
 Other search and lookup functions:
-[`get_url()`](https://www.kyleGrealis.com/nhanesdata/reference/get_url.md),
-[`var_search()`](https://www.kyleGrealis.com/nhanesdata/reference/var_search.md)
+[`get_url()`](https://www.kylegrealis.com/nhanesdata/reference/get_url.md),
+[`var_search()`](https://www.kylegrealis.com/nhanesdata/reference/var_search.md)
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-# Search for diabetes-related variables
-term_search("diabetes")
+# \donttest{
+# Search for diabetes-related variables (showing first 5 results)
+term_search("diabetes") |> head(5)
+#>   Variable.Name
+#> 1        DID040
+#> 2        DIQ010
+#> 3        DIQ160
+#> 4        DIQ180
+#> 5        DID040
+#>                                                                                                               Variable.Description
+#> 1 How old {was SP/were you} when a doctor or other health professional first told {you/him/her} that {you/he/she} had diabetes or 
+#> 2 The next questions are about specific medical conditions. {Other than during pregnancy, {have you/has SP}/{Have you/Has SP}} eve
+#> 3 {Have you/Has SP} ever been told by a doctor or other health professional that {you have/SP has} any of the following:  prediabe
+#> 4                                 {Have you/Has SP} had a blood test for high blood sugar or diabetes within the past three years?
+#> 5 How old {was SP/were you} when a doctor or other health professional first told {you/him/her} that {you/he/she} had diabetes or 
+#>   Data.File.Name Begin.Year
+#> 1          DIQ_L       2021
+#> 2          DIQ_L       2021
+#> 3          DIQ_L       2021
+#> 4          DIQ_L       2021
+#> 5          DIQ_J       2017
 
-# Search for blood pressure measurements
-term_search("blood pressure")
-
-# Handles special characters safely
-term_search("weight (kg)")
-} # }
+# Search for blood pressure measurements (showing first 5 results)
+term_search("blood pressure") |> head(5)
+#>   Variable.Name
+#> 1        BPQ020
+#> 2        BPQ030
+#> 3        BPQ150
+#> 4      BPAOMNTS
+#> 5        BPD035
+#>                                                                                                               Variable.Description
+#> 1 {Have you/Has SP} ever been told by a doctor or other health professional that {you/s/he} had hypertension, also called high blo
+#> 2          {Were you/Was SP} told on 2 or more different visits that {you/s/he} had hypertension, also called high blood pressure?
+#> 3                    {Are you/Is SP} now taking any medication prescribed by a doctor for {your/his/her/SP's} high blood pressure?
+#> 4 Difference in minutes between blood pressure obtained by a physician with a mercury sphygmomanometer (legacy) and blood pressure
+#> 5       How old {were you/was SP} when {you were/he/she was} first told that {you/he/she} had hypertension or high blood pressure?
+#>   Data.File.Name Begin.Year
+#> 1          BPQ_L       2021
+#> 2          BPQ_L       2021
+#> 3          BPQ_L       2021
+#> 4         BPXO_J       2017
+#> 5          BPQ_J       2017
+# }
 ```
