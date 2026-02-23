@@ -44,8 +44,4 @@ get_url("diq_j") # Case-insensitive: Diabetes 2017-2018
 #> https://wwwn.cdc.gov/nchs/data/nhanes/public/2017/datafiles/DIQ_J.htm
 get_url("DIQ") # No suffix = 1999-2000 cycle
 #> https://wwwn.cdc.gov/nchs/data/nhanes/public/1999/datafiles/DIQ.htm
-
-# Capture the URL for programmatic use
-url <- get_url("BMX_J")
-#> https://wwwn.cdc.gov/nchs/data/nhanes/public/2017/datafiles/BMX_J.htm
 ```
