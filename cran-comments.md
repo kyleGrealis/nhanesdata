@@ -10,9 +10,20 @@
 
 ## Resubmission
 
-This is a resubmission addressing reviewer feedback from February 18, 2026.
+This is a resubmission addressing reviewer feedback from February 23, 2026.
 
 ### Changes made to address CRAN feedback:
+
+1. **Moved data processing functions out of R/**:
+   - Relocated `pull_nhanes()` and its helper functions from `R/data.R` and
+     `R/utils.R` to `inst/scripts/pull_nhanes.R`
+   - These are internal maintenance functions used only by package maintainers
+     in automated workflows, not part of the user-facing API
+   - Eliminates CRAN policy concern about default file writing in R/ functions
+   - Workflow script (`inst/scripts/workflow_update.R`) now sources these
+     functions directly instead of using `:::`
+
+### Previous resubmission changes (February 18, 2026):
 
 1. **DESCRIPTION file**:
    - Removed "An R Package" from title
