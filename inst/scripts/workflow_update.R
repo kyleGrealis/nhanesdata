@@ -22,13 +22,9 @@
 #   --dry-run     Skip R2 upload (testing mode)
 #   --datasets    Comma-separated list of specific datasets (default: all from config)
 
-#------- Uncomment if ::: fails below
-# Alternative: Source internal functions directly
-# This avoids ::: and is standard practice for build scripts
-# source("R/data.R")        # Provides pull_nhanes()
-# source("R/r2_upload.R")   # Provides nhanes_r2_upload()
-#-------
-
+# Source internal data processing functions
+# These are not part of the user-facing package API and live in inst/scripts/
+source("inst/scripts/pull_nhanes.R")  # Provides pull_nhanes() and helpers
 
 # Parse command line arguments
 args <- commandArgs(trailingOnly = TRUE)
@@ -153,7 +149,7 @@ for (i in seq_len(nrow(config))) {
 
   dataset_obj <- tryCatch(
     {
-      nhanesdata:::pull_nhanes(dataset_name, save = TRUE)
+      pull_nhanes(dataset_name, save = TRUE)
     },
     error = function(e) {
       cli_alert_danger("Failed to pull {dataset_name}: {e$message}")

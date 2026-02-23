@@ -28,9 +28,6 @@ get_url("DEMO_J") # Demographics 2017-2018
 get_url("diq_j") # Case-insensitive: Diabetes 2017-2018
 get_url("DIQ") # No suffix = 1999-2000 cycle
 
-# Capture the URL for programmatic use
-url <- get_url("BMX_J")
-
 }
 \seealso{
 \code{\link{term_search}}, \code{\link{var_search}}
