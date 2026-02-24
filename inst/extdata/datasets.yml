@@ -290,3 +290,1095 @@ datasets:
   - name: trigly
     description: Triglyceride
     category: examination
+
+#-----------------------------------
+# Additional NHANES Datasets (271 new datasets added)
+#-----------------------------------
+
+  # Dietary Datasets
+  - name: drxfcd
+    description: Dietary Interview Technical Support File - Food Codes
+    category: dietary
+
+  - name: drxiff
+    description: Dietary Interview - Individual Foods
+    category: dietary
+
+  - name: drxmcd
+    description: Dietary Interview Technical Support File - Modification Codes
+    category: dietary
+
+  - name: drxtot
+    description: Dietary Interview - Total Nutrient Intakes
+    category: dietary
+
+  - name: ds1ids
+    description: Dietary Supplement Use 24-Hour - Individual Dietary Supplements, First Day
+    category: dietary
+
+  - name: ds1tot
+    description: Dietary Supplement Use 24-Hour - Total Dietary Supplements, First Day
+    category: dietary
+
+  - name: ds2ids
+    description: Dietary Supplement Use 24-Hour - Individual Dietary Supplements, Second Day
+    category: dietary
+
+  - name: ds2tot
+    description: Dietary Supplement Use 24-Hour - Total Dietary Supplements, Second Day
+    category: dietary
+
+  - name: dsq1
+    description: Dietary Supplement Use 30-Day - File 1, Supplement Counts
+    category: dietary
+
+  - name: dsq2
+    description: Dietary Supplement Use 30-Day - File 2, Participant's Use of Supplements
+    category: dietary
+
+  - name: dsqfile1
+    description: Dietary Supplement Use 30-Day - File 1, Supplement Counts
+    category: dietary
+
+  - name: dsqfile2
+    description: Dietary Supplement Use 30-Day - File 2, Participant's Use of Supplements
+    category: dietary
+
+  - name: dsqids
+    description: Dietary Supplement Use 30 Day - Individual Dietary Supplements
+    category: dietary
+
+  - name: dsqtot
+    description: Dietary Supplement Use 30-Day - Total Dietary Supplements
+    category: dietary
+
+  - name: dtq
+    description: Dietary Screener Questionnaire
+    category: dietary
+
+  - name: ffqdc
+    description: Food Frequency Questionnaire - Output from DietCalc Software
+    category: dietary
+
+  # Examination Datasets
+  - name: arx
+    description: Arthritis Body Measures
+    category: examination
+
+  - name: aux1
+    description: Audiometry
+    category: examination
+
+  - name: auxtym
+    description: Audiometry - Tympanometry
+    category: examination
+
+  - name: auxwbr
+    description: Audiometry - Wideband Reflectance
+    category: examination
+
+  - name: bax
+    description: Balance
+    category: examination
+
+  - name: bix
+    description: Bioelectrical Impedance Analysis
+    category: examination
+
+  - name: bpxo
+    description: Blood Pressure - Oscillometric Measurements
+    category: examination
+
+  - name: csx
+    description: Taste & Smell
+    category: examination
+
+  - name: cvx
+    description: Cardiovascular Fitness
+    category: examination
+
+  - name: dex
+    description: Dermatology
+    category: examination
+
+  - name: dxx_2
+    description: Dual-Energy X-ray Absorptiometry - Whole Body, Second Exam
+    category: examination
+
+  - name: dxxaac
+    description: Dual-Energy X-ray Absorptiometry - Abdominal Aortic Calcification
+    category: examination
+
+  - name: dxxfem
+    description: Dual Energy X-ray Absorptiometry - Femur
+    category: examination
+
+  - name: dxxfrx
+    description: Dual-Energy X-ray Absorptiometry - FRAX Score
+    category: examination
+
+  - name: dxxl1
+    description: Dual-Energy X-ray Absorptiometry - L1 Vertebrae Morphology
+    category: examination
+
+  - name: dxxl2
+    description: Dual-Energy X-ray Absorptiometry - L2 Vertebrae Morphology
+    category: examination
+
+  - name: dxxl3
+    description: Dual-Energy X-ray Absorptiometry - L3 Vertebrae Morphology
+    category: examination
+
+  - name: dxxl4
+    description: Dual-Energy X-ray Absorptiometry - L4 Vertebrae Morphology
+    category: examination
+
+  - name: dxxspn
+    description: Dual Energy X-ray Absorptiometry - Spine
+    category: examination
+
+  - name: dxxt10
+    description: Dual-Energy X-ray Absorptiometry - T10 Vertebrae Morphology
+    category: examination
+
+  - name: dxxt11
+    description: Dual-Energy X-ray Absorptiometry - T11 Vertebrae Morphology
+    category: examination
+
+  - name: dxxt12
+    description: Dual-Energy X-ray Absorptiometry - T12 Vertebrae Morphology
+    category: examination
+
+  - name: dxxt4
+    description: Dual-Energy X-ray Absorptiometry - T4 Vertebrae Morphology
+    category: examination
+
+  - name: dxxt5
+    description: Dual-Energy X-ray Absorptiometry - T5 Vertebrae Morphology
+    category: examination
+
+  - name: dxxt6
+    description: Dual-Energy X-ray Absorptiometry - T6 Vertebrae Morphology
+    category: examination
+
+  - name: dxxt7
+    description: Dual-Energy X-ray Absorptiometry - T7 Vertebrae Morphology
+    category: examination
+
+  - name: dxxt8
+    description: Dual-Energy X-ray Absorptiometry - T8 Vertebrae Morphology
+    category: examination
+
+  - name: dxxt9
+    description: Dual-Energy X-ray Absorptiometry - T9 Vertebrae Morphology
+    category: examination
+
+  - name: dxxvfa
+    description: Dual-Energy X-ray Absorptiometry - Vertebral Fracture Assessment
+    category: examination
+
+  - name: enx
+    description: Exhaled Nitric Oxide
+    category: examination
+
+  - name: flxcln
+    description: Fluorosis - Clinical
+    category: examination
+
+  - name: lexab
+    description: Lower Extremity Disease - Ankle Brachial Blood Pressure Index
+    category: examination
+
+  - name: lexabpi
+    description: Lower Extremity Disease - Ankle Brachial Blood Pressure Index
+    category: examination
+
+  - name: lexpn
+    description: Lower Extremity Disease - Peripheral Neuropathy
+    category: examination
+
+  - name: lux
+    description: Liver Ultrasound Transient Elastography
+    category: examination
+
+  - name: mgx
+    description: Muscle Strength - Grip Test
+    category: examination
+
+  - name: msx
+    description: Muscle Strength
+    category: examination
+
+  - name: ohx
+    description: Oral Health
+    category: examination
+
+  - name: ohxadd
+    description: Oral Health - Addendum
+    category: examination
+
+  - name: ohxden
+    description: Oral Health - Dentition
+    category: examination
+
+  - name: ohxdent
+    description: Oral Health - Dentition
+    category: examination
+
+  - name: ohxper
+    description: Oral Health - Periodontal
+    category: examination
+
+  - name: ohxperio
+    description: Oral Health - Periodontal
+    category: examination
+
+  - name: ohxprl
+    description: Oral Health - Periodontal/Lower
+    category: examination
+
+  - name: ohxpru
+    description: Oral Health - Periodontal/Upper
+    category: examination
+
+  - name: ohxref
+    description: Oral Health - Recommendation of Care
+    category: examination
+
+  - name: opxfdt
+    description: Ophthalmology - Frequency Doubling Technology
+    category: examination
+
+  - name: opxret
+    description: Ophthalmology - Retinal Imaging
+    category: examination
+
+  - name: paxday
+    description: Physical Activity Monitor - Day
+    category: examination
+
+  - name: paxhd
+    description: Physical Activity Monitor - Header
+    category: examination
+
+  - name: paxhr
+    description: Physical Activity Monitor - Hour
+    category: examination
+
+  - name: paxmin
+    description: Physical Activity Monitor - Minute
+    category: examination
+
+  - name: seq
+    description: Shared Exclusion Questions
+    category: examination
+
+  - name: spx
+    description: Spirometry - Pre and Post-Bronchodilator
+    category: examination
+
+  - name: tb
+    description: Tuberculosis
+    category: examination
+
+  - name: tbx
+    description: Tuberculosis
+    category: examination
+
+  - name: vix
+    description: Vision
+    category: examination
+
+  # Laboratory Datasets
+  - name: aa
+    description: Aromatic Amines - Urine
+    category: laboratory
+
+  - name: aas
+    description: Aromatic Amines - Urine - Special Sample
+    category: laboratory
+
+  - name: al_ige
+    description: Allergen Specific IgE(s) & Total IgE - Serum
+    category: laboratory
+
+  - name: ald
+    description: Aldehydes - Serum
+    category: laboratory
+
+  - name: alds
+    description: Aldehydes - Serum - Special Sample
+    category: laboratory
+
+  - name: aldust
+    description: Allergens - Household Dust
+    category: laboratory
+
+  - name: amdgds
+    description: Acrylamide & Glycidamide - Special Sample
+    category: laboratory
+
+  - name: amdgyd
+    description: Acrylamide & Glycidamide
+    category: laboratory
+
+  - name: apob
+    description: Apolipoprotein B
+    category: laboratory
+
+  - name: b12
+    description: Vitamin B12
+    category: laboratory
+
+  - name: cafe
+    description: Caffeine & Caffeine Metabolites - Urine
+    category: laboratory
+
+  - name: carb
+    description: Pesticides - Carbamates & Organophosphorus Metabolites - Urine
+    category: laboratory
+
+  - name: chlmda
+    description: Chlamydia & Gonorrhea - Urine
+    category: laboratory
+
+  - name: cmv
+    description: Cytomegalovirus IgG & IgM Antibodies - Serum
+    category: laboratory
+
+  - name: cot
+    description: Cotinine - Serum
+    category: laboratory
+
+  - name: cotnal
+    description: Cotinine - Serum & Total NNAL - Urine
+    category: laboratory
+
+  - name: crco
+    description: Chromium & Cobalt
+    category: laboratory
+
+  - name: crp
+    description: C-Reactive Protein (CRP)
+    category: laboratory
+
+  - name: cusezn
+    description: Copper, Selenium & Zinc - Serum
+    category: laboratory
+
+  - name: deet
+    description: DEET and Metabolites
+    category: laboratory
+
+  - name: eph
+    description: Environmental Phenols & Parabens
+    category: laboratory
+
+  - name: ephpp
+    description: Personal Care and Consumer Product Chemicals and Metabolites
+    category: laboratory
+
+  - name: epp
+    description: Erythrocyte Protoporphyrin
+    category: laboratory
+
+  - name: ethox
+    description: Ethylene Oxide
+    category: laboratory
+
+  - name: ethoxs
+    description: Ethylene Oxide - Special Sample
+    category: laboratory
+
+  - name: fas
+    description: Fatty Acids - Serum
+    category: laboratory
+
+  - name: fastqx
+    description: Fasting Questionnaire
+    category: laboratory
+
+  - name: fertin
+    description: Ferritin
+    category: laboratory
+
+  - name: fetib
+    description: Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation
+    category: laboratory
+
+  - name: fldep
+    description: Fluoride - Plasma
+    category: laboratory
+
+  - name: fldew
+    description: Fluoride - Water
+    category: laboratory
+
+  - name: folate
+    description: Folate - RBC & Serum
+    category: laboratory
+
+  - name: folfms
+    description: Folate Forms - Individual - Serum
+    category: laboratory
+
+  - name: formal
+    description: Formaldehyde
+    category: laboratory
+
+  - name: formas
+    description: Formaldehyde - Special Sample
+    category: laboratory
+
+  - name: fr
+    description: Flame Retardants - Urine
+    category: laboratory
+
+  - name: hcaa
+    description: Heterocyclic Aromatic Amines - Urine
+    category: laboratory
+
+  - name: hcaas
+    description: Heterocyclic Aromatic Amines (HCAA) - Urine - Special Sample
+    category: laboratory
+
+  - name: hcy
+    description: Homocysteine
+    category: laboratory
+
+  - name: hepa
+    description: Hepatitis A Antibody
+    category: laboratory
+
+  - name: hepbd
+    description: Hepatitis B - Core Antibody, Surface Antigen & Hepatitis D Antibody
+    category: laboratory
+
+  - name: hepc
+    description: Hepatitis C - Confirmed Antibody, RNA (HCV-RNA) & Genotype
+    category: laboratory
+
+  - name: hepe
+    description: Hepatitis E - IgG & IgM Antibodies
+    category: laboratory
+
+  - name: hpvp
+    description: Human Papillomavirus (HPV) DNA Results from Penile Swab Samples
+    category: laboratory
+
+  - name: hpvser
+    description: Human Papillomavirus (HPV) - 6, 11, 16 & 18 Antibody - Serum
+    category: laboratory
+
+  - name: hpvsrm
+    description: Human Papillomavirus (HPV) - Multiplexed Antibody - Serum
+    category: laboratory
+
+  - name: hpvswc
+    description: Human Papillomavirus (HPV) DNA - Vaginal Swab - Roche Cobas
+    category: laboratory
+
+  - name: hpvswr
+    description: Human Papillomavirus (HPV) DNA - Vaginal Swab - Roche Linear Array
+    category: laboratory
+
+  - name: hscrp
+    description: High-Sensitivity C-Reactive Protein (hs-CRP)
+    category: laboratory
+
+  - name: hsv
+    description: Herpes Simplex Virus Type-1 & Type-2
+    category: laboratory
+
+  - name: ihg
+    description: Mercury - Inorganic - Blood
+    category: laboratory
+
+  - name: ihgem
+    description: Mercury - Inorganic, Ethyl and Methyl - Blood
+    category: laboratory
+
+  - name: ins
+    description: Insulin
+    category: laboratory
+
+  - name: l02
+    description: Hepatitis B & C - Core Antibody, Surface Antigen & RNA
+    category: laboratory
+
+  - name: l06
+    description: Cadmium, Lead, Mercury, Cotinine & Nutritional Biochemistries
+    category: laboratory
+
+  - name: l06age
+    description: Acrylamide & Glycidamide
+    category: laboratory
+
+  - name: l06bmt
+    description: Cadmium, Lead & Total Mercury - Blood
+    category: laboratory
+
+  - name: l06cot
+    description: Cotinine - Serum
+    category: laboratory
+
+  - name: l06hm
+    description: Metals - Urine
+    category: laboratory
+
+  - name: l06mh
+    description: Methylmalonic acid & Homocysteine
+    category: laboratory
+
+  - name: l06nb
+    description: Folate - RBC & Serum, and Vitamin B12
+    category: laboratory
+
+  - name: l06phy
+    description: Phytoestrogens - Urine
+    category: laboratory
+
+  - name: l06tfr
+    description: Ferritin & Transferrin Receptor
+    category: laboratory
+
+  - name: l06uas
+    description: Arsenics - Total & Speciated - Urine
+    category: laboratory
+
+  - name: l06uhg
+    description: Mercury - Inorganic - Urine
+    category: laboratory
+
+  - name: l06uio
+    description: Iodine - Urine
+    category: laboratory
+
+  - name: l06vid
+    description: Vitamin D
+    category: laboratory
+
+  - name: l06vit
+    description: Vitamin A, Vitamin E & Carotenoids
+    category: laboratory
+
+  - name: l11
+    description: C-Reactive protein (CRP), Fibrinogen & Bone Alkaline Phosphatase
+    category: laboratory
+
+  - name: l11p_2_b
+    description: Prostate-specific Antigen (PSA), Second Exam
+    category: laboratory
+
+  - name: l11psa
+    description: Prostate specific antigen (PSA)
+    category: laboratory
+
+  - name: l13am
+    description: Cholesterol - LDL & Triglycerides
+    category: laboratory
+
+  - name: l16
+    description: Albumin & Creatinine - Urine
+    category: laboratory
+
+  - name: l17
+    description: Toxoplasma (IgG), Toxoplasma (IgM) & Toxoplasma (Dye)
+    category: laboratory
+
+  - name: l19
+    description: Measles, Rubella & Varicella
+    category: laboratory
+
+  - name: l20
+    description: Lead - Dust
+    category: laboratory
+
+  - name: l24eph
+    description: Environmental Phenols
+    category: laboratory
+
+  - name: l24pfc
+    description: Polyfluoroalkyl Chemicals
+    category: laboratory
+
+  - name: l24ph
+    description: Phthalates - Urine
+    category: laboratory
+
+  - name: l24pp
+    description: Pesticides - Environmental - Urine
+    category: laboratory
+
+  - name: l25
+    description: Complete Blood Count with 5-part Differential - Whole Blood
+    category: laboratory
+
+  - name: l26opd
+    description: Organophosphate Insecticides - Diakyl Phosphate Metabolites - Urine
+    category: laboratory
+
+  - name: l26pp
+    description: Pesticides - Current Use - Urine
+    category: laboratory
+
+  - name: l26upp
+    description: Pesticides - Current Use - Urine
+    category: laboratory
+
+  - name: l28dfp
+    description: Dioxins, Furans & Coplanar PCBs
+    category: laboratory
+
+  - name: l28npb
+    description: Non-dioxin-like Polychlorinated Biphenyls
+    category: laboratory
+
+  - name: l28ocp
+    description: Pesticides - Organochlorine Metabolites - Serum
+    category: laboratory
+
+  - name: l28pbe
+    description: Brominated Flame Retardants (BFRs)
+    category: laboratory
+
+  - name: l28poc
+    description: Dioxins, Furans & Coplanar PCBs
+    category: laboratory
+
+  - name: l31pah
+    description: Polyaromatic Hydrocarbons (PAHs) - Urine
+    category: laboratory
+
+  - name: l35
+    description: Methicillin - Resistant Staphylococcus aureus (MRSA)
+    category: laboratory
+
+  - name: l36
+    description: Syphilis-IgG, Syphilis RPR & Treponema pallidum
+    category: laboratory
+
+  - name: l37swa
+    description: Human Papillomavirus (HPV) DNA - Vaginal Swab
+    category: laboratory
+
+  - name: l37swr
+    description: Human Papillomavirus (HPV) DNA - Vaginal Swab - Roche Linear Array
+    category: laboratory
+
+  - name: l39
+    description: Erythrocyte Protoporphyrin
+    category: laboratory
+
+  - name: l39epp
+    description: Erythrocyte Protoporphyrin & Selenium
+    category: laboratory
+
+  - name: l40
+    description: Standard Biochemistry Profile
+    category: laboratory
+
+  - name: l40fe
+    description: Iron, Total Iron Binding Capacity (TIBC) & Transferrin Saturation
+    category: laboratory
+
+  - name: l40t4
+    description: Thyroid - Stimulating Hormone & Thyroxine (TSH & T4)
+    category: laboratory
+
+  - name: l43
+    description: Vitamin B6
+    category: laboratory
+
+  - name: l45vit
+    description: Vitamin A, Vitamin E & Carotenoids
+    category: laboratory
+
+  - name: l52ser
+    description: Human Papillomavirus (HPV) - 6, 11, 16 & 18 Antibody - Serum
+    category: laboratory
+
+  - name: lab06hm
+    description: Metals - Urine
+    category: laboratory
+
+  - name: lab13am
+    description: Cholesterol - LDL & Triglycerides
+    category: laboratory
+
+  - name: lab18t4
+    description: Thyroid - Stimulating Hormone & Thyroxine (TSH & T4)
+    category: laboratory
+
+  - name: lab26pp
+    description: Pesticides - Current Use - Urine
+    category: laboratory
+
+  - name: lab28poc
+    description: Dioxins, Furans & Coplanar PCBs
+    category: laboratory
+
+  - name: mma
+    description: Methylmalonic Acid
+    category: laboratory
+
+  - name: mmrv
+    description: Measles, Mumps, Rubella & Varicella
+    category: laboratory
+
+  - name: ogtt
+    description: Oral Glucose Tolerance Test
+    category: laboratory
+
+  - name: opd
+    description: Organophosphate Insecticides - Diakyl Phosphate Metabolites - Urine
+    category: laboratory
+
+  - name: orhpv
+    description: Human Papillomavirus (HPV) - Oral Rinse
+    category: laboratory
+
+  - name: pah
+    description: Polyaromatic Hydrocarbons (PAHs) - Urine
+    category: laboratory
+
+  - name: pahs
+    description: Polyaromatic Hydrocarbons (PAHs) - Urine - Special Sample
+    category: laboratory
+
+  - name: pbcd
+    description: Cadmium, Lead & Total Mercury - Blood
+    category: laboratory
+
+  - name: pernt
+    description: Perchlorate, Nitrate & Thiocyanate - Urine
+    category: laboratory
+
+  - name: pernts
+    description: Perchlorate, Nitrate & Thiocyanate - Urine - Special Sample
+    category: laboratory
+
+  - name: pfas
+    description: Perfluoroalkyl and Polyfluoroalkyl Substances
+    category: laboratory
+
+  - name: pfc
+    description: Polyfluoroalkyl Chemicals
+    category: laboratory
+
+  - name: ph
+    description: Fasting Questionnaire
+    category: laboratory
+
+  - name: phpypa
+    description: Phthalates, Phytoestrogens & PAHs - Urine
+    category: laboratory
+
+  - name: phthte
+    description: Phthalates - Urine
+    category: laboratory
+
+  - name: phyto
+    description: Phytoestrogens - Urine
+    category: laboratory
+
+  - name: pp
+    description: Pesticides - Environmental - Urine
+    category: laboratory
+
+  - name: psa
+    description: Prostate Specific Antigen (PSA)
+    category: laboratory
+
+  - name: pth
+    description: Parathyroid Hormone
+    category: laboratory
+
+  - name: telo
+    description: Telomere Mean and Standard Deviation
+    category: laboratory
+
+  - name: tfa
+    description: Trans Fatty Acids
+    category: laboratory
+
+  - name: tfr
+    description: Transferrin Receptor
+    category: laboratory
+
+  - name: tgema
+    description: Tissue Transglutaminase Assay (IgA-TTG) & IgA Endomyseal Antibody
+    category: laboratory
+
+  - name: thyrod
+    description: Thyroid Profile
+    category: laboratory
+
+  - name: trich
+    description: Trichomonas - Urine
+    category: laboratory
+
+  - name: tsna
+    description: Tobacco-specific Nitrosamines (TSNAs) - Urine
+    category: laboratory
+
+  - name: tst
+    description: Total Testosterone
+    category: laboratory
+
+  - name: uadm
+    description: Aromatic Diamines - Urine
+    category: laboratory
+
+  - name: uam
+    description: Atrazine and Metabolites
+    category: laboratory
+
+  - name: uas
+    description: Arsenics - Total & Speciated - Urine
+    category: laboratory
+
+  - name: uass
+    description: Arsenics - Total & Speciated - Urine - Special Sample
+    category: laboratory
+
+  - name: uc
+    description: Pregnancy Test - Urine
+    category: laboratory
+
+  - name: ucflow
+    description: Urine Flow Rate
+    category: laboratory
+
+  - name: ucm
+    description: Chromium - Urine
+    category: laboratory
+
+  - name: ucosmo
+    description: Osmolality - Urine
+    category: laboratory
+
+  - name: ucot
+    description: Cotinine, Hydroxycotinine & Other Nicotine Metabolites - Urine
+    category: laboratory
+
+  - name: ucots
+    description: Cotinine, Hydroxycotinine & Nicotine Metabolites - Urine - Special Sample
+    category: laboratory
+
+  - name: ucpreg
+    description: Pregnancy Test - Urine
+    category: laboratory
+
+  - name: uflde
+    description: Fluoride - Urine
+    category: laboratory
+
+  - name: uhg
+    description: Mercury - Inorganic - Urine
+    category: laboratory
+
+  - name: uhm
+    description: Metals - Urine
+    category: laboratory
+
+  - name: uhms
+    description: Metals - Urine - Special Sample
+    category: laboratory
+
+  - name: uio
+    description: Iodine - Urine
+    category: laboratory
+
+  - name: um
+    description: Metals - Urine
+    category: laboratory
+
+  - name: ums
+    description: Metals - Urine - Special Sample
+    category: laboratory
+
+  - name: uni
+    description: Nickel - Urine
+    category: laboratory
+
+  - name: uphopm
+    description: Pyrethroids, Herbicides & OP Metabolites - Urine
+    category: laboratory
+
+  - name: upp
+    description: Pesticides - Current Use - Urine
+    category: laboratory
+
+  - name: utas
+    description: Arsenic - Total - Urine
+    category: laboratory
+
+  - name: utass
+    description: Arsenic - Total - Urine - Special Sample
+    category: laboratory
+
+  - name: uvoc
+    description: Volatile Organic Compound (VOC) Metabolites - Urine
+    category: laboratory
+
+  - name: uvocs
+    description: Volatile Organic Compound (VOC) Metabolites - Urine - Special Sample
+    category: laboratory
+
+  - name: vic
+    description: Vitamin C
+    category: laboratory
+
+  - name: vid
+    description: Vitamin D
+    category: laboratory
+
+  - name: vid_2
+    description: Vitamin D, Second Exam
+    category: laboratory
+
+  - name: vit_2
+    description: Vitamin A, Vitamin E & Carotenoids, Second Exam
+    category: laboratory
+
+  - name: vit_b6
+    description: Vitamin B6
+    category: laboratory
+
+  - name: vitaec
+    description: Vitamin A, Vitamin E & Carotenoids
+    category: laboratory
+
+  - name: vitb12
+    description: Vitamin B12
+    category: laboratory
+
+  - name: vna
+    description: Volatile N-Nitrosamine Compounds (VNAs) - Urine
+    category: laboratory
+
+  - name: vnas
+    description: Volatile N-Nitrosamine Compounds (VNAs) - Urine - Special Sample
+    category: laboratory
+
+  - name: voc
+    description: Volatile Organic Compounds - Water & Related Questionnaire Items
+    category: laboratory
+
+  - name: vocmwb
+    description: Volatile Organic Compounds - Trihalomethanes/MTBE/Nitromethane - Blood
+    category: laboratory
+
+  - name: vocwb
+    description: Volatile Organic Compounds - Blood & Related Questionnaire Items
+    category: laboratory
+
+  - name: vocwbs
+    description: Volatile Organic Compounds & Trihalomethanes/MTBE - Blood - Special Sample
+    category: laboratory
+
+  - name: wpin
+    description: Perchlorate, Nitrate & Iodide - Tap Water
+    category: laboratory
+
+  # Questionnaire Datasets
+  - name: alqy
+    description: Alcohol Use (Ages 18-19)
+    category: questionnaire
+
+  - name: aqq
+    description: Air Quality
+    category: questionnaire
+
+  - name: arq
+    description: Arthritis
+    category: questionnaire
+
+  - name: baq
+    description: Balance
+    category: questionnaire
+
+  - name: bhq
+    description: Bowel Health
+    category: questionnaire
+
+  - name: cbqpfa
+    description: Consumer Behavior Phone Follow-up Module - Adult
+    category: questionnaire
+
+  - name: cbqpfc
+    description: Consumer Behavior Phone Follow-up Module - Child
+    category: questionnaire
+
+  - name: ciqdep
+    description: Mental Health - Depression
+    category: questionnaire
+
+  - name: ciqgad
+    description: Mental Health - Generalized Anxiety Disorder
+    category: questionnaire
+
+  - name: ciqmdep
+    description: Mental Health - Depression
+    category: questionnaire
+
+  - name: ciqpan
+    description: Mental Health - Panic Disorder
+    category: questionnaire
+
+  - name: ciqpanic
+    description: Mental Health - Panic Disorder
+    category: questionnaire
+
+  - name: csq
+    description: Taste & Smell
+    category: questionnaire
+
+  - name: hcq
+    description: Hepatitis C Follow Up
+    category: questionnaire
+
+  - name: hoq
+    description: Housing Characteristics
+    category: questionnaire
+
+  - name: mpq
+    description: Miscellaneous Pain
+    category: questionnaire
+
+  - name: paqy
+    description: Physical Activity - Youth
+    category: questionnaire
+
+  - name: puq
+    description: Pesticide Use
+    category: questionnaire
+
+  - name: rxq_ana
+    description: Analgesic Pain Relievers
+    category: questionnaire
+
+  - name: rxqana
+    description: Analgesic Pain Relievers
+    category: questionnaire
+
+  - name: rxqasa
+    description: Preventive Aspirin Use
+    category: questionnaire
+
+  - name: smqmec
+    description: Smoking - Adult Recent Tobacco Use & Youth Cigarette/Tobacco Use
+    category: questionnaire
+
+  - name: smqshs
+    description: Smoking - Secondhand Smoke Exposure
+    category: questionnaire
+
+  - name: tbq
+    description: Tuberculosis
+    category: questionnaire
+
+  - name: vtq
+    description: Volatile Toxicant
+    category: questionnaire
