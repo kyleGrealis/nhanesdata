@@ -8,6 +8,10 @@ on:
   # Manual trigger with optional parameters
   workflow_dispatch:
     inputs:
+      batch:
+        description: 'Batch number to process (1-6, leave empty for all batches)'
+        required: false
+        type: number
       datasets:
         description: 'Comma-separated list of datasets to update (leave empty for all)'
         required: false
@@ -95,6 +99,10 @@ jobs:
         run: |
           # Build command with optional arguments
           CMD="Rscript inst/scripts/workflow_update.R"
+
+          if [ -n "${{ inputs.batch }}" ]; then
+            CMD="$CMD --batch=${{ inputs.batch }}"
+          fi
 
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             CMD="$CMD --dry-run"

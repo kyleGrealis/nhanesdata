@@ -30,6 +30,7 @@ source("inst/scripts/pull_nhanes.R")  # Provides pull_nhanes() and helpers
 args <- commandArgs(trailingOnly = TRUE)
 dry_run <- "--dry-run" %in% args
 specific_datasets <- NULL
+batch_number <- NULL
 
 # Extract dataset list if provided
 dataset_arg_idx <- which(grepl("^--datasets", args))
@@ -42,6 +43,20 @@ if (length(dataset_arg_idx) > 0) {
     )[[1]]
   } else if (length(args) > dataset_arg_idx) {
     specific_datasets <- strsplit(args[dataset_arg_idx + 1], ",")[[1]]
+  }
+}
+
+# Extract batch number if provided (1-6)
+batch_arg_idx <- which(grepl("^--batch", args))
+if (length(batch_arg_idx) > 0) {
+  batch_arg <- args[batch_arg_idx]
+  if (grepl("=", batch_arg)) {
+    batch_number <- as.integer(sub("^--batch=", "", batch_arg))
+  } else if (length(args) > batch_arg_idx) {
+    batch_number <- as.integer(args[batch_arg_idx + 1])
+  }
+  if (!batch_number %in% 1:6) {
+    stop("Batch number must be between 1 and 6", call. = FALSE)
   }
 }
 
@@ -114,6 +129,70 @@ if (!is.null(specific_datasets)) {
   )
 }
 
+# Organize datasets into batches (60 per batch, grouped by category)
+# If --batch parameter provided, process only that batch
+# Otherwise, process all batches sequentially with 10-min delays
+if (is.null(specific_datasets) && (is.null(batch_number) || length(batch_number) == 0)) {
+  # Split config by category for organized batching
+  dietary <- config[config$category == "dietary", ]
+  examination <- config[config$category == "examination", ]
+  questionnaire <- config[config$category == "questionnaire", ]
+  laboratory <- config[config$category == "laboratory", ]
+
+  # Create 6 batches of ~60 datasets each
+  batches <- list(
+    rbind(dietary, examination[1:min(40, nrow(examination)), ]),
+    rbind(
+      examination[41:min(nrow(examination), 63), ],
+      questionnaire[1:min(37, nrow(questionnaire)), ]
+    ),
+    rbind(
+      questionnaire[38:min(nrow(questionnaire), nrow(questionnaire)), ],
+      laboratory[1:min(26, nrow(laboratory)), ]
+    ),
+    laboratory[27:min(86, nrow(laboratory)), ],
+    laboratory[87:min(146, nrow(laboratory)), ],
+    laboratory[147:nrow(laboratory), ]
+  )
+
+  # Remove empty batches
+  batches <- batches[sapply(batches, function(b) !is.null(b) && nrow(b) > 0)]
+
+  cli_alert_info("Organized into {length(batches)} batches")
+  for (i in seq_along(batches)) {
+    cli_alert_info(
+      "  Batch {i}: {nrow(batches[[i]])} datasets"
+    )
+  }
+} else if (!is.null(batch_number)) {
+  # Process specific batch only
+  dietary <- config[config$category == "dietary", ]
+  examination <- config[config$category == "examination", ]
+  questionnaire <- config[config$category == "questionnaire", ]
+  laboratory <- config[config$category == "laboratory", ]
+
+  batches <- list(
+    rbind(dietary, examination[1:min(40, nrow(examination)), ]),
+    rbind(
+      examination[41:min(nrow(examination), 63), ],
+      questionnaire[1:min(37, nrow(questionnaire)), ]
+    ),
+    rbind(
+      questionnaire[38:min(nrow(questionnaire), nrow(questionnaire)), ],
+      laboratory[1:min(26, nrow(laboratory)), ]
+    ),
+    laboratory[27:min(86, nrow(laboratory)), ],
+    laboratory[87:min(146, nrow(laboratory)), ],
+    laboratory[147:nrow(laboratory), ]
+  )
+
+  batches <- list(batches[[batch_number]])
+  cli_alert_info("Processing batch {batch_number} only ({nrow(batches[[1]])} datasets)")
+} else {
+  # Specific datasets provided, no batching
+  batches <- list(config)
+}
+
 # Validate R2 credentials (unless dry run)
 if (!dry_run) {
   cli_h2("Validating R2 credentials")
@@ -131,13 +210,22 @@ if (!dry_run) {
   cli_alert_success("All R2 credentials found")
 }
 
-# Process each dataset
+# Process each batch
 cli_h2("Processing datasets")
 cli_rule()
 
-for (i in seq_len(nrow(config))) {
-  dataset_name <- config$name[i]
-  dataset_desc <- config$description[i]
+for (batch_idx in seq_along(batches)) {
+  current_batch <- batches[[batch_idx]]
+
+  if (length(batches) > 1) {
+    cli_h2("Batch {batch_idx}/{length(batches)}")
+    cli_alert_info("{nrow(current_batch)} datasets in this batch")
+    cli_rule()
+  }
+
+  for (i in seq_len(nrow(current_batch))) {
+    dataset_name <- current_batch$name[i]
+    dataset_desc <- current_batch$description[i]
 
   cli_h3("{i}/{nrow(config)}: {toupper(dataset_name)}")
   cli_alert_info("Description: {dataset_desc}")
@@ -291,6 +379,22 @@ for (i in seq_len(nrow(config))) {
   }
 
   cli_rule()
+  }
+
+  # Add delay between batches to avoid CDC rate limiting
+  if (batch_idx < length(batches)) {
+    cli_h3("Batch {batch_idx} complete")
+    cli_alert_warning(
+      "Waiting 10 minutes before next batch to avoid CDC rate limiting..."
+    )
+    cli_alert_info("Next batch: {batch_idx + 1}/{length(batches)}")
+
+    # Sleep for 10 minutes (600 seconds)
+    Sys.sleep(600)
+
+    cli_alert_success("Resuming processing")
+    cli_rule()
+  }
 }
 
 # Generate summary report
