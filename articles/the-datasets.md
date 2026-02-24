@@ -2,7 +2,7 @@
 
 ## Available Datasets
 
-This package provides 71 NHANES datasets, automatically updated
+This package provides 342 NHANES datasets, automatically updated
 quarterly with data from 1999-2023 (excluding the 2019-2020 cycle).
 
 ### Quick Start

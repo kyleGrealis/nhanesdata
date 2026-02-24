@@ -76,16 +76,28 @@ All functions are case-insensitive.
 
 ## Available Datasets
 
-71 datasets across two categories, with more planned:
+All standard NHANES datasets are included, except:
 
-- **Questionnaire/Interview (50):** `demo`, `bpq`, `diq`, `smq`, `alq`,
-  and 45 more
-- **Examination (16):** `bmx`, `bpx`, `cbc`, `trigly`, and 12 more
-- **Laboratory (5):** `dxxag`, `l10`, `l10am`, `lab10`, `lab10am`
+- Surplus samples (requires special access)
+- Pooled samples (different analysis requirements)
+- Special samples (limited availability)
+- 2019-2020 cycle data (COVID-19 disruption)
+
+Categories include:
+
+- **Questionnaire/Interview:** Demographics, health conditions,
+  lifestyle factors, dietary data
+- **Examination:** Physical measurements, body composition,
+  cardiovascular fitness
+- **Laboratory:** Biomarkers, environmental chemicals, infectious
+  disease serology, nutritional status
+- **Dietary:** Dietary recall, supplement use, food frequency
+  questionnaires
 
 See the [dataset
 catalog](https://www.kylegrealis.com/nhanesdata/articles/the-datasets.html)
-for the full list, or browse `inst/extdata/datasets.yml` in the source.
+for the complete list, or browse `inst/extdata/datasets.yml` in the
+source.
 
 ## Important Notes
 
