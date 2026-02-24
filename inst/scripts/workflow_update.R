@@ -379,6 +379,13 @@ for (batch_idx in seq_along(batches)) {
   }
 
   cli_rule()
+
+  # Close any lingering connections to avoid R's 128 connection limit
+  # This prevents "all 128 connections are in use" errors during long runs
+  open_cons <- showConnections(all = FALSE)
+  if (nrow(open_cons) > 10) {
+    closeAllConnections()
+  }
   }
 
   # Add delay between batches to avoid CDC rate limiting
@@ -446,6 +453,9 @@ if (length(summary$changed_datasets) > 0) {
 }
 
 # Save summary as JSON for GitHub Actions artifact
+# Close all connections first to avoid "all 128 connections are in use" error
+closeAllConnections()
+
 summary_json <- jsonlite::toJSON(summary, pretty = TRUE, auto_unbox = FALSE)
 writeLines(summary_json, "workflow_summary.json")
 cli_alert_success("Summary saved to workflow_summary.json")
