@@ -24,7 +24,7 @@ template:
 home:
   title: "nhanesdata: Pre-processed NHANES Data with Automated Updates"
   description: >
-    Access harmonized NHANES survey data (1999-2023) with quarterly updates
+    Access harmonized NHANES survey data (1999-2023) with annual updates
     from CDC servers. Provides fast data loading, search functions, and
     automatic type reconciliation across survey cycles.
   sidebar:

@@ -57,7 +57,7 @@ Released: Jan. 2026
 
 ## Changes
 
-* Automated quarterly data updates via GitHub Actions with checksum-based
+* Automated annual data updates via GitHub Actions with checksum-based
   change detection and Cloudflare R2 uploads.
 * Replaced `pins` with direct R2 uploads for simpler URL structure.
 * Added dataset catalog vignette with searchable table.

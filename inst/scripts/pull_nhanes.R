@@ -106,14 +106,15 @@ pull_nhanes <- function(nhanes_table, selected_variables = NULL, save = FALSE) {
   message(sprintf("\nDataset: %s", nhanes_table))
 
   # Build the list of table codes and their corresponding survey years.
-  # Suffixes B through J cover 2001-2017; L covers 2021-2023.
+  # Suffixes B through J cover 2001-2017; L through P cover 2021-2029.
   # Suffix K (2019-2020) is intentionally skipped due to COVID-19 data
   # collection issues that compromised data quality.
-  table_suffixes <- c(LETTERS[2:10], LETTERS[12])
+  # Future-proofed through 2029 to automatically detect new cycles as CDC releases them.
+  table_suffixes <- c(LETTERS[2:10], LETTERS[12:16])
 
   start_dfr <- tibble::tibble(
     code = c(nhanes_table, paste0(nhanes_table, "_", table_suffixes)),
-    year = c(seq(1999, 2017, by = 2), 2021)
+    year = c(seq(1999, 2017, by = 2), seq(2021, 2029, by = 2))
   )
 
   # ---------------------------------------------------------------------------

@@ -1,0 +1,16 @@
+{
+  "start_time": ["2026-02-24 15:06:39"],
+  "datasets_processed": [339],
+  "datasets_changed": [323],
+  "datasets_unchanged": [16],
+  "datasets_failed": [0],
+  "datasets_incompatible": [0],
+  "datasets_uploaded": [323],
+  "datasets_skipped_cycles": [0],
+  "changed_datasets": ["ds1ids", "ds2tot", "auxar", "auxtym", "auxwbr", "bax", "biopro", "bix", "bmx", "bpx", "bpxo", "cbc", "csx", "cvx", "dex", "dxx", "dxx_2", "dxxaac", "dxxag", "dxxfem", "dxxfrx", "dxxl1", "dxxl2", "dxxl3", "dxxl4", "dxxspn", "dxxt10", "dxxt11", "dxxt12", "dxxt4", "dxxt5", "dxxt6", "dxxt7", "dxxt8", "dxxt9", "dxxvfa", "enx", "flxcln", "ghb", "glu", "hdl", "hiv", "l10", "l10am", "lab10", "lab10am", "lexab", "lexabpi", "lexpn", "lux", "mgx", "msx", "ohx", "ohxadd", "ohxden", "ohxdent", "ohxper", "ohxperio", "ohxprl", "ohxpru", "ohxref", "opxfdt", "opxret", "paxday", "paxhd", "paxhr", "seq", "spx", "tb", "tbx", "tchol", "trigly", "vix", "acq", "agq", "alq", "alqy", "aqq", "arq", "auq", "baq", "bhq", "bpq", "cbq", "cbqpfa", "cbqpfc", "cdq", "cfq", "ciqdep", "ciqgad", "ciqmdep", "ciqpan", "ciqpanic", "ckq", "csq", "dbq", "demo", "deq", "diq", "dlq", "dpq", "dr1iff", "dr1tot", "dr2iff", "dr2tot", "duq", "ecq", "fsq", "hcq", "heq", "hiq", "hoq", "hsq", "huq", "imq", "inq", "kiq", "kiq_p", "kiq_u", "mcq", "mpq", "ocq", "ohq", "osq", "paq", "paqiaf", "paqy", "pfq", "psq", "puq", "puqmec", "rdq", "rhq", "rxq_ana", "rxq_rx", "rxqana", "rxqasa", "slq", "smq", "smqfam", "smqmec", "smqrtu", "smqshs", "ssq", "sxq", "tbq", "viq", "vtq", "whq", "whqmec", "aa", "aas", "al_ige", "ald", "alds", "aldust", "amdgds", "amdgyd", "apob", "b12", "cafe", "carb", "chlmda", "cmv", "cot", "cotnal", "crco", "crp", "cusezn", "deet", "eph", "ephpp", "epp", "ethox", "ethoxs", "fas", "fastqx", "fertin", "fetib", "fldep", "fldew", "folate", "folfms", "formal", "formas", "fr", "hcaa", "hcaas", "hcy", "hepa", "hepbd", "hepc", "hepe", "hpvp", "hpvser", "hpvsrm", "hpvswc", "hpvswr", "hscrp", "hsv", "ihg", "ihgem", "ins", "l02", "l06", "l06age", "l06bmt", "l06cot", "l06hm", "l06mh", "l06nb", "l06phy", "l06tfr", "l06uas", "l06uhg", "l06uio", "l06vid", "l06vit", "l11", "l11p_2_b", "l11psa", "l13am", "l16", "l17", "l19", "l20", "l24eph", "l24pfc", "l24ph", "l24pp", "l25", "l26opd", "l26pp", "l26upp", "l28dfp", "l28npb", "l28ocp", "l28pbe", "l28poc", "l31pah", "l35", "l36", "l37swa", "l37swr", "l39", "l39epp", "l40", "l40fe", "l40t4", "l43", "l45vit", "l52ser", "lab06hm", "lab13am", "lab18t4", "lab26pp", "lab28poc", "mma", "mmrv", "ogtt", "opd", "orhpv", "pah", "pahs", "pbcd", "pernt", "pernts", "pfas", "pfc", "ph", "phpypa", "phthte", "phyto", "pp", "psa", "pth", "telo", "tfa", "tfr", "tgema", "thyrod", "trich", "tsna", "tst", "uadm", "uam", "uas", "uass", "uc", "ucflow", "ucm", "ucosmo", "ucot", "ucots", "ucpreg", "uflde", "uhg", "uhm", "uhms", "uio", "um", "ums", "uni", "uphopm", "upp", "utas", "utass", "uvoc", "uvocs", "vic", "vid", "vid_2", "vit_2", "vit_b6", "vitaec", "vitb12", "vna", "vnas", "voc", "vocmwb", "vocwb", "vocwbs", "wpin"],
+  "failed_datasets": [],
+  "incompatible_datasets": [],
+  "skipped_cycle_details": [],
+  "end_time": ["2026-02-24 18:46:46"],
+  "duration_minutes": [220.1049]
+}

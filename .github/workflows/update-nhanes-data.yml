@@ -1,13 +1,17 @@
 name: Update NHANES Data
 
 on:
-  # Quarterly schedule: 1st day of Jan/Apr/Jul/Oct at 2 AM UTC
+  # Annual schedule: January 1st at 2 AM UTC
   schedule:
-    - cron: '0 2 1 1,4,7,10 *'
+    - cron: '0 2 1 1 *'
 
   # Manual trigger with optional parameters
   workflow_dispatch:
     inputs:
+      batch:
+        description: 'Batch number to process (1-9, leave empty for all batches)'
+        required: false
+        type: number
       datasets:
         description: 'Comma-separated list of datasets to update (leave empty for all)'
         required: false
@@ -56,6 +60,7 @@ jobs:
             any::jsonlite
             any::yaml
             any::paws.storage
+            any::digest
           cache-version: 2
 
       - name: Install nhanesdata package
@@ -96,6 +101,10 @@ jobs:
           # Build command with optional arguments
           CMD="Rscript inst/scripts/workflow_update.R"
 
+          if [ -n "${{ inputs.batch }}" ]; then
+            CMD="$CMD --batch=${{ inputs.batch }}"
+          fi
+
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             CMD="$CMD --dry-run"
           fi
@@ -113,8 +122,17 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: workflow-summary-${{ github.run_number }}
-          path: workflow_summary.json
+          path: inst/logs/inst/logs/workflow_summary.json
           retention-days: 90
+
+      - name: Upload workflow log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: workflow-log-${{ github.run_number }}
+          path: inst/logs/*.txt
+          retention-days: 90
+          if-no-files-found: warn
 
       - name: Commit updated checksums
         if: ${{ !inputs.dry_run }}
@@ -128,7 +146,7 @@ jobs:
           else
             git add .checksums.json
             git commit -m "$(cat <<'EOF'
-          chore: update data checksums after quarterly CDC pull
+          chore: update data checksums after annual CDC pull
 
           Automated data update from GitHub Actions workflow.
           Run: ${{ github.run_number }}
@@ -149,15 +167,15 @@ jobs:
         if: ${{ !inputs.dry_run && success() }}
         run: |
           # Read summary file
-          if [ -f workflow_summary.json ]; then
+          if [ -f inst/logs/workflow_summary.json ]; then
             echo "## NHANES Data Update - $(date -u +"%Y-%m-%d")" > release_notes.md
             echo "" >> release_notes.md
             echo "### Summary" >> release_notes.md
 
             # Extract key metrics using jq
-            CHANGED=$(jq -r '.datasets_changed' workflow_summary.json)
-            UPLOADED=$(jq -r '.datasets_uploaded' workflow_summary.json)
-            FAILED=$(jq -r '.datasets_failed' workflow_summary.json)
+            CHANGED=$(jq -r '.datasets_changed' inst/logs/workflow_summary.json)
+            UPLOADED=$(jq -r '.datasets_uploaded' inst/logs/workflow_summary.json)
+            FAILED=$(jq -r '.datasets_failed' inst/logs/workflow_summary.json)
 
             echo "- Changed datasets: $CHANGED" >> release_notes.md
             echo "- Uploaded to R2: $UPLOADED" >> release_notes.md
@@ -167,7 +185,7 @@ jobs:
             # List changed datasets
             if [ "$CHANGED" -gt 0 ]; then
               echo "### Changed Datasets" >> release_notes.md
-              jq -r '.changed_datasets[]' workflow_summary.json | while read ds; do
+              jq -r '.changed_datasets[]' inst/logs/workflow_summary.json | while read ds; do
                 echo "- \`$ds\`" >> release_notes.md
               done
               echo "" >> release_notes.md
@@ -200,8 +218,8 @@ jobs:
           echo "::error::NHANES data update workflow failed"
           echo "::error::Check the workflow summary artifact for details"
 
-          if [ -f workflow_summary.json ]; then
-            FAILED=$(jq -r '.failed_datasets[]' workflow_summary.json 2>/dev/null || echo "")
+          if [ -f inst/logs/workflow_summary.json ]; then
+            FAILED=$(jq -r '.failed_datasets[]' inst/logs/workflow_summary.json 2>/dev/null || echo "")
             if [ -n "$FAILED" ]; then
               echo "::error::Failed datasets: $FAILED"
             fi
