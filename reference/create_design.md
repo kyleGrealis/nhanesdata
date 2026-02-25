@@ -144,7 +144,7 @@ design <- create_design(
 # Combine with examination data and use MEC weights
 bmx <- read_nhanes("bmx")
 #> Loading: BMX
-#> BMX complete! (96,288 rows)
+#> BMX complete! (105,626 rows)
 combined <- demo |>
   dplyr::left_join(bmx, by = c("seqn", "year"))
 

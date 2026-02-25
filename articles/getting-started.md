@@ -167,7 +167,7 @@ Shows which cycles contain a specific variable.
 ### In loaded data
 
     #> Loading: BMX
-    #> BMX complete! (96,288 rows)
+    #> BMX complete! (105,626 rows)
 
 ``` r
 "bmxht" %in% names(bmx)

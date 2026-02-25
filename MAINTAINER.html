@@ -70,38 +70,97 @@
 </ol></div>
 </div>
 <div class="section level2">
-<h2 id="triggering-updates">Triggering Updates<a class="anchor" aria-label="anchor" href="#triggering-updates"></a></h2>
+<h2 id="workflow-update-commands">Workflow Update Commands<a class="anchor" aria-label="anchor" href="#workflow-update-commands"></a></h2>
 <div class="section level3">
-<h3 id="local-full-update">Local Full Update<a class="anchor" aria-label="anchor" href="#local-full-update"></a></h3>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"inst/scripts/workflow_update.R"</span><span class="op">)</span></span>
-<span><span class="co"># Runs all 71 datasets, uploads to R2, updates .checksums.json</span></span></code></pre></div>
+<h3 id="test-with-sample-20-datasets">Test with Sample (20 datasets)<a class="anchor" aria-label="anchor" href="#test-with-sample-20-datasets"></a></h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Generate random sample</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">Rscript</span> inst/scripts/create_random_sample.R</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># Test with sample (live upload + verification)</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="ex">Rscript</span> inst/scripts/workflow_update.R <span class="at">--sample</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="github-actions">GitHub Actions<a class="anchor" aria-label="anchor" href="#github-actions"></a></h3>
-<p>Already configured - you know how to do this.</p>
+<h3 id="full-update-339-datasets-18-batches">Full Update (339 datasets, 18 batches)<a class="anchor" aria-label="anchor" href="#full-update-339-datasets-18-batches"></a></h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Dry run (no upload, checks for changes)</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">Rscript</span> inst/scripts/workflow_update.R <span class="at">--dry-run</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># Live run (uploads + verification)</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="ex">Rscript</span> inst/scripts/workflow_update.R</span></code></pre></div>
 </div>
+<div class="section level3">
+<h3 id="process-specific-batch">Process Specific Batch<a class="anchor" aria-label="anchor" href="#process-specific-batch"></a></h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Dry run batch 5</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="ex">Rscript</span> inst/scripts/workflow_update.R <span class="at">--dry-run</span> <span class="at">--batch</span><span class="op">=</span>5</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># Live run batch 5</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="ex">Rscript</span> inst/scripts/workflow_update.R <span class="at">--batch</span><span class="op">=</span>5</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="process-specific-datasets">Process Specific Datasets<a class="anchor" aria-label="anchor" href="#process-specific-datasets"></a></h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">Rscript</span> inst/scripts/workflow_update.R <span class="at">--datasets</span><span class="op">=</span>demo,bpx,bmx</span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="workflow-features">Workflow Features<a class="anchor" aria-label="anchor" href="#workflow-features"></a></h2>
+<div class="section level3">
+<h3 id="batch-processing">Batch Processing<a class="anchor" aria-label="anchor" href="#batch-processing"></a></h3>
+<ul><li>Organizes 339 datasets into 18 category-based batches (max 20 per batch)</li>
+<li>4-minute delays between batches to respect CDC rate limiting</li>
+<li>Categories: dietary → examination → questionnaire → laboratory</li>
+<li>Aggressive memory cleanup after each dataset (prevents connection exhaustion)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="upload-verification">Upload Verification<a class="anchor" aria-label="anchor" href="#upload-verification"></a></h3>
+<ul><li>After each live upload, verifies data integrity by downloading from R2</li>
+<li>Checks: row count, column count, column names, required columns, data presence, seqn uniqueness</li>
+<li><strong>Workflow stops immediately if verification fails</strong></li>
+<li>Only runs during live uploads (skipped in dry-run mode)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="hash-tracking">Hash Tracking<a class="anchor" aria-label="anchor" href="#hash-tracking"></a></h3>
+<ul><li>
+<code>.checksums.json</code> stores MD5 hashes of uploaded datasets</li>
+<li>Workflow only uploads datasets that changed (UNCHANGED datasets are skipped)</li>
+<li>Dry runs check hashes but never write to file</li>
+<li>Clear checksums to force re-upload: <code>echo '{"_comment": "..."}' &gt; .checksums.json</code>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="empty-dataset-handling">Empty Dataset Handling<a class="anchor" aria-label="anchor" href="#empty-dataset-handling"></a></h3>
+<ul><li>Gracefully skips datasets with no available data across any cycle</li>
+<li>Prevents crashes when CDC returns 404 for all cycles</li>
+</ul></div>
 </div>
 <div class="section level2">
 <h2 id="adding-new-datasets">Adding New Datasets<a class="anchor" aria-label="anchor" href="#adding-new-datasets"></a></h2>
-<p>Edit <code>inst/extdata/datasets.yml</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">questionnaire</span><span class="kw">:</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> newdataset</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="at">    </span><span class="fu">description</span><span class="kw">:</span><span class="at"> Brief description</span></span></code></pre></div>
-<p>The workflow picks up all datasets listed there. That’s it.</p>
+<ol style="list-style-type: decimal"><li>Edit <code>inst/extdata/datasets.yml</code> (alphabetically within category):</li>
+</ol><div class="sourceCode" id="cb6"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">datasets</span><span class="kw">:</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="at">  </span><span class="fu">newdataset</span><span class="kw">:</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> newdataset</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="at">    </span><span class="fu">description</span><span class="kw">:</span><span class="at"> Brief description</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="at">    </span><span class="fu">category</span><span class="kw">:</span><span class="at"> questionnaire</span><span class="co">  # dietary, examination, questionnaire, laboratory</span></span></code></pre></div>
+<ol start="2" style="list-style-type: decimal"><li>Test with sample mode first:</li>
+</ol><div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="ex">Rscript</span> inst/scripts/create_random_sample.R</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="ex">Rscript</span> inst/scripts/workflow_update.R <span class="at">--sample</span></span></code></pre></div>
+<ol start="3" style="list-style-type: decimal"><li>Run full workflow:</li>
+</ol><div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="ex">Rscript</span> inst/scripts/workflow_update.R</span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="data-workflow">Data Workflow<a class="anchor" aria-label="anchor" href="#data-workflow"></a></h2>
+<h2 id="data-pipeline">Data Pipeline<a class="anchor" aria-label="anchor" href="#data-pipeline"></a></h2>
 <ol style="list-style-type: decimal"><li>
-<code>pull_nhanes(dataset)</code> - Downloads from CDC, merges cycles, returns data</li>
+<strong>Pull</strong>: <code>pull_nhanes(dataset)</code> downloads from CDC, merges cycles (1999-2023), harmonizes types</li>
 <li>
-<code>nhanes_r2_upload(data, name, bucket)</code> - Uploads to R2 via paws.storage</li>
+<strong>Check</strong>: Compare MD5 hash against <code>.checksums.json</code> (skip if unchanged)</li>
 <li>
-<code>detect_data_changes(dataset)</code> - Checks if data changed via MD5</li>
+<strong>Upload</strong>: <code>nhanes_r2_upload(data, name, bucket)</code> writes Parquet to R2 via paws.storage</li>
 <li>
-<code>update_checksum(dataset, hash)</code> - Updates <code>.checksums.json</code>
-</li>
-</ol><p>That’s it.</p>
+<strong>Verify</strong>: <code>verify_r2_upload(dataset, original_data)</code> downloads and validates integrity</li>
+<li>
+<strong>Track</strong>: Update <code>.checksums.json</code> with new hash</li>
+</ol></div>
+<div class="section level2">
+<h2 id="github-actions">GitHub Actions<a class="anchor" aria-label="anchor" href="#github-actions"></a></h2>
+<p>Workflow runs quarterly (January, April, July, October) to refresh all datasets. Already configured with R2 credentials as repository secrets.</p>
 </div>
 </div>
 

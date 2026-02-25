@@ -207,7 +207,7 @@ Otherwise, this function assumes only 2-year fasting weights (WTSAF2YR) are avai
 <span class="r-in"><span><span class="co"># Combine with examination data and use MEC weights</span></span></span>
 <span class="r-in"><span><span class="va">bmx</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_nhanes.html">read_nhanes</a></span><span class="op">(</span><span class="st">"bmx"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading: BMX</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> BMX complete! (96,288 rows)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> BMX complete! (105,626 rows)</span>
 <span class="r-in"><span><span class="va">combined</span> <span class="op">&lt;-</span> <span class="va">demo</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">bmx</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"seqn"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

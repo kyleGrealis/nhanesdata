@@ -2,7 +2,7 @@
 
 Downloads pre-processed NHANES data files from cloud storage. Data
 includes all survey cycles (1999-2023) automatically merged and
-harmonized, with quarterly updates.
+harmonized, with annual updates.
 
 ## Usage
 
@@ -29,7 +29,7 @@ dataset-specific variables.
 
 This function downloads NHANES datasets from cloud storage (hosted at
 nhanes.kylegrealis.com). All datasets combine multiple survey cycles
-with automatic type harmonization. Data is updated quarterly via
+with automatic type harmonization. Data is updated annually via
 automated workflows that pull fresh data from CDC servers.
 
 **Dataset names are case-insensitive throughout this package.** Use
