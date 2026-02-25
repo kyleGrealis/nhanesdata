@@ -22,34 +22,94 @@ Settings → Secrets and variables → Actions → Add:
 3. Update `.Renviron` and GitHub Secrets
 4. Delete old token
 
-## Triggering Updates
+## Workflow Update Commands
 
-### Local Full Update
-```r
-source("inst/scripts/workflow_update.R")
-# Runs all 71 datasets, uploads to R2, updates .checksums.json
+### Test with Sample (20 datasets)
+```bash
+# Generate random sample
+Rscript inst/scripts/create_random_sample.R
+
+# Test with sample (live upload + verification)
+Rscript inst/scripts/workflow_update.R --sample
 ```
 
-### GitHub Actions
-Already configured - you know how to do this.
+### Full Update (339 datasets, 18 batches)
+```bash
+# Dry run (no upload, checks for changes)
+Rscript inst/scripts/workflow_update.R --dry-run
+
+# Live run (uploads + verification)
+Rscript inst/scripts/workflow_update.R
+```
+
+### Process Specific Batch
+```bash
+# Dry run batch 5
+Rscript inst/scripts/workflow_update.R --dry-run --batch=5
+
+# Live run batch 5
+Rscript inst/scripts/workflow_update.R --batch=5
+```
+
+### Process Specific Datasets
+```bash
+Rscript inst/scripts/workflow_update.R --datasets=demo,bpx,bmx
+```
+
+## Workflow Features
+
+### Batch Processing
+- Organizes 339 datasets into 18 category-based batches (max 20 per batch)
+- 4-minute delays between batches to respect CDC rate limiting
+- Categories: dietary → examination → questionnaire → laboratory
+- Aggressive memory cleanup after each dataset (prevents connection exhaustion)
+
+### Upload Verification
+- After each live upload, verifies data integrity by downloading from R2
+- Checks: row count, column count, column names, required columns, data presence, seqn uniqueness
+- **Workflow stops immediately if verification fails**
+- Only runs during live uploads (skipped in dry-run mode)
+
+### Hash Tracking
+- `.checksums.json` stores MD5 hashes of uploaded datasets
+- Workflow only uploads datasets that changed (UNCHANGED datasets are skipped)
+- Dry runs check hashes but never write to file
+- Clear checksums to force re-upload: `echo '{"_comment": "..."}' > .checksums.json`
+
+### Empty Dataset Handling
+- Gracefully skips datasets with no available data across any cycle
+- Prevents crashes when CDC returns 404 for all cycles
 
 ## Adding New Datasets
 
-Edit `inst/extdata/datasets.yml`:
-
+1. Edit `inst/extdata/datasets.yml` (alphabetically within category):
 ```yaml
-questionnaire:
-  - name: newdataset
+datasets:
+  newdataset:
+    name: newdataset
     description: Brief description
+    category: questionnaire  # dietary, examination, questionnaire, laboratory
 ```
 
-The workflow picks up all datasets listed there. That's it.
+2. Test with sample mode first:
+```bash
+Rscript inst/scripts/create_random_sample.R
+Rscript inst/scripts/workflow_update.R --sample
+```
 
-## Data Workflow
+3. Run full workflow:
+```bash
+Rscript inst/scripts/workflow_update.R
+```
 
-1. `pull_nhanes(dataset)` - Downloads from CDC, merges cycles, returns data
-2. `nhanes_r2_upload(data, name, bucket)` - Uploads to R2 via paws.storage
-3. `detect_data_changes(dataset)` - Checks if data changed via MD5
-4. `update_checksum(dataset, hash)` - Updates `.checksums.json`
+## Data Pipeline
 
-That's it.
+1. **Pull**: `pull_nhanes(dataset)` downloads from CDC, merges cycles (1999-2023), harmonizes types
+2. **Check**: Compare MD5 hash against `.checksums.json` (skip if unchanged)
+3. **Upload**: `nhanes_r2_upload(data, name, bucket)` writes Parquet to R2 via paws.storage
+4. **Verify**: `verify_r2_upload(dataset, original_data)` downloads and validates integrity
+5. **Track**: Update `.checksums.json` with new hash
+
+## GitHub Actions
+
+Workflow runs quarterly (January, April, July, October) to refresh all datasets. Already configured with R2 credentials as repository secrets.

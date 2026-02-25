@@ -20,12 +20,12 @@ columns plus dataset-specific variables.
 \description{
 Downloads pre-processed NHANES data files from cloud storage. Data includes
 all survey cycles (1999-2023) automatically merged and harmonized, with
-quarterly updates.
+annual updates.
 }
 \details{
 This function downloads NHANES datasets from cloud storage (hosted at
 nhanes.kylegrealis.com). All datasets combine multiple survey cycles with
-automatic type harmonization. Data is updated quarterly via automated
+automatic type harmonization. Data is updated annually via automated
 workflows that pull fresh data from CDC servers.
 
 \strong{Dataset names are case-insensitive throughout this package.} Use uppercase
