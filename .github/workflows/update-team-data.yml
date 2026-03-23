@@ -54,4 +54,5 @@ jobs:
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         run: |
           source("./inst/scripts/derived/create_base.R")
+          # add new source scripts here!
         shell: Rscript {0}
