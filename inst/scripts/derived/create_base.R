@@ -7,17 +7,17 @@
 
 #### Purpose ####
 
-# This script builds a base dataset for NHANES cycles 2009–2018. It downloads 
-#   the DEMO (demographics), HIQ (insurance), SMQ (smoking), ALQ (alcohol), and 
-#   PAQ (physical activity) tables, filters to the selected cycles, and 
+# This script builds a base dataset for NHANES cycles 2009–2018. It downloads
+#   the DEMO (demographics), HIQ (insurance), SMQ (smoking), ALQ (alcohol), and
+#   PAQ (physical activity) tables, filters to the selected cycles, and
 #   left-joins the tables by year and seqn to create one row per participant per
-#   cycle. 
+#   cycle.
 
-# We create analysis-ready versions of key variables: a cleaned race/ethnicity 
-#   variable, collapsed education, income, and marital status variables with 
-#   nonresponse set to NA (or “Missing” for income), a nativity/years-in-US 
-#   variable, a binary insurance variable, smoking status (never, current, or 
-#   former), alcohol use status (never/former/current/not provided) plus a 
+# We create analysis-ready versions of key variables: a cleaned race/ethnicity
+#   variable, collapsed education, income, and marital status variables with
+#   nonresponse set to NA (or “Missing” for income), a nativity/years-in-US
+#   variable, a binary insurance variable, smoking status (never, current, or
+#   former), alcohol use status (never/former/current/not provided) plus a
 #   binary current drinking indicator, a continuous total MET-minutes variable,
 #   and activity categories (4-level and binary).
 
@@ -53,12 +53,12 @@ base <- demo |>
   left_join(paq, by = c("year", "seqn"))
 # nrow(base)   # 49,693
 
-base <- base |> 
+base <- base |>
   # clean names to all lowercase
   janitor::clean_names() |>
   mutate(
-    
-    # Refer to this page on why using default value from RIDRETH3. 
+
+    # Refer to this page on why using default value from RIDRETH3.
     # https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/DEMO_L.htm
     # RIDRETH3 has values for Asian, but has missingness where RIDRETH1 does not
     race_eth_init = case_when(
@@ -69,7 +69,7 @@ base <- base |>
     race_ethnicity = fct_relevel(
       factor(case_when(
         # just a minor stylistic tweak to replace the dash for a comma
-        str_detect(race_eth_init, 'Race - Inc') 
+        str_detect(race_eth_init, 'Race - Inc')
         ~ 'Other Race, including Multi-Racial',
         .default = race_eth_init
         )
@@ -80,7 +80,7 @@ base <- base |>
     education = factor(
       case_when(
         dmdeduc2 %in% c(
-          'Less than 9th Grade', 
+          'Less than 9th Grade',
           'Less than 9th grade',
           '9-11th Grade (Includes 12th grade with no diploma)',
           '9-11th grade (Includes 12th grade with no diploma)'
@@ -107,7 +107,7 @@ base <- base |>
         'College graduate or above'
       )
     ),
-    
+
     # Income
     income = factor(
       case_when(
@@ -130,7 +130,7 @@ base <- base |>
           '$65,000 to $74,999'
         ) ~ '$20,000 to $74,999',
         indhhin2 == '$75,000 to $99,999' ~ '$75,000 to $99,999',
-        indhhin2 %in% 
+        indhhin2 %in%
           c('$100,000 and over', '$100,000 and Over')  ~ '$100,000 and over',
         indhhin2 %in% c('Refused', 'Don\'t know') ~ 'Missing',
         is.na(indhhin2) ~ 'Missing'
@@ -143,9 +143,9 @@ base <- base |>
         'Missing'
       )
     ),
-    
+
     marital_status = case_when(
-      dmdmartl %in% c('Married', 'Living with partner') ~ 
+      dmdmartl %in% c('Married', 'Living with partner') ~
         'Married or living with partner',
       dmdmartl %in% c(
         'Never married', 'Separated', 'Divorced', 'Widowed'
@@ -160,14 +160,14 @@ base <- base |>
         'Never married, separated, divorced, or widowed'
       )
     ),
-    
+
     # Years in US
     nativity = case_when(
-      dmdborn2 == 'Born in 50 US States or Washington, DC' & 
+      dmdborn2 == 'Born in 50 US States or Washington, DC' &
         ridageyr < 10 ~ 'US born, less than 10 yrs',
-      dmdborn2 == 'Born in 50 US States or Washington, DC' & 
+      dmdborn2 == 'Born in 50 US States or Washington, DC' &
         ridageyr >= 10 ~ 'US born, more than 10 yrs',
-      dmdborn2 != 'Born in 50 US States or Washington, DC' & 
+      dmdborn2 != 'Born in 50 US States or Washington, DC' &
         dmdyrsus %in% c(
           'Less than 1 year',
           '1 yr.,
@@ -176,7 +176,7 @@ base <- base |>
           '1 year or more, but less than 5 years',
           '5 year or more, but less than 10 years'
         ) ~ 'Born abroad, less than 10 years in US',
-      dmdborn2 != 'Born in 50 US States or Washington, DC' & 
+      dmdborn2 != 'Born in 50 US States or Washington, DC' &
         dmdyrsus %in% c(
           '5 yrs., less than 10 yrs.',
           '5 year or more, but less than 10 years ',
@@ -194,18 +194,18 @@ base <- base |>
         ) ~ 'Born abroad, more than 10 years in US',
       .default = NA_character_
     ),
-    
+
     # Health insurance
     has_health_ins = case_when(
       hiq011 == "Yes" ~ "Yes",
-      hiq011 == "No"  ~ "No", 
+      hiq011 == "No"  ~ "No",
       TRUE ~ NA_character_          # All else becomes NA
     ),
     has_health_ins = factor(
       has_health_ins,
       levels = c("Yes", "No")
     ),
-    
+
     # smoked at least 100 cigarettes in life
     smq020 = factor(
       smq020,
@@ -236,11 +236,11 @@ base <- base |>
       ),
       levels = c('Never', 'Current', 'Former')
     ),
-    
+
     # Alcohol use
     alcohol_status = factor(
       case_when(
-        alq110 %in% c('Don\'t know', 'Refused') | 
+        alq110 %in% c('Don\'t know', 'Refused') |
           alq120q >= 777 ~ 'Not provided',
         alq110 == 'No' ~ 'Never',
         alq110 == 'Yes' & alq120q == 0 ~ 'Former',
@@ -248,7 +248,7 @@ base <- base |>
         # for refused or don't know:
         alq110 == 'Yes' & between(alq120q, 1, 700) ~ 'Current',
         alq110 == 'Yes' & (alq120q == 999 | is.na(alq120q)) ~ 'Not provided',
-        # is.na(alq110) but reported values for alq120q & alq120u meaning they 
+        # is.na(alq110) but reported values for alq120q & alq120u meaning they
         #   currently drink
         is.na(alq110) & !is.na(alq120u) ~ 'Current',
         # is.na(alq110) = no prior history, but report not currently drinking
@@ -264,14 +264,14 @@ base <- base |>
     alcohol_current = factor(
       case_when(
         alcohol_status == "Current" ~ "Drinks alcohol",
-        alcohol_status %in% 
+        alcohol_status %in%
           c("Does not currently drink, hx unknown", "Former", "Never")
         ~ "Does not drink alcohol",
         TRUE ~ NA_character_   #  all else becomes NA
       ),
       levels = c("Does not drink alcohol", "Drinks alcohol")
     ),
-    
+
     # Physical activity variables
     # We chose to impute the median when responses were 9999
     vig_work_min_week = case_when(
@@ -299,7 +299,7 @@ base <- base |>
       paq665 == 'No' ~ 0,
       .default = paq670 * pad675
     ),
-    
+
     # Convert METS-minutes
     vig_met_min   = (vig_work_min_week + vig_rec_min_week) * 8.0,
     mod_met_min   = (
@@ -308,7 +308,7 @@ base <- base |>
         transp_min_week
       ) * 4.0,
     total_met_min = vig_met_min + mod_met_min,
-    
+
     # 4-level Physical Activity category using MET-min/week thresholds
     pa_level = factor(
       case_when(
@@ -360,6 +360,10 @@ base_small <- base |>
 
 
 #### Save ####
-save(base_small, file = "data/base_2009_2018.rda")
-# push to nhanes_data package
+nhanesdata:::nhanes_r2_upload(
+  x = base_small,
+  name = "base_2009_2018",
+  bucket = "nhanes-data"
+)
+
 

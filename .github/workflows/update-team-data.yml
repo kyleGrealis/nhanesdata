@@ -38,7 +38,18 @@ jobs:
             any::digest
           cache-version: 2
 
+      - name: install nhanesdata package
+        run: |
+          remotes::install_local(".", dependencies = TRUE, force = TRUE)
+        shell: Rscript {0}
+
       - name: Update team data
+          env:
+            R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+            R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+            R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         run: |
           source("./inst/scripts/derived/create_base.R")
         shell: Rscript {0}
+
+      -
