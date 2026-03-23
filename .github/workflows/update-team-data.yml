@@ -1,0 +1,44 @@
+name: Update Team Data
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+# Minimize permissions (principle of least privilege)
+permissions:
+  contents: write  # Needed to commit updated checksums
+  actions: read
+
+jobs:
+  update-team-data:
+    name: Pull Team Data & Upload to R2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for proper git operations
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+          use-public-rspm: true
+
+      - name: Setup R dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            any::remotes
+            any::jsonlite
+            any::yaml
+            any::paws.storage
+            any::digest
+          cache-version: 2
+
+      - name: Update team data
+        run: |
+          source("./inst/scripts/derived/create_base.R")
+        shell: Rscript {0}
