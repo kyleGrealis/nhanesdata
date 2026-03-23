@@ -2,6 +2,8 @@
 
 ## nhanesdata 0.2.1
 
+CRAN release: 2026-02-28
+
 ### Bug Fixes
 
 - Converted vignettes from Quarto (.qmd) to R Markdown (.Rmd) to fix
