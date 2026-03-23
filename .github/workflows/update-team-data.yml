@@ -36,6 +36,10 @@ jobs:
             any::yaml
             any::paws.storage
             any::digest
+            any::forcats
+            any::dplyr
+            any::stringr
+            any::janitor
           cache-version: 2
 
       - name: install nhanesdata package
