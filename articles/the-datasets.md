@@ -2,7 +2,7 @@
 
 ## Available Datasets
 
-This package provides 339 NHANES datasets, automatically updated
+This package provides 340 NHANES datasets, automatically updated
 annually with data from 1999-2023 (excluding the 2019-2020 cycle).
 
 ### Quick Start
@@ -37,7 +37,7 @@ term_search('blood pressure')
 > before analyzing mortality outcomes.
 >
 > See the [Public-Use Linked Mortality
-> Files](https://www.cdc.gov/nchs/data-linkage/mortality-public.htm) for
+> Files](https://www.cdc.gov/nchs/linked-data/mortality-files/) for
 > methodology and variable definitions.
 
 ### Categories
