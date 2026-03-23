@@ -24,9 +24,11 @@ term_search('blood pressure')
 > participants to death certificate records from the National Death
 > Index (NDI), enabling survival analysis and mortality risk studies.
 >
-> **Key features:** - Follow-up through December 31, 2019 -
-> Cause-specific mortality (ICD-10 codes) - Person-months of follow-up -
-> Vital status and mortality flags
+> **Key features:**  
+> \* Follow-up through December 31, 2019  
+> \* Cause-specific mortality (ICD-10 codes)  
+> \* Person-months of follow-up  
+> \* Vital status and mortality flags
 >
 > **Important:** Mortality linkage requires understanding of survey
 > weights, censoring, and survival analysis methods. Always consult the
