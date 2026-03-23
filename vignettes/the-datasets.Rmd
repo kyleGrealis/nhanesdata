@@ -32,6 +32,14 @@ catalog <- do.call(rbind, lapply(config$datasets, function(x) {
     stringsAsFactors = FALSE
   )
 }))
+
+catalog <- rbind(catalog, data.frame(
+  Dataset = "MORTALITY",
+  Description = "NHANES-Linked Mortality (NDI) - Follow-up Through 2019",
+  Category = "Linkage",
+  stringsAsFactors = FALSE
+))
+
 ```
 
 ## Available Datasets
@@ -61,7 +69,7 @@ term_search('blood pressure')
 >
 > **Important:** Mortality linkage requires understanding of survey weights, censoring, and survival analysis methods. Always consult the [NCHS data linkage documentation](https://www.cdc.gov/nchs/data-linkage/mortality-public.htm) and the [NHANES analytic guidelines](https://wwwn.cdc.gov/nchs/nhanes/analyticguidelines.aspx) before analyzing mortality outcomes.
 >
-> See the [Public-Use Linked Mortality Files](https://www.cdc.gov/nchs/data-linkage/mortality-public.htm) for methodology and variable definitions.
+> See the [Public-Use Linked Mortality Files](https://www.cdc.gov/nchs/linked-data/mortality-files/) for methodology and variable definitions.
 
 ### Categories
 
