@@ -1,6 +1,6 @@
 ################################################################################
 # Title:   Expanded Base NHANES Dataset (1999–2021)
-# Author:  [contributor]
+# Author:  Natalie Neugaard
 # Date:    2026-03-29
 # Saved:   base_1999_2021  (on Cloudflare R2 via nhanesdata:::nhanes_r2_upload)
 ################################################################################
@@ -636,10 +636,13 @@ base_small <- base |>
     ridageyr,    # age in years (continuous)
     riagendr,    # sex (Male / Female)
     race_ethnicity,
-    ridpreg,     # pregnancy status at MEC exam (females 8–59; NA otherwise)
-                 # nhanesdata name for CDC's RIDEXPREG.
-                 # 1=positive lab test, 2=self-reported, 3=cannot ascertain
+    ridexprg,    # pregnancy status at MEC exam (females; NA for males & ineligible)
+                 # CDC variable: RIDEXPRG. Stored as labelled string in nhanesdata.
+                 # Positive values contain "positive lab" or "self-reported pregnant".
+                 # "Cannot ascertain" and "not pregnant" → keep.
                  # Use for exclusion criteria in study-specific scripts.
+                 # NOTE: ridpreg also exists in demo but is largely unpopulated —
+                 # use ridexprg.
 
     # ----- Socioeconomic & household ------------------------------------------
     education,
@@ -841,19 +844,29 @@ print(
     summarise(pct_ocq670_present = round(mean(!is.na(ocq670)) * 100, 1), n = n())
 )
 
-# 6i. Survey weight sanity checks
+# 6i. Pregnancy variable (ridexprg) coverage by year
+# Expect NA for all males and age-ineligible participants; non-NA for
+# examined females. Overall missingness ~81% in the full sample is expected.
+message("\nPregnancy status (ridexprg) non-missing rate by year:")
+print(
+  base_small |>
+    group_by(year) |>
+    summarise(pct_ridexprg_present = round(mean(!is.na(ridexprg)) * 100, 1), n = n())
+)
+
+# 6j. Survey weight sanity checks
 stopifnot(
   "Negative wtmec2yr found" = all(base_small$wtmec2yr >= 0, na.rm = TRUE),
   "Negative wtint2yr found" = all(base_small$wtint2yr >= 0, na.rm = TRUE)
 )
 
-# 6j. PIR range check
+# 6k. PIR range check
 if (any(base_small$pir > 10, na.rm = TRUE)) {
   warning(sum(base_small$pir > 10, na.rm = TRUE),
           " rows have PIR > 10 — check for coding errors.")
 }
 
-# 6k. OCQ hours check (>99 hrs/week; sentinel codes 77777/99999 already NA).
+# 6l. OCQ hours check (>99 hrs/week; sentinel codes 77777/99999 already NA).
 # Remaining values >99 are expected to be real extreme-hour workers.
 # Note: some cycles used 100 as a ceiling code ("100 or more") — interpret
 # the value 100 with caution in continuous models.
