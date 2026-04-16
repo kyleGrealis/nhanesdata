@@ -1,0 +1,30 @@
+<style>
+  .hide {
+    display: none !important;
+  }
+</style>
+
+<script>
+  // Wait for Reveal to be fully loaded before doing anything
+  Reveal.addEventListener('ready', function() {
+    let footer = document.querySelector('div.footer');
+    let slideNo = document.querySelector('div.slide-number');
+    
+    // Hide elements on the first slide initially
+    if (Reveal.isFirstSlide()) {
+      slideNo.classList.add('hide');
+      footer.classList.add('hide');
+    }
+    
+    // Add event listener for slide changes
+    Reveal.on('slidechanged', function(event) {
+      if (Reveal.isFirstSlide()) {
+        slideNo.classList.add('hide');
+        footer.classList.add('hide');
+      } else {
+        slideNo.classList.remove('hide');
+        footer.classList.remove('hide');
+      }
+    });
+  });
+</script>
