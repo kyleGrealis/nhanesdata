@@ -15,5 +15,7 @@ docs/
 # AI
 .claude
 CLAUDE.md
+.gemini
+GEMINI.md
 
 CRAN-SUBMISSION
