@@ -213,7 +213,7 @@ create_design <- function(
   # Create the survey dataset with new calculated weight variable
   # Need to handle 4yr weights conditionally since they only exist for 1999/2001
   if (wt_type == "interview") {
-    if (needs_4yr) {
+    if (needs_4yr && needs_2yr) {
       survey_dat <- import |>
         mutate(
           design_weight = if_else(
@@ -222,12 +222,15 @@ create_design <- function(
             wtint2yr * 1 / length(cycles)
           )
         )
+    } else if (needs_4yr) {
+      survey_dat <- import |>
+        mutate(design_weight = wtint4yr * 2 / length(cycles))
     } else {
       survey_dat <- import |>
         mutate(design_weight = wtint2yr * 1 / length(cycles))
     }
   } else if (wt_type == "mec") {
-    if (needs_4yr) {
+    if (needs_4yr && needs_2yr) {
       survey_dat <- import |>
         mutate(
           design_weight = if_else(
@@ -236,13 +239,30 @@ create_design <- function(
             wtmec2yr * 1 / length(cycles)
           )
         )
+    } else if (needs_4yr) {
+      survey_dat <- import |>
+        mutate(design_weight = wtmec4yr * 2 / length(cycles))
     } else {
       survey_dat <- import |>
         mutate(design_weight = wtmec2yr * 1 / length(cycles))
     }
   } else { # fasting
-    survey_dat <- import |>
-      mutate(design_weight = wtsaf2yr * 1 / length(cycles))
+    if (needs_4yr && needs_2yr) {
+      survey_dat <- import |>
+        mutate(
+          design_weight = if_else(
+            year %in% c(1999, 2001),
+            wtsaf4yr * 2 / length(cycles),
+            wtsaf2yr * 1 / length(cycles)
+          )
+        )
+    } else if (needs_4yr) {
+      survey_dat <- import |>
+        mutate(design_weight = wtsaf4yr * 2 / length(cycles))
+    } else {
+      survey_dat <- import |>
+        mutate(design_weight = wtsaf2yr * 1 / length(cycles))
+    }
   }
 
   # Handle NA weights - filter them out automatically
