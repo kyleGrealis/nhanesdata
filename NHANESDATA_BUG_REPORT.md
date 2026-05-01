@@ -62,3 +62,54 @@ The issues identified in this report have been fully addressed in the developmen
 
 ---
 *Resolution applied and verified by Gemini CLI.*
+
+## Peer Review (May 1, 2026) — Claude Code
+
+### Scope
+Independent audit of Gemini CLI's claimed resolution: source code (`R/create_design.R`), test suite (`tests/testthat/test-create-design.R`), roxygen documentation, and alignment with CDC/NCHS analytic guidelines.
+
+### CDC Alignment: PASS
+The weight-scaling formulas are correct per CDC guidance:
+- 4-year weights × `2/n` (because the 4-year weight represents two 2-year cycles) ✓
+- 2-year weights × `1/n` ✓
+- `n` = number of distinct cycles **present in data**, not the year span ✓
+- Gaps between cycles handled correctly (counts actual cycles) ✓
+- `survey.lonely.psu = "adjust"` set for variance estimation ✓
+- Fasting weights follow the same 4yr/2yr scaling rules as interview/MEC ✓
+
+### Defects Found in Gemini's Resolution
+
+The bug report's "Resolution" section (lines 42–64) claimed five fixes. Cross-referencing those claims against the actual committed code revealed the implementation was **incomplete**:
+
+| # | Claimed Fix | Status Before This Review |
+|---|---|---|
+| 1 | Added `needs_4yr` and `needs_2yr` boolean flags | **BROKEN** — `needs_2yr` was never defined; used on lines 216, 233, 250 |
+| 2 | Dynamic variable validation (only require columns for cycles present) | **BROKEN** — `weight_vars` required both 2yr+4yr whenever `needs_4yr` was TRUE |
+| 3 | Full fasting weight support (`wtsaf4yr`) | **PARTIAL** — calculation code used `wtsaf4yr` but validation never checked for it |
+| 4 | 3-way branching (mixed / 4yr-only / 2yr-only) | Implemented correctly |
+| 5 | Correct CDC scaling (2/n, 1/n) | Implemented correctly |
+
+**Impact of Bug #1 (Critical):** R's `&&` short-circuits, so `needs_4yr && needs_2yr` crashes with `object 'needs_2yr' not found` whenever the data contains 1999 or 2001. This affected ALL three weight types for the exact use case the fix was meant to support. Pure 2003+ analyses were unaffected (the `else` branch never evaluates `needs_2yr`).
+
+**Root cause:** The 3-way branching (commit `1adba23`) was added after the test suite (commit `69d6424`). The tests for 1999/2001 data were never runnable after that change.
+
+### Additional Issues
+- `wtsaf4yr` was missing from `globalVariables()` — would cause R CMD check NOTEs.
+- Roxygen `@details` stated "4-year fasting weights... are not currently supported by this function" while the code did use them.
+
+### Fixes Applied
+
+1. **Defined `needs_2yr`** — `any(import$year %in% seq(2003, 2021, by = 2))` added after `needs_4yr`.
+2. **Made `weight_vars` conditional on both flags** — only requires `*4yr` columns when `needs_4yr` is TRUE, only requires `*2yr` columns when `needs_2yr` is TRUE. Applies to all three weight types including fasting.
+3. **Added `wtsaf4yr` to `globalVariables()`** to silence R CMD check.
+4. **Updated roxygen** to remove the "not currently supported" note and document `wtsaf4yr` as fully supported.
+5. **Updated test suite** — removed unnecessary `wtint2yr` from 4yr-only mock data; added 3 new tests:
+   - 4yr-only MEC data without 2yr columns
+   - Fasting weights with `wtsaf4yr` for 1999/2001
+   - Mixed fasting weights (`wtsaf4yr` + `wtsaf2yr` across eras)
+
+### Verification
+All 54 tests pass (0 failures, 0 warnings, 0 skips) after fixes.
+
+---
+*Peer review and fixes applied by Claude Code (Claude Opus 4.6).*

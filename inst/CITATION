@@ -23,5 +23,5 @@ bibentry(
   ),
   year = "2026",
   url = "https://www.kylegrealis.com/nhanesdata/",
-  note = "R package version 0.2.1"
+  note = "R package version 0.2.2"
 )

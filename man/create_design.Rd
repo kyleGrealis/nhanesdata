@@ -89,18 +89,17 @@ Example: Combining 4 cycles (1999, 2001, 2003, 2005):
 \item 2003 & 2005: \code{wtmec2yr * 1/4}
 }
 
-Fasting weights (\code{wtsaf2yr}) are used with \code{1/n} multiplication.
-
-NOTE: 4-year fasting weights (\code{wtsaf4yr}) exist in NHANES laboratory files
-for 1999-2002 but are not currently supported by this function.
+Fasting weights follow the same rules: \code{wtsaf4yr * 2/n} for 1999/2001 and
+\code{wtsaf2yr * 1/n} for 2003+.
 
 \strong{Fasting Subsample Weights}
 
 For fasting subsample analyses combining 1999-2002 cycles, the 4-year fasting
 weight (WTSAF4YR) exists in laboratory files (e.g., LAB10AM, LAB13AM) but is
 typically NOT in demographic files obtained via nhanesA. If your dataset includes
-merged laboratory fasting data from 1999-2002, ensure WTSAF4YR is present.
-Otherwise, this function assumes only 2-year fasting weights (WTSAF2YR) are available.
+1999 or 2001 cycles with fasting data, ensure WTSAF4YR is present in the merged
+dataset. The function will validate its presence and apply the same 2/n scaling
+used for other 4-year weights.
 }
 \examples{
 \donttest{
