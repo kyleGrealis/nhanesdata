@@ -68,6 +68,7 @@ timespan.
 ## Basic Usage
 
 ``` r
+
 library(nhanesdata)
 library(dplyr)
 library(srvyr)
@@ -78,6 +79,7 @@ library(srvyr)
 When analyzing demographics and questionnaire data only:
 
 ``` r
+
 # Load demographics data
 demo <- read_nhanes("demo")
 
@@ -102,6 +104,7 @@ design_int |>
 When including any examination or laboratory data:
 
 ``` r
+
 # Load demographics and body measures
 demo <- read_nhanes("demo")
 bmx <- read_nhanes("bmx")
@@ -131,6 +134,7 @@ design_mec |>
 When including fasting laboratory measurements:
 
 ``` r
+
 # Load demographics and fasting lab data
 demo <- read_nhanes("demo")
 glu <- read_nhanes("glu")
@@ -163,6 +167,7 @@ your data. The function calculates weights based only on cycles actually
 present:
 
 ``` r
+
 # Data might be missing 2007-2010 cycles
 # Weights calculated on cycles present, not timespan
 design <- create_design(

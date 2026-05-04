@@ -8,6 +8,7 @@ annually with data from 1999-2023 (excluding the 2019-2020 cycle).
 ### Quick Start
 
 ``` r
+
 library(nhanesdata)
 
 # Load demographics data

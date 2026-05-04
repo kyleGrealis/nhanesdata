@@ -27,12 +27,12 @@ Source:
 
 Grealis K, Baral A, Neugaard N, Balise R, Thrul J, Devkota J (2026).
 *nhanesdata: Harmonized Access to NHANES Survey Data*. R package version
-0.2.1, <https://www.kylegrealis.com/nhanesdata/>.
+0.2.2, <https://www.kylegrealis.com/nhanesdata/>.
 
     @Manual{,
       title = {nhanesdata: Harmonized Access to NHANES Survey Data},
       author = {Kyle Grealis and Amrit Baral and Natalie Neugaard and Raymond Balise and Johannes Thrul and Janardan Devkota},
       year = {2026},
       url = {https://www.kylegrealis.com/nhanesdata/},
-      note = {R package version 0.2.1},
+      note = {R package version 0.2.2},
     }

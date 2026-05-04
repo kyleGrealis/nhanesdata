@@ -27,6 +27,7 @@ provides the foundation for accessing NHANES data through R.
 ## Installation
 
 ``` r
+
 # From CRAN (submitted for approval Feb. 18, 2026)
 install.packages("nhanesdata")
 
@@ -37,6 +38,7 @@ pak::pak("kyleGrealis/nhanesdata")
 ## Quick Start
 
 ``` r
+
 library(nhanesdata)
 
 # Load any dataset (case-insensitive)
@@ -56,6 +58,7 @@ All datasets include a `year` column (survey cycle start year) and
 `seqn` (participant ID). Join datasets on both columns:
 
 ``` r
+
 library(dplyr)
 
 analysis <- read_nhanes("demo") |>
@@ -64,13 +67,13 @@ analysis <- read_nhanes("demo") |>
 
 ## Functions
 
-| Function                                                                               | Purpose                                                                |
-|----------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-| [`read_nhanes()`](https://www.kylegrealis.com/nhanesdata/reference/read_nhanes.md)     | Load a pre-merged NHANES dataset from cloud storage                    |
+| Function | Purpose |
+|----|----|
+| [`read_nhanes()`](https://www.kylegrealis.com/nhanesdata/reference/read_nhanes.md) | Load a pre-merged NHANES dataset from cloud storage |
 | [`create_design()`](https://www.kylegrealis.com/nhanesdata/reference/create_design.md) | Create survey design objects with proper weighting for multiple cycles |
-| [`term_search()`](https://www.kylegrealis.com/nhanesdata/reference/term_search.md)     | Search variables by keyword or phrase                                  |
-| [`var_search()`](https://www.kylegrealis.com/nhanesdata/reference/var_search.md)       | Search variables by exact name                                         |
-| [`get_url()`](https://www.kylegrealis.com/nhanesdata/reference/get_url.md)             | Get CDC codebook URL for a specific table                              |
+| [`term_search()`](https://www.kylegrealis.com/nhanesdata/reference/term_search.md) | Search variables by keyword or phrase |
+| [`var_search()`](https://www.kylegrealis.com/nhanesdata/reference/var_search.md) | Search variables by exact name |
+| [`get_url()`](https://www.kylegrealis.com/nhanesdata/reference/get_url.md) | Get CDC codebook URL for a specific table |
 
 All functions are case-insensitive.
 
@@ -114,6 +117,7 @@ source.
 ## Direct Access (Without the Package)
 
 ``` r
+
 library(arrow)
 demo <- arrow::read_parquet("https://nhanes.kylegrealis.com/demo.parquet")
 ```

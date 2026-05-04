@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhanesdata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,17 @@
       <small>Source: <a href="https://github.com/kyleGrealis/nhanesdata/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.2" id="nhanesdata-022">nhanesdata 0.2.2<a class="anchor" aria-label="anchor" href="#nhanesdata-022"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-2-2">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-2"></a></h3>
+<ul><li>Fixed <code><a href="../reference/create_design.html">create_design()</a></code> crash for any analysis including 1999 or 2001 NHANES cycles. The <code>needs_2yr</code> flag was referenced but never defined, causing <code>object 'needs_2yr' not found</code> at runtime.</li>
+<li>Fixed <code><a href="../reference/create_design.html">create_design()</a></code> requiring 2-year weight columns (<code>wtint2yr</code>, <code>wtmec2yr</code>) for datasets containing only 1999/2001 cycles, where those columns do not exist in NHANES demographic files.</li>
+<li>Fixed fasting weight validation to check for <code>wtsaf4yr</code> when 1999/2001 cycles are present, matching the calculation logic that already used it.</li>
+<li>Added <code>wtsaf4yr</code> to <code><a href="https://rdrr.io/r/utils/globalVariables.html" class="external-link">globalVariables()</a></code> to resolve R CMD check NOTEs.</li>
+<li>Corrected roxygen documentation that incorrectly stated 4-year fasting weights were not supported.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.1" id="nhanesdata-021">nhanesdata 0.2.1<a class="anchor" aria-label="anchor" href="#nhanesdata-021"></a></h2><p class="text-muted">CRAN release: 2026-02-28</p>
 <div class="section level3">

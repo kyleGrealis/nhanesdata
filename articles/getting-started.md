@@ -28,11 +28,13 @@ provides the underlying interface to NHANES data in R.
 ## Installation
 
 ``` r
+
 # install.packages("pak")
 pak::pak("kyleGrealis/nhanesdata")
 ```
 
 ``` r
+
 library(nhanesdata)
 library(dplyr)
 library(ggplot2)
@@ -44,6 +46,7 @@ library(ggplot2)
     #> DEMO complete! (113,249 rows)
 
 ``` r
+
 demo <- read_nhanes("demo")
 glimpse(demo)
 ```
@@ -60,6 +63,7 @@ work.
 ## Example: Age Distribution Over Time
 
 ``` r
+
 demo |>
   filter(!is.na(ridageyr)) |>
   ggplot(aes(x = ridageyr)) +
@@ -94,6 +98,7 @@ Use
 to retrieve the codebook URL for any cycle-specific table:
 
 ``` r
+
 get_url("DEMO")   # 1999-2000 codebook
 get_url("DEMO_I") # 2015-2016 codebook
 ```
@@ -107,6 +112,7 @@ for details.
 Combine datasets using `seqn` and `year` as join keys:
 
 ``` r
+
 demo <- read_nhanes("demo")
 bpx <- read_nhanes("bpx")
 bmx <- read_nhanes("bmx")
@@ -124,6 +130,7 @@ within the same survey period.
 ## Filtering by Survey Year
 
 ``` r
+
 demo <- read_nhanes("demo")
 
 # Recent cycles only
@@ -148,6 +155,7 @@ demo |>
 ### By keyword
 
 ``` r
+
 term_search("blood pressure")
 ```
 
@@ -159,6 +167,7 @@ with
 ### By variable name
 
 ``` r
+
 var_search("BPXSY1")
 ```
 
@@ -170,6 +179,7 @@ Shows which cycles contain a specific variable.
     #> BMX complete! (105,626 rows)
 
 ``` r
+
 "bmxht" %in% names(bmx)
 #> [1] TRUE
 ```
@@ -179,6 +189,7 @@ All search functions are case-insensitive.
 ## Complete Example: Blood Pressure by Age Group
 
 ``` r
+
 demo <- read_nhanes("demo")
 bpx <- read_nhanes("bpx")
 
@@ -213,6 +224,7 @@ bp_summary <- bp_analysis |>
 ```
 
 ``` r
+
 bp_summary |>
   ggplot(aes(x = age_group)) +
   geom_col(aes(y = mean_systolic), fill = "coral", alpha = 0.7) +

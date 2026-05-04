@@ -75,6 +75,7 @@ pre-pandemic files directly from the CDC using the
 [**nhanesA**](https://cran.r-project.org/package=nhanesA) package:
 
 ``` r
+
 library(nhanesA)
 
 # Access 2019-2020 pre-pandemic demographics

@@ -55,7 +55,7 @@ See also as_survey_design"><meta property="og:image" content="https://www.kylegr
 
     <a class="navbar-brand me-2" href="../index.html">nhanesdata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -176,15 +176,15 @@ the 4-year weight represents two 2-year cycles.</p></li>
 <li><p>The denominator <code>n</code> is always the total number of cycles in the analysis.</p></li>
 </ul><p>Example: Combining 4 cycles (1999, 2001, 2003, 2005):</p><ul><li><p>1999 &amp; 2001: <code>wtmec4yr * 2/4</code></p></li>
 <li><p>2003 &amp; 2005: <code>wtmec2yr * 1/4</code></p></li>
-</ul><p>Fasting weights (<code>wtsaf2yr</code>) are used with <code>1/n</code> multiplication.</p>
-<p>NOTE: 4-year fasting weights (<code>wtsaf4yr</code>) exist in NHANES laboratory files
-for 1999-2002 but are not currently supported by this function.</p>
+</ul><p>Fasting weights follow the same rules: <code>wtsaf4yr * 2/n</code> for 1999/2001 and
+<code>wtsaf2yr * 1/n</code> for 2003+.</p>
 <p><strong>Fasting Subsample Weights</strong></p>
 <p>For fasting subsample analyses combining 1999-2002 cycles, the 4-year fasting
 weight (WTSAF4YR) exists in laboratory files (e.g., LAB10AM, LAB13AM) but is
 typically NOT in demographic files obtained via nhanesA. If your dataset includes
-merged laboratory fasting data from 1999-2002, ensure WTSAF4YR is present.
-Otherwise, this function assumes only 2-year fasting weights (WTSAF2YR) are available.</p>
+1999 or 2001 cycles with fasting data, ensure WTSAF4YR is present in the merged
+dataset. The function will validate its presence and apply the same 2/n scaling
+used for other 4-year weights.</p>
     </div>
 
     <div class="section level2">

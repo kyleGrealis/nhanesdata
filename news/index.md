@@ -1,5 +1,28 @@
 # Changelog
 
+## nhanesdata 0.2.2
+
+### Bug Fixes
+
+- Fixed
+  [`create_design()`](https://www.kylegrealis.com/nhanesdata/reference/create_design.md)
+  crash for any analysis including 1999 or 2001 NHANES cycles. The
+  `needs_2yr` flag was referenced but never defined, causing
+  `object 'needs_2yr' not found` at runtime.
+- Fixed
+  [`create_design()`](https://www.kylegrealis.com/nhanesdata/reference/create_design.md)
+  requiring 2-year weight columns (`wtint2yr`, `wtmec2yr`) for datasets
+  containing only 1999/2001 cycles, where those columns do not exist in
+  NHANES demographic files.
+- Fixed fasting weight validation to check for `wtsaf4yr` when 1999/2001
+  cycles are present, matching the calculation logic that already used
+  it.
+- Added `wtsaf4yr` to
+  [`globalVariables()`](https://rdrr.io/r/utils/globalVariables.html) to
+  resolve R CMD check NOTEs.
+- Corrected roxygen documentation that incorrectly stated 4-year fasting
+  weights were not supported.
+
 ## nhanesdata 0.2.1
 
 CRAN release: 2026-02-28
