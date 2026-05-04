@@ -1,0 +1,480 @@
+---
+title: "nhanesdata"
+subtitle: "Harmonized, cloud-hosted NHANES data for streamlined research workflows"
+author: "Kyle Grealis, MS¹ · Natalie Neugaard (Goulett), MPH · Amrit Baral, PhD, MBBS, MPH² · Raymond Balise, PhD¹ · Johannes Thrul, PhD² · Janardan Devkota, PhD²<br><br><small>¹ Dept. of Biostatistics, University of Miami, Miller School of Medicine, Miami, FL<br>² Dept. of Mental Health, Bloomberg School of Public Health, Johns Hopkins University, Baltimore, MD</small>"
+date: "2026-05-07"
+date-format: "MMMM D, YYYY"
+format:
+  revealjs:
+    theme:
+      - default
+      - slides.scss
+    title-slide-attributes:
+      data-background-image: "img/rmed_background.png"
+      data-background-size: cover
+      data-background-opacity: "50"
+    fontsize: 2em
+    html-math-method: mathjax
+    slide-number: c/t
+    show-slide-number: all
+    highlight-style: rstudio_default-light.theme
+    logo: "img/rmed.png"
+    footer: "[github.com/kyleGrealis/nhanesdata](https://github.com/kyleGrealis/nhanesdata){target='_blank'}"
+    include-after-body: "img/clean_title_page.html"
+include-in-header:
+  text: |
+    <link rel="shortcut icon" href="img/rmed.ico"/>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var titleSlide = document.getElementById('title-slide');
+        if (titleSlide) {
+          var notes = document.createElement('aside');
+          notes.className = 'notes';
+          notes.innerHTML = 'Good afternoon, everyone. My name is Natalie Neugaard and I\'m an independent data scientist. Today I want to introduce nhanesdata — a package our team built to make working with NHANES data faster, more consistent, and more reproducible. I\'ll walk you through why we built it, how it works, and show some examples of it in use.';
+          titleSlide.appendChild(notes);
+        }
+      });
+    </script>
+embed-resources: true
+knitr:
+  opts_chunk:
+    collapse: true
+    echo: false
+    message: false
+    warning: false
+    error: true
+    comment: ""
+    R.options:
+      digits: 3
+editor_options:
+  chunk_output_type: console
+editor: source
+highlight-style: rstudio_default-light.theme
+---
+
+```{r setup}
+library(conflicted)
+suppressPackageStartupMessages(library(tidyverse))
+library(knitr)
+```
+
+## What is NHANES?
+
+:::: {.columns}
+
+::: {.column width="58%"}
+The **National Health and Nutrition Examination Survey** (NHANES) is:
+
+- A nationally representative, complex survey of U.S. civilians
+- Continuous since 1999, collected in **2-year cycles**
+- Combines **interviews**, **physical exams**, and **laboratory tests**
+- A cornerstone dataset for population health research
+:::
+
+::: {.column width="42%"}
+**Data spans:**
+
+| Category | Datasets |
+|----------|----------|
+| Laboratory | 173 |
+| Questionnaire | 77 |
+| Examination | 75 |
+| Dietary | 14 |
+| **Total** | **339+** |
+:::
+
+::::
+
+::: {.fragment}
+> NHANES is powerful, but working with it at scale is painful.
+:::
+
+::: notes
+(1) Let me start with a little background on NHANES for those who may be less familiar. The CDC's National Health and Nutrition Examination Survey, or NHANES, is one of the most valuable public health datasets we have. It's nationally representative, it has decades of data, and it's all available for free.
+(2) The catch is that its datasets come in two-year cycle chunks, and combining all of them can get painful.
+:::
+
+## The Problem
+
+The CDC publishes data in **two-year cycle fragments** with cryptic naming:
+
+```
+DEMO    DEMO_B    DEMO_C    DEMO_D    ...    DEMO_L
+(1999)  (2001)    (2003)    (2005)           (2021)
+```
+
+::: {.fragment}
+**Pain points for researchers:**
+
+- CDC servers are **slow and frequently unreliable**
+- Every table must be individually downloaded, cleaned, and merged
+- **Column types conflict** across cycles (numeric in one cycle, factor in another)
+- Inconsistent variable coding: raw numeric codes, not labels
+- Repetitive, error-prone boilerplate code in every new project
+:::
+
+::: {.fragment}
+> For large data science projects and iterative workflows, this becomes a bottleneck.
+:::
+
+::: notes
+(1) When you go to download NHANES data, you're looking at 13 separate sets of files per table. 
+(2) The CDC servers are slow and go down regularly. Each file needs to be downloaded, cleaned, and merged. Column types don't always agree across cycles, and variables are often stored as raw numeric codes rather than meaningful labels. 
+(3) In iterative workflows, this overhead becomes a drag.
+:::
+
+# The Solution {background-color="#003F30"}
+
+::: notes
+So — what did we do about it? That's where nhanesdata comes in.
+:::
+
+## nhanesdata: What We Built
+
+Built on the shoulders of the excellent **`nhanesA`** package (Endres *et al.*), which made NHANES data more accessible, but still relied on CDC's servers.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**We added:**
+
+- Pre-merged tables across all cycles
+- Harmonized column types and labels
+- Parquet files hosted on a **public cloud server** (Cloudflare R2)
+- `create_design()` for CDC-compliant survey weighting
+- Variable and term search utilities
+:::
+
+::: {.column width="50%"}
+**The result:**
+
+- Near-instantaneous downloads
+- No CDC server dependency at runtime
+- Reproducible, consistent data ready to join and analyze
+- Lower barrier to entry for NHANES research
+:::
+
+::::
+
+::: notes
+We built nhanesdata on top of nhanesA, which already made NHANES much more accessible in R. Our contribution was to take that a step further: we downloaded all the data, merged it across cycles, harmonized the types and labels, and stored it as Parquet files on a public cloud server. Parquet is a compressed, columnar file format that loads extremely quickly — that's what allows near-instantaneous downloads without depending on CDC's servers at all.
+:::
+
+## How It Works
+
+Instead of downloading data by cycle, **`nhanesdata` serves it by table.** All cycles for a given table are already merged into a single dataset.
+
+For example, `read_nhanes("demo")` returns one tibble containing NHANES demographics from 1999 through 2023 — every cycle combined, ready to use.
+
+::: {.fragment}
+Every dataset always contains two key variables:
+
+- `seqn`: the participant ID
+- `year`: the survey cycle start year
+:::
+
+::: {.fragment}
+The underlying Parquet files are also **publicly accessible** — no R required. The demo table, for example, can be downloaded at:
+
+`nhanes.kylegrealis.com/demo.parquet`
+:::
+
+::: notes
+(1) Instead of dealing with 13 separate files per table, one function call returns a single merged tibble. For example, using the function `read_nhanes()` on the "demo" table returns one tibble containing all participant demographics for each cycle from 1999 through 2023.
+(2) Every dataset always includes seqn and year, which are the two keys you need for everything downstream.
+(3) The underlying Parquet files are publicly accessible via URL. Anyone can download them directly — Python users, Julia users, and anyone else who uses Parquet files.
+:::
+
+## Data Harmonization
+
+`nhanesA` translates numeric codes to labeled factors only when a **parseable CDC codebook exists** for that cycle. When one doesn't, the same variable comes back as raw numbers — so a single variable across 13 cycles might be labeled in 10 and numeric in 3. Add R type conflicts and variables absent from certain cycles, and there is a lot to resolve before `bind_rows()` will even run.
+
+::: {.fragment}
+**Our approach:**
+
+- Cached translation tables from cycles that *do* have codebooks and applied them to cycles that don't
+- Resolved all R type conflicts across cycles before binding
+- Variables not collected in a given cycle are filled with `NA`, not dropped
+:::
+
+::: {.fragment}
+::: {.callout-warning}
+**We're human. We did our best.** If a variable is critical to your analysis, verify it against the CDC codebook. Use `get_url("DEMO_J")` for a direct link.
+:::
+:::
+
+::: notes
+(1) The biggest harmonization challenge: nhanesA uses CDC codebooks to translate numeric codes into labeled factors. But not every cycle has a parseable codebook. So a single variable across 13 cycles might be labeled in 10 and numeric in 3. On top of that, R class conflicts and variables absent from certain cycles make bind_rows() fail outright.
+(2) Our solution was to cache translation tables from cycles that do have codebooks and apply them to cycles that don't. We resolved all type conflicts before binding and filled missing variables with NA rather than dropping them.
+(3) That said — we're only human. Verify any variable critical to your analysis using get_url(), which links directly to the CDC codebook page for a given table.
+:::
+
+# Using nhanesdata {background-color="#003F30"}
+
+::: notes
+Now let's look at what using the package actually looks like in practice.
+:::
+
+## Installation & Loading Data
+
+```{r}
+#| echo: true
+#| eval: false
+
+install.packages("nhanesdata")
+library(nhanesdata)
+
+# Load any NHANES table - merged across all cycles, instantly
+demo  <- read_nhanes("demo")   # Demographics, 1999-2023
+bpx   <- read_nhanes("bpx")    # Blood pressure
+bmx   <- read_nhanes("bmx")    # Body measures
+tchol <- read_nhanes("tchol")  # Total cholesterol
+```
+
+::: {.fragment}
+```{r}
+#| echo: true
+#| eval: false
+
+# Not sure what a table is called? Search by keyword or variable name
+term_search("blood pressure")   # keyword search to find table name
+var_search("BPXSY1")            # find which cycles contain a variable
+get_url("BPX_J")                # open CDC codebook for a specific cycle
+```
+:::
+
+::: notes
+(1) You can install nhanesdata using the `install.packages()` function. Once loaded, you call the `read_nhanes()` function with the table name of interest. Here we're loading demographics, blood pressure, body measures, and total cholesterol on lines 5-8.
+(2) If you're not sure what a table is called, the package includes three search helpers. `term_search()` takes a keyword and returns matching table names. `var_search()` takes a specific variable name and tells you which cycles contain it. And `get_url()` returns a direct link to that table's CDC codebook page.
+:::
+
+## Joining & Filtering
+
+```{r}
+#| echo: true
+#| eval: false
+
+library(nhanesdata)
+library(dplyr)
+
+demo  <- read_nhanes("demo")
+bpx   <- read_nhanes("bpx")
+bmx   <- read_nhanes("bmx")
+
+# Join on BOTH seqn AND year - seqn alone is not unique across cycles
+analysis <- demo |>
+  inner_join(bpx, by = c("seqn", "year")) |>
+  inner_join(bmx, by = c("seqn", "year")) |>
+  filter(
+    ridageyr >= 18,       # adults only
+    year >= 2007,         # 2007-2017 cycles
+    year <= 2017
+  ) |>
+  mutate(obese = bmxbmi >= 30)
+```
+
+::: {.fragment}
+> Filtering and variable creation should happen **before** creating a survey design object.
+:::
+
+::: notes
+(1) A participant's `seqn` is only unique within a cycle, not across the full dataset. Joining on `seqn` alone will silently produce wrong results by matching participants from different cycles who happen to share an ID. Always join on both `seqn` and `year`.
+
+(2) Then you'll filter and create any derived variables you need before creating what's called a survey design object — modifying the data afterward can break the weight calculations. We need to create a survey design object because...
+:::
+
+## Survey Design
+
+NHANES oversamples certain subgroups, so each participant carries a **sampling weight**. Ignoring weights produces biased population estimates.
+
+**Pick the weight type that matches your most restrictive data source:**
+
+| Weight | Use when your analysis includes... |
+|---|---|
+| `"interview"` | Questionnaire / demographics only |
+| `"mec"` | Any physical exam or lab data |
+| `"fasting"` | Fasting lab measurements |
+
+::: {.fragment}
+```{r}
+#| echo: true
+#| eval: false
+
+design <- create_design(
+  dsn      = analysis,
+  start_yr = 2007,
+  end_yr   = 2017,
+  wt_type  = "mec"
+)
+```
+
+`create_design()` handles CDC-required weight scaling across cycles automatically.
+:::
+
+::: notes
+(1) NHANES oversamples certain groups — elderly, minorities, low-income — so unweighted estimates are biased. Every participant carries a sampling weight representing how many people they stand for in the U.S. population. The key decision is weight type: use interview for questionnaire data only, mec if your analysis involves any exam or lab data, and fasting for fasting labs.
+
+(2) The create_design function handles all the CDC-required weight scaling behind the scenes — including the tricky adjustments for combining multiple cycles.
+:::
+
+## Survey Design: Weighted Analysis
+
+```{r}
+#| echo: true
+#| eval: false
+
+library(srvyr)
+
+# Weighted mean systolic BP and obesity prevalence by age group
+design |>
+  group_by(age_60plus = ridageyr >= 60) |>
+  summarize(
+    mean_sbp  = survey_mean(bpxsy1, na.rm = TRUE),
+    pct_obese = survey_mean(obese,  na.rm = TRUE),
+    n         = survey_total(vartype = NULL)
+  )
+```
+
+::: {.fragment}
+```
+# A tibble: 2 × 6
+  age_60plus mean_sbp mean_sbp_se pct_obese pct_obese_se        n
+  <lgl>         <dbl>       <dbl>     <dbl>        <dbl>    <dbl>
+1 FALSE          119.       0.315     0.332       0.00531 178456823
+2 TRUE           135.       0.481     0.357       0.00902  41234109
+```
+:::
+
+::: notes
+(1) Once you have the design object, you can use `srvyr` verbs just like dplyr, but estimates are properly weighted for the U.S. population.
+
+(2) The n column produced here at the end using the `survey_total()` function represents estimated population counts, not sample sizes, which is what a weighted NHANES analysis is actually based on.
+:::
+
+## Mortality Linkage
+
+One of the most powerful features: `read_nhanes("mortality")`
+
+```{r}
+#| echo: true
+#| eval: false
+
+library(survival)
+
+demo      <- read_nhanes("demo")
+mortality <- read_nhanes("mortality")   # NDI linkage through Dec 31, 2019
+
+survival_data <- demo |>
+  inner_join(mortality, by = c("seqn", "year")) |>
+  filter(ridageyr >= 40, year >= 1999)
+
+design <- create_design(survival_data, 1999, 2017, wt_type = "interview")
+
+svycoxph(
+  Surv(permth_exm / 12, mortstat == 1) ~ ridageyr + riagendr,
+  design = design
+)
+```
+
+::: {.fragment}
+> Population-representative survival analyses, entirely in R.
+:::
+
+::: notes
+(1) I want to highlight the mortality linkage dataset specifically. read_nhanes("mortality") gives you National Death Index-linked mortality data through the end of 2019. Combined with the `create_design` function, 
+(2) you can run survey-weighted survival models — like the Cox proportional hazards model shown on line 12, without ever leaving R or visiting the CDC's website. This is especially useful for chronic disease and aging research.
+:::
+
+# Caveats & What's Next {background-color="#003F30"}
+
+::: notes
+Before wrapping up, I want to be upfront about what the package does not yet cover.
+:::
+
+## What's Not Included (Yet)
+
+We harmonized the **majority of NHANES datasets**, but some are excluded:
+
+**Currently excluded:**
+
+- Datasets where CDC **suffix conventions are not followed**
+- Datasets with **repeated measures** (require special handling)
+- Surplus, pooled, and restricted-access samples
+- The **2019-2020 cycle** (COVID-19 disrupted data collection; CDC advises against combining it with standard cycles)
+
+::: {.fragment}
+**We're actively working on expanding coverage.**
+If you need a specific dataset not yet available, open a GitHub issue or contribute!
+:::
+
+::: notes
+(1) We haven't yet harmonized datasets that don't follow the standard suffix naming conventions, or datasets with repeated measures, which need special handling. The 2019-2020 cycle is intentionally excluded — the CDC itself advises against combining it with standard cycles because of COVID-19's disruption to data collection.
+(2) We're actively expanding coverage, and if there's a specific dataset you need, we welcome GitHub issues or contributions.
+:::
+
+## The Bottom Line
+
+**Goal:** Abstract away the data science overhead so researchers can focus on their science.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**We achieved this by:**
+
+- Harmonizing 339+ datasets across 13 cycles
+- Hosting on a public, no-auth cloud server
+- Serving as Parquet files for near-instant access
+- Providing `create_design()` for CDC-compliant weighting
+:::
+
+::: {.column width="50%"}
+**What it means for you:**
+
+- Go from install to analysis in minutes
+- Consistent, documented data you can trust
+- Reproducible workflows that don't break when CDC servers go down
+:::
+
+::::
+
+::: notes
+The core goal is accessibility. We wanted to remove the data science overhead so researchers can focus on the science. On the left is how we got there: over 300 harmonized datasets merged across 13 cycles, hosted publicly as Parquet files, with a design object function that handles the CDC weighting rules for you. On the right is what that means in practice: you can go from install to a weighted analysis in a few lines of code, with data that is consistent across cycles and does not depend on the CDC's servers. We used this package for our own research workflows, and we are now releasing it publicly so others can benefit from the same foundation.
+:::
+
+## Thank You
+
+:::: {.columns}
+
+::: {.column width="60%"}
+**Get started:**
+
+```r
+install.packages("nhanesdata")
+```
+
+**Resources:**
+
+- 📦 GitHub: [github.com/kyleGrealis/nhanesdata](https://github.com/kyleGrealis/nhanesdata)
+- 📖 Docs & vignettes: [kylegrealis.com/nhanesdata](https://www.kylegrealis.com/nhanesdata/)
+- 🖥️ These slides: [slides.kylegrealis.com/nhanesdata](https://slides.kylegrealis.com/nhanesdata)
+
+**Built on:** `nhanesA`, `arrow`, `srvyr`, `dplyr`
+:::
+
+::: {.column width="40%"}
+**Contributors:**
+
+- Kyle Grealis, MS *(lead developer)*
+- Natalie Neugaard (Goulett), MPH *(presenter)*
+- Amrit Baral, PhD, MBBS, MPH *(co-presenter)*
+- Raymond Balise, PhD
+- Johannes Thrul, PhD
+- Janardan Devkota, PhD
+
+:::
+
+::::
+
+::: notes
+The nhanesdata package is available on CRAN and on GitHub, and there's a full documentation site with vignettes covering everything we touched on today — getting started, survey design, the full dataset catalog, and more. The link in the footer will take you straight to the GitHub repo. Thank you for your time, and we'd be happy to answer any questions.
+:::

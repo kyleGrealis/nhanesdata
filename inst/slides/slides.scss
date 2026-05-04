@@ -27,6 +27,39 @@ $link-color: $primary;
   color: white
 }
 
+#title-slide::before {
+  content: "";
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  height: 320px;
+  background-image: url('img/nhanesdata-logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#title-slide {
+  padding-top: 330px !important;
+}
+
+#title-slide h1.title {
+  font-size: 2.0em !important;
+}
+
+#title-slide p.subtitle {
+  font-size: 0.95em !important;
+}
+
+#title-slide .quarto-title-author-name,
+#title-slide .quarto-title-affiliation,
+#title-slide p.author,
+#title-slide p.date {
+  font-size: 0.8em !important;
+}
+
 .reveal a {
   text-decoration: underline;
 }
