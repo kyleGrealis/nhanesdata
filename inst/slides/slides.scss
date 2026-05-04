@@ -1,0 +1,79 @@
+/*-- scss:defaults --*/
+// Colors
+$primary: #003F30;
+$body-color: #003F30;
+$body-bg: #fefefe;
+$link-color: $primary;
+// Fonts
+// $font-family-sans-serif: "Open Sans", sans-serif;
+// $font-family-monospace: "Source Code Pro", monospace;
+
+
+/*-- scss:mixins --*/
+
+
+/*-- scss:rules --*/
+
+
+.slide-number,
+.reveal.has-logo .slide-number {
+  bottom: 10px !important;
+  right: 100px !important;
+  top: unset !important;
+  color: $body-color !important;
+}
+
+#title-slide, #title-slide h1.title {
+  color: white
+}
+
+.reveal a {
+  text-decoration: underline;
+}
+
+.red {
+  color: #da2c43
+}
+
+.max-lines {
+  max-height: 400px; /* Adjust height as needed */
+  overflow: scroll; /* Enable scrolling if content exceeds height */
+}
+
+.scrolling {
+  overflow: scroll;
+  height: 400px;
+}
+
+.reveal ol {
+    margin: 0 0 0 1.5em;
+}
+
+.reveal code {
+  background-color: #F1F3F5;
+  color: blue;
+  padding: 0.1em 0.2em;
+  border-radius: 3px;     
+}
+
+.reveal .slide-logo {
+  height: 1.75em !important;
+  width: 1.75em !important;
+  max-width: unset !important;
+  max-height: unset !important;
+}
+
+.reveal div.sourceCode {
+  border: 1px solid #ccc !important;
+  box-shadow: none !important;
+}
+
+.reveal pre {
+  /* Remove the inner border */
+  border: none !important;  
+  box-shadow: none !important;
+}
+
+.reveal pre code {
+  background-color: #F1F3F5;
+}

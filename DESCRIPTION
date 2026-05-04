@@ -1,6 +1,6 @@
 Package: nhanesdata
 Title: Harmonized Access to NHANES Survey Data
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: c(
     person(
         "Kyle", "Grealis",
