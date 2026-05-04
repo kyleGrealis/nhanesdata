@@ -34,7 +34,7 @@ term_search('blood pressure')
 > **Important:** Mortality linkage requires understanding of survey
 > weights, censoring, and survival analysis methods. Always consult the
 > [NCHS data linkage
-> documentation](https://www.cdc.gov/nchs/data-linkage/mortality-public.htm)
+> documentation](https://www.cdc.gov/nchs/linked-data/mortality-files/?CDC_AAref_Val=https://www.cdc.gov/nchs/data-linkage/mortality-public.htm)
 > and the [NHANES analytic
 > guidelines](https://wwwn.cdc.gov/nchs/nhanes/analyticguidelines.aspx)
 > before analyzing mortality outcomes.
