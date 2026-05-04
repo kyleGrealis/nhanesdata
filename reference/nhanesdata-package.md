@@ -20,7 +20,7 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Kyle Grealis <kylegrealis@proton.me>
+**Maintainer**: Kyle Grealis <kyle@kylegrealis.com>
 ([ORCID](https://orcid.org/0000-0002-9223-8854))
 
 Other contributors:
