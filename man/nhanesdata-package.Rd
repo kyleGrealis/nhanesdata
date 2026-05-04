@@ -6,6 +6,8 @@
 \alias{nhanesdata-package}
 \title{nhanesdata: Harmonized Access to NHANES Survey Data}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Instant access to harmonized National Health and Nutrition Examination Survey (NHANES) data spanning 1999-2023. Retrieve pre-processed datasets from reliable cloud storage with automatic type reconciliation and integrated search tools for variables and datasets. Simplifies NHANES data workflows by handling cycle management and maintaining data consistency across survey waves. Data is sourced from \url{https://www.cdc.gov/nchs/nhanes/}.
 }
 \seealso{
@@ -18,7 +20,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Kyle Grealis \email{kylegrealis@proton.me} (\href{https://orcid.org/0000-0002-9223-8854}{ORCID})
+\strong{Maintainer}: Kyle Grealis \email{kyle@kylegrealis.com} (\href{https://orcid.org/0000-0002-9223-8854}{ORCID})
 
 Other contributors:
 \itemize{
