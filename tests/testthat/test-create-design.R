@@ -155,7 +155,7 @@ test_that("missing required variables produces error", {
 })
 
 test_that("missing weight variables produces error", {
-  # For 1999 cycles, need both 2yr and 4yr weights
+  # For 1999-only data, need wtint4yr (not wtint2yr)
   mock_data <- data.frame(
     year = 1999L,
     seqn = 1L,
@@ -181,7 +181,6 @@ test_that("interview weights calculated correctly for 1999/2001 cycles", {
     seqn = 1:4,
     sdmvpsu = c(1L, 2L, 1L, 2L),
     sdmvstra = c(1L, 1L, 2L, 2L),
-    wtint2yr = c(1000, 2000, 1500, 2500),
     wtint4yr = c(500, 1000, 750, 1250)
   )
 
@@ -506,4 +505,70 @@ test_that("function sets survey.lonely.psu option", {
   create_design(mock_data, start_yr = 2003, end_yr = 2003, wt_type = "interview")
 
   expect_equal(getOption("survey.lonely.psu"), "adjust")
+})
+
+test_that("4yr-only data does not require 2yr weight columns", {
+  mock_data <- data.frame(
+    year = c(1999L, 2001L),
+    seqn = 1:2,
+    sdmvpsu = c(1L, 1L),
+    sdmvstra = c(1L, 1L),
+    wtmec4yr = c(800, 600)
+  )
+
+  result <- create_design(
+    mock_data,
+    start_yr = 1999,
+    end_yr = 2001,
+    wt_type = "mec"
+  )
+
+  # 4yr weight * 2/2 = 4yr weight
+  expect_equal(result$variables$design_weight[1], 800)
+  expect_equal(result$variables$design_weight[2], 600)
+})
+
+test_that("fasting weights use wtsaf4yr for 1999/2001 cycles", {
+  mock_data <- data.frame(
+    year = c(1999L, 2001L),
+    seqn = 1:2,
+    sdmvpsu = c(1L, 1L),
+    sdmvstra = c(1L, 1L),
+    wtsaf4yr = c(400, 300)
+  )
+
+  result <- create_design(
+    mock_data,
+    start_yr = 1999,
+    end_yr = 2001,
+    wt_type = "fasting"
+  )
+
+  # 4yr fasting weight * 2/2 = wtsaf4yr
+  expect_equal(result$variables$design_weight[1], 400)
+  expect_equal(result$variables$design_weight[2], 300)
+})
+
+test_that("mixed fasting weights use wtsaf4yr and wtsaf2yr correctly", {
+  mock_data <- data.frame(
+    year = c(1999L, 2001L, 2003L),
+    seqn = 1:3,
+    sdmvpsu = c(1L, 1L, 1L),
+    sdmvstra = c(1L, 1L, 1L),
+    wtsaf4yr = c(400, 300, NA),
+    wtsaf2yr = c(NA, NA, 600)
+  )
+
+  result <- suppressMessages(create_design(
+    mock_data,
+    start_yr = 1999,
+    end_yr = 2003,
+    wt_type = "fasting"
+  ))
+
+  # 1999 & 2001: wtsaf4yr * 2/3
+  # 2003: wtsaf2yr * 1/3
+  expect_equal(result$variables$design_weight[1], 400 * 2 / 3)
+  expect_equal(result$variables$design_weight[2], 300 * 2 / 3)
+  expect_equal(result$variables$design_weight[3], 600 * 1 / 3)
 })

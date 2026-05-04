@@ -1,7 +1,7 @@
 # Silence R CMD check notes for NSE variables
 utils::globalVariables(c(
   "between", "design_weight", "if_else", "sdmvpsu", "sdmvstra",
-  "wtint2yr", "wtint4yr", "wtmec2yr", "wtmec4yr", "wtsaf2yr"
+  "wtint2yr", "wtint4yr", "wtmec2yr", "wtmec4yr", "wtsaf2yr", "wtsaf4yr"
 ))
 
 #' Calculate survey design weight within a NHANES dataset
@@ -57,10 +57,8 @@ utils::globalVariables(c(
 #'   \item 2003 & 2005: \code{wtmec2yr * 1/4}
 #' }
 #'
-#' Fasting weights (\code{wtsaf2yr}) are used with \code{1/n} multiplication.
-#'
-#' NOTE: 4-year fasting weights (\code{wtsaf4yr}) exist in NHANES laboratory files
-#' for 1999-2002 but are not currently supported by this function.
+#' Fasting weights follow the same rules: \code{wtsaf4yr * 2/n} for 1999/2001 and
+#' \code{wtsaf2yr * 1/n} for 2003+.
 #'
 #' @details
 #' \strong{Fasting Subsample Weights}
@@ -68,8 +66,9 @@ utils::globalVariables(c(
 #' For fasting subsample analyses combining 1999-2002 cycles, the 4-year fasting
 #' weight (WTSAF4YR) exists in laboratory files (e.g., LAB10AM, LAB13AM) but is
 #' typically NOT in demographic files obtained via nhanesA. If your dataset includes
-#' merged laboratory fasting data from 1999-2002, ensure WTSAF4YR is present.
-#' Otherwise, this function assumes only 2-year fasting weights (WTSAF2YR) are available.
+#' 1999 or 2001 cycles with fasting data, ensure WTSAF4YR is present in the merged
+#' dataset. The function will validate its presence and apply the same 2/n scaling
+#' used for other 4-year weights.
 #'
 #' @param dsn Tibble or data-frame.
 #' @param start_yr Numeric. Lower bound for year filtering (inclusive).
@@ -195,11 +194,12 @@ create_design <- function(
   # Validate required variables are available
   required_vars <- c("sdmvpsu", "sdmvstra")
   needs_4yr <- any(import$year %in% c(1999, 2001))
+  needs_2yr <- any(import$year %in% seq(2003, 2021, by = 2))
 
   weight_vars <- switch(wt_type,
-    "interview" = if (needs_4yr) c("wtint2yr", "wtint4yr") else "wtint2yr",
-    "mec" = if (needs_4yr) c("wtmec2yr", "wtmec4yr") else "wtmec2yr",
-    "fasting" = "wtsaf2yr"
+    "interview" = c(if (needs_4yr) "wtint4yr", if (needs_2yr) "wtint2yr"),
+    "mec" = c(if (needs_4yr) "wtmec4yr", if (needs_2yr) "wtmec2yr"),
+    "fasting" = c(if (needs_4yr) "wtsaf4yr", if (needs_2yr) "wtsaf2yr")
   )
 
   missing_vars <- setdiff(c(required_vars, weight_vars), names(import))
@@ -213,7 +213,7 @@ create_design <- function(
   # Create the survey dataset with new calculated weight variable
   # Need to handle 4yr weights conditionally since they only exist for 1999/2001
   if (wt_type == "interview") {
-    if (needs_4yr) {
+    if (needs_4yr && needs_2yr) {
       survey_dat <- import |>
         mutate(
           design_weight = if_else(
@@ -222,12 +222,15 @@ create_design <- function(
             wtint2yr * 1 / length(cycles)
           )
         )
+    } else if (needs_4yr) {
+      survey_dat <- import |>
+        mutate(design_weight = wtint4yr * 2 / length(cycles))
     } else {
       survey_dat <- import |>
         mutate(design_weight = wtint2yr * 1 / length(cycles))
     }
   } else if (wt_type == "mec") {
-    if (needs_4yr) {
+    if (needs_4yr && needs_2yr) {
       survey_dat <- import |>
         mutate(
           design_weight = if_else(
@@ -236,13 +239,30 @@ create_design <- function(
             wtmec2yr * 1 / length(cycles)
           )
         )
+    } else if (needs_4yr) {
+      survey_dat <- import |>
+        mutate(design_weight = wtmec4yr * 2 / length(cycles))
     } else {
       survey_dat <- import |>
         mutate(design_weight = wtmec2yr * 1 / length(cycles))
     }
   } else { # fasting
-    survey_dat <- import |>
-      mutate(design_weight = wtsaf2yr * 1 / length(cycles))
+    if (needs_4yr && needs_2yr) {
+      survey_dat <- import |>
+        mutate(
+          design_weight = if_else(
+            year %in% c(1999, 2001),
+            wtsaf4yr * 2 / length(cycles),
+            wtsaf2yr * 1 / length(cycles)
+          )
+        )
+    } else if (needs_4yr) {
+      survey_dat <- import |>
+        mutate(design_weight = wtsaf4yr * 2 / length(cycles))
+    } else {
+      survey_dat <- import |>
+        mutate(design_weight = wtsaf2yr * 1 / length(cycles))
+    }
   }
 
   # Handle NA weights - filter them out automatically
