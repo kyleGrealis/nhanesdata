@@ -2,7 +2,7 @@
 
 ## Available Datasets
 
-This package provides 340 NHANES datasets, automatically updated
+This package provides 342 NHANES datasets, automatically updated
 annually with data from 1999-2023 (excluding the 2019-2020 cycle).
 
 ### Quick Start
@@ -49,6 +49,40 @@ term_search('blood pressure')
 interviews
 
 **Examination Tables** - Physical measurements and laboratory results
+
+### Codebook Validation Status
+
+The **CB** column indicates whether each dataset’s categorical variable
+labels have been cross-validated against CDC codebooks across all survey
+cycles (1999–2023).
+
+| Symbol | Meaning |
+|:--:|----|
+| ✓ | **Verified** – Per-cycle CDC codebooks were compared and all labels confirmed correct across cycles. |
+| 🔍 | **Unverified** – No CDC codebook was available for automated cross-validation. These are predominantly continuous laboratory values where label drift does not apply. The data is correct; only the independent label audit could not be performed. |
+| 🛠️ | **Fix applied** – A label discrepancy was found and corrected. See below. |
+| ⚠️ | **Caution** – Known label text changes across survey cycles. See below. |
+
+#### 🛠️ Fix Applied: CDQ (Cardiovascular Health)
+
+The 2001–2002 cycle codebook (`CDQ_B`) listed raw numeric values (“1”,
+“2”, …, “8”) as labels for variables `CDQ009A`–`CDQ009H` instead of the
+descriptive pain-location text used in all other cycles. This was a CDC
+codebook deficiency, not a change in questionnaire meaning. The
+corrected labels (e.g., “Pain in right arm”, “Pain in left chest”) now
+match the descriptive text from the 2003+ codebooks.
+
+#### ⚠️ Caution: OHXDEN (Oral Health - Dentition)
+
+CDC updated descriptive labels for 111 dental coding variables across
+survey cycles. The underlying numeric codes retain their original
+meaning — for example, tooth condition code `2` consistently means
+“permanent tooth” whether the label reads “Permanent tooth
+(succedaneous)” (2001) or “Permanent tooth present” (2009+). Similarly,
+code `3` means “implant” regardless of whether the label is “Implant” or
+“Dental Implant.” These are cosmetic label refinements by CDC, not
+changes in clinical coding. Researchers performing cross-cycle analyses
+should be aware that label text may differ by era.
 
 ### Notes
 

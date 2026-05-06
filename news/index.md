@@ -2,6 +2,8 @@
 
 ## nhanesdata 0.2.2
 
+CRAN release: 2026-05-04
+
 ### Bug Fixes
 
 - Fixed
