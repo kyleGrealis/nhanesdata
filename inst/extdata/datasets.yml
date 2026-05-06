@@ -2,1024 +2,1373 @@ datasets:
 - name: drxiff
   description: Dietary Interview - Individual Foods
   category: dietary
+  codebook_status: verified
 - name: drxtot
   description: Dietary Interview - Total Nutrient Intakes
   category: dietary
+  codebook_status: verified
 - name: ds1ids
   description: Dietary Supplement Use 24-Hour - Individual Dietary Supplements, First
     Day
   category: dietary
+  codebook_status: verified
 - name: ds1tot
   description: Dietary Supplement Use 24-Hour - Total Dietary Supplements, First Day
   category: dietary
+  codebook_status: verified
 - name: ds2ids
   description: Dietary Supplement Use 24-Hour - Individual Dietary Supplements, Second
     Day
   category: dietary
+  codebook_status: verified
 - name: ds2tot
   description: Dietary Supplement Use 24-Hour - Total Dietary Supplements, Second
     Day
   category: dietary
+  codebook_status: verified
 - name: dsq1
   description: Dietary Supplement Use 30-Day - File 1, Supplement Counts
   category: dietary
+  codebook_status: verified
 - name: dsq2
   description: Dietary Supplement Use 30-Day - File 2, Participant's Use of Supplements
   category: dietary
+  codebook_status: verified
 - name: dsqfile1
   description: Dietary Supplement Use 30-Day - File 1, Supplement Counts
   category: dietary
+  codebook_status: verified
 - name: dsqfile2
   description: Dietary Supplement Use 30-Day - File 2, Participant's Use of Supplements
   category: dietary
+  codebook_status: verified
 - name: dsqids
   description: Dietary Supplement Use 30 Day - Individual Dietary Supplements
   category: dietary
+  codebook_status: verified
 - name: dsqtot
   description: Dietary Supplement Use 30-Day - Total Dietary Supplements
   category: dietary
+  codebook_status: verified
 - name: dtq
   description: Dietary Screener Questionnaire
   category: dietary
+  codebook_status: verified
 - name: ffqdc
   description: Food Frequency Questionnaire - Output from DietCalc Software
   category: dietary
+  codebook_status: verified
 - name: alb_cr
   description: Albumin & Creatinine
   category: examination
+  codebook_status: unverified
 - name: arx
   description: Arthritis Body Measures
   category: examination
+  codebook_status: unverified
 - name: aux
   description: Audiometry
   category: examination
+  codebook_status: verified
 - name: aux1
   description: Audiometry
   category: examination
+  codebook_status: unverified
 - name: auxar
   description: Audiometry - Acoustic Reflex
   category: examination
+  codebook_status: verified
 - name: auxtym
   description: Audiometry - Tympanometry
   category: examination
+  codebook_status: verified
 - name: auxwbr
   description: Audiometry - Wideband Reflectance
   category: examination
+  codebook_status: unverified
 - name: bax
   description: Balance
   category: examination
+  codebook_status: verified
 - name: biopro
   description: More Glucose, etc.
   category: examination
+  codebook_status: unverified
 - name: bix
   description: Bioelectrical Impedance Analysis
   category: examination
+  codebook_status: verified
 - name: bmx
   description: Body Measures
   category: examination
+  codebook_status: verified
 - name: bpx
   description: Blood Pressure
   category: examination
+  codebook_status: verified
 - name: bpxo
   description: Blood Pressure - Oscillometric Measurements
   category: examination
+  codebook_status: verified
 - name: cbc
   description: Blood Counts
   category: examination
+  codebook_status: unverified
 - name: csx
   description: Taste & Smell
   category: examination
+  codebook_status: unverified
 - name: cvx
   description: Cardiovascular Fitness
   category: examination
+  codebook_status: verified
 - name: dex
   description: Dermatology
   category: examination
+  codebook_status: unverified
 - name: dxx
   description: DEXA Bodyscan (NOTE - has repeated measures until 2005+)
   category: examination
-  notes: See https://wwwn.cdc.gov/nchs/data/nhanes/public/2005/datafiles/dxx_d.htm
+  codebook_status: verified
+  notes: "See https://wwwn.cdc.gov/nchs/data/nhanes/public/2005/datafiles/dxx_d.htm"
 - name: dxx_2
   description: Dual-Energy X-ray Absorptiometry - Whole Body, Second Exam
   category: examination
+  codebook_status: unverified
 - name: dxxaac
   description: Dual-Energy X-ray Absorptiometry - Abdominal Aortic Calcification
   category: examination
+  codebook_status: unverified
 - name: dxxag
   description: DEXA Bodyscan (Android/Gynoid Measurements)
   category: examination
+  codebook_status: verified
   notes: Non-repeated measures
 - name: dxxfem
   description: Dual Energy X-ray Absorptiometry - Femur
   category: examination
+  codebook_status: unverified
 - name: dxxfrx
   description: Dual-Energy X-ray Absorptiometry - FRAX Score
   category: examination
+  codebook_status: unverified
 - name: dxxl1
   description: Dual-Energy X-ray Absorptiometry - L1 Vertebrae Morphology
   category: examination
+  codebook_status: unverified
 - name: dxxl2
   description: Dual-Energy X-ray Absorptiometry - L2 Vertebrae Morphology
   category: examination
+  codebook_status: unverified
 - name: dxxl3
   description: Dual-Energy X-ray Absorptiometry - L3 Vertebrae Morphology
   category: examination
+  codebook_status: unverified
 - name: dxxl4
   description: Dual-Energy X-ray Absorptiometry - L4 Vertebrae Morphology
   category: examination
+  codebook_status: unverified
 - name: dxxspn
   description: Dual Energy X-ray Absorptiometry - Spine
   category: examination
+  codebook_status: unverified
 - name: dxxt10
   description: Dual-Energy X-ray Absorptiometry - T10 Vertebrae Morphology
   category: examination
+  codebook_status: unverified
 - name: dxxt11
   description: Dual-Energy X-ray Absorptiometry - T11 Vertebrae Morphology
   category: examination
+  codebook_status: unverified
 - name: dxxt12
   description: Dual-Energy X-ray Absorptiometry - T12 Vertebrae Morphology
   category: examination
+  codebook_status: unverified
 - name: dxxt4
   description: Dual-Energy X-ray Absorptiometry - T4 Vertebrae Morphology
   category: examination
+  codebook_status: verified
 - name: dxxt5
   description: Dual-Energy X-ray Absorptiometry - T5 Vertebrae Morphology
   category: examination
+  codebook_status: verified
 - name: dxxt6
   description: Dual-Energy X-ray Absorptiometry - T6 Vertebrae Morphology
   category: examination
+  codebook_status: unverified
 - name: dxxt7
   description: Dual-Energy X-ray Absorptiometry - T7 Vertebrae Morphology
   category: examination
+  codebook_status: unverified
 - name: dxxt8
   description: Dual-Energy X-ray Absorptiometry - T8 Vertebrae Morphology
   category: examination
+  codebook_status: unverified
 - name: dxxt9
   description: Dual-Energy X-ray Absorptiometry - T9 Vertebrae Morphology
   category: examination
+  codebook_status: unverified
 - name: dxxvfa
   description: Dual-Energy X-ray Absorptiometry - Vertebral Fracture Assessment
   category: examination
+  codebook_status: unverified
 - name: enx
   description: Exhaled Nitric Oxide
   category: examination
+  codebook_status: unverified
 - name: flxcln
   description: Fluorosis - Clinical
   category: examination
+  codebook_status: unverified
 - name: ghb
   description: Diabetes 2
   category: examination
+  codebook_status: verified
+- name: ghb_combined
+  description: "Glycohemoglobin (combined: lab10 1999 + l10 2001-2003 + ghb 2005-2021)"
+  category: examination
+  codebook_status: verified
+  notes: Combined dataset - see inst/scripts/derived/create_ghb_combined.R
 - name: glu
   description: Glucose
   category: examination
+  codebook_status: verified
+- name: glu_combined
+  description: "Fasting Glucose & Insulin (combined: lab10am 1999 + l10am 2001-2003 + glu 2005-2021)"
+  category: examination
+  codebook_status: verified
+  notes: Combined dataset with harmonized SI column names - see inst/scripts/derived/create_glu_combined.R
 - name: hdl
   description: Cholesterol
   category: examination
+  codebook_status: verified
 - name: hiv
   description: HIV
   category: examination
+  codebook_status: unverified
 - name: l10
   description: Glycohemoglobin
   category: examination
+  codebook_status: verified
 - name: l10am
   description: Plasma Fasting Glucose, Serum C-peptide & Insulin
   category: examination
+  codebook_status: verified
 - name: lab10
   description: Glycohemoglobin
   category: examination
+  codebook_status: verified
 - name: lab10am
   description: Plasma Fasting Glucose, Serum C-peptide & Insulin
   category: examination
+  codebook_status: verified
 - name: lexab
   description: Lower Extremity Disease - Ankle Brachial Blood Pressure Index
   category: examination
+  codebook_status: unverified
 - name: lexabpi
   description: Lower Extremity Disease - Ankle Brachial Blood Pressure Index
   category: examination
+  codebook_status: verified
 - name: lexpn
   description: Lower Extremity Disease - Peripheral Neuropathy
   category: examination
+  codebook_status: verified
 - name: lux
   description: Liver Ultrasound Transient Elastography
   category: examination
+  codebook_status: unverified
 - name: mgx
   description: Muscle Strength - Grip Test
   category: examination
+  codebook_status: unverified
 - name: msx
   description: Muscle Strength
   category: examination
+  codebook_status: verified
 - name: ohx
   description: Oral Health
   category: examination
+  codebook_status: verified
 - name: ohxadd
   description: Oral Health - Addendum
   category: examination
+  codebook_status: verified
 - name: ohxden
   description: Oral Health - Dentition
   category: examination
+  codebook_status: caution
 - name: ohxdent
   description: Oral Health - Dentition
   category: examination
+  codebook_status: verified
 - name: ohxper
   description: Oral Health - Periodontal
   category: examination
+  codebook_status: verified
 - name: ohxperio
   description: Oral Health - Periodontal
   category: examination
+  codebook_status: unverified
 - name: ohxprl
   description: Oral Health - Periodontal/Lower
   category: examination
+  codebook_status: unverified
 - name: ohxpru
   description: Oral Health - Periodontal/Upper
   category: examination
+  codebook_status: unverified
 - name: ohxref
   description: Oral Health - Recommendation of Care
   category: examination
+  codebook_status: unverified
 - name: opxfdt
   description: Ophthalmology - Frequency Doubling Technology
   category: examination
+  codebook_status: unverified
 - name: opxret
   description: Ophthalmology - Retinal Imaging
   category: examination
+  codebook_status: unverified
 - name: paxday
   description: Physical Activity Monitor - Day
   category: examination
+  codebook_status: unverified
 - name: paxhd
   description: Physical Activity Monitor - Header
   category: examination
+  codebook_status: unverified
 - name: paxhr
   description: Physical Activity Monitor - Hour
   category: examination
+  codebook_status: unverified
 - name: seq
   description: Shared Exclusion Questions
   category: examination
+  codebook_status: verified
 - name: spx
   description: Spirometry - Pre and Post-Bronchodilator
   category: examination
+  codebook_status: unverified
 - name: tb
   description: Tuberculosis
   category: examination
+  codebook_status: unverified
 - name: tbx
   description: Tuberculosis
   category: examination
+  codebook_status: unverified
 - name: tchol
   description: Cholesterol 2
   category: examination
+  codebook_status: verified
 - name: trigly
   description: Triglyceride
   category: examination
+  codebook_status: verified
 - name: vix
   description: Vision
   category: examination
+  codebook_status: unverified
 - name: acq
   description: Acculturation
   category: questionnaire
+  codebook_status: verified
 - name: agq
   description: Allergies
   category: questionnaire
+  codebook_status: unverified
 - name: alq
   description: Alcohol
   category: questionnaire
+  codebook_status: verified
 - name: alqy
   description: Alcohol Use (Ages 18-19)
   category: questionnaire
+  codebook_status: unverified
 - name: aqq
   description: Air Quality
   category: questionnaire
+  codebook_status: verified
 - name: arq
   description: Arthritis
   category: questionnaire
+  codebook_status: verified
 - name: auq
   description: Audiometry
   category: questionnaire
+  codebook_status: verified
 - name: baq
   description: Balance
   category: questionnaire
+  codebook_status: verified
 - name: bhq
   description: Bowel Health
   category: questionnaire
+  codebook_status: unverified
 - name: bpq
   description: Blood Pressure & Cholesterol Questionnaire
   category: questionnaire
+  codebook_status: verified
 - name: cbq
   description: Consumer Behavior
   category: questionnaire
+  codebook_status: verified
 - name: cbqpfa
   description: Consumer Behavior Phone Follow-up Module - Adult
   category: questionnaire
+  codebook_status: verified
 - name: cbqpfc
   description: Consumer Behavior Phone Follow-up Module - Child
   category: questionnaire
+  codebook_status: verified
 - name: cdq
   description: Cardiovascular Health
   category: questionnaire
+  codebook_status: fix_applied
 - name: cfq
   description: Comorbidity Functioning
   category: questionnaire
+  codebook_status: verified
 - name: ciqdep
   description: Mental Health - Depression
   category: questionnaire
+  codebook_status: verified
 - name: ciqgad
   description: Mental Health - Generalized Anxiety Disorder
   category: questionnaire
+  codebook_status: verified
 - name: ciqmdep
   description: Mental Health - Depression
   category: questionnaire
+  codebook_status: verified
 - name: ciqpan
   description: Mental Health - Panic Disorder
   category: questionnaire
+  codebook_status: verified
 - name: ciqpanic
   description: Mental Health - Panic Disorder
   category: questionnaire
+  codebook_status: verified
 - name: ckq
   description: Creatinine Kinase
   category: questionnaire
+  codebook_status: verified
 - name: csq
   description: Taste & Smell
   category: questionnaire
+  codebook_status: verified
 - name: dbq
   description: Diet, Behavior, & Nutrition
   category: questionnaire
+  codebook_status: verified
 - name: demo
   description: Demographics
   category: questionnaire
+  codebook_status: verified
 - name: deq
   description: Dermatology
   category: questionnaire
+  codebook_status: verified
 - name: diq
   description: Diabetes
   category: questionnaire
+  codebook_status: verified
 - name: dlq
   description: Disability
   category: questionnaire
+  codebook_status: verified
 - name: dpq
   description: Mental Health - Depression Screener
   category: questionnaire
+  codebook_status: verified
 - name: dr1iff
   description: Dietary Interview, Individual Food First Day
   category: questionnaire
+  codebook_status: verified
 - name: dr1tot
   description: Total Nutrient Intake, First Day
   category: questionnaire
+  codebook_status: verified
 - name: dr2iff
   description: Dietary Interview, Second Day
   category: questionnaire
+  codebook_status: unverified
 - name: dr2tot
   description: Total Nutrient Intake, Second Day
   category: questionnaire
+  codebook_status: unverified
 - name: duq
   description: Substance Use
   category: questionnaire
+  codebook_status: verified
 - name: ecq
   description: Early Childhood
   category: questionnaire
+  codebook_status: verified
 - name: fsq
   description: Food Security
   category: questionnaire
+  codebook_status: verified
 - name: hcq
   description: Hepatitis C Follow Up
   category: questionnaire
+  codebook_status: verified
 - name: heq
   description: Hepatitis
   category: questionnaire
+  codebook_status: verified
 - name: hiq
   description: Health Insurance
   category: questionnaire
+  codebook_status: verified
 - name: hoq
   description: Housing Characteristics
   category: questionnaire
+  codebook_status: verified
 - name: hsq
   description: Current Health Status
   category: questionnaire
+  codebook_status: verified
 - name: huq
   description: Hospital Utilization & Access to Care
   category: questionnaire
+  codebook_status: verified
 - name: imq
   description: Immunization
   category: questionnaire
+  codebook_status: verified
 - name: inq
   description: Income
   category: questionnaire
+  codebook_status: verified
 - name: kiq
   description: Kidney Conditions & Urology (1999)
   category: questionnaire
+  codebook_status: unverified
 - name: kiq_p
   description: Prostate Conditions
   category: questionnaire
+  codebook_status: verified
 - name: kiq_u
   description: Kidney Conditions & Urology (2001+)
   category: questionnaire
+  codebook_status: verified
 - name: mcq
   description: Cancer Questions
   category: questionnaire
+  codebook_status: verified
 - name: mpq
   description: Miscellaneous Pain
   category: questionnaire
+  codebook_status: verified
 - name: ocq
   description: Occupation
   category: questionnaire
+  codebook_status: verified
 - name: ohq
   description: Oral Health
   category: questionnaire
+  codebook_status: verified
 - name: osq
   description: Osteoporosis
   category: questionnaire
+  codebook_status: verified
 - name: paq
   description: Physical Activity
   category: questionnaire
+  codebook_status: verified
 - name: paqiaf
   description: Physical Activity - Individual Activities
   category: questionnaire
+  codebook_status: verified
 - name: paqy
   description: Physical Activity - Youth
   category: questionnaire
+  codebook_status: verified
 - name: pfq
   description: Physical Functioning
   category: questionnaire
+  codebook_status: verified
 - name: psq
   description: PSA Follow-up
   category: questionnaire
+  codebook_status: verified
 - name: puq
   description: Pesticide Use
   category: questionnaire
+  codebook_status: verified
 - name: puqmec
   description: Pesticide Use
   category: questionnaire
+  codebook_status: verified
 - name: rdq
   description: Respiratory Health
   category: questionnaire
+  codebook_status: verified
 - name: rhq
   description: Reproductive Health
   category: questionnaire
+  codebook_status: verified
 - name: rxq_ana
   description: Analgesic Pain Relievers
   category: questionnaire
+  codebook_status: unverified
 - name: rxq_rx
   description: Prescription Medication - Multiple Rows Per Participant
   category: questionnaire
+  codebook_status: verified
 - name: rxqana
   description: Analgesic Pain Relievers
   category: questionnaire
+  codebook_status: verified
 - name: rxqasa
   description: Preventive Aspirin Use
   category: questionnaire
+  codebook_status: verified
 - name: slq
   description: Sleep Disorders
   category: questionnaire
+  codebook_status: unverified
 - name: smq
   description: Smoking
   category: questionnaire
+  codebook_status: verified
 - name: smqfam
   description: Smoking - Household
   category: questionnaire
+  codebook_status: verified
 - name: smqmec
   description: Smoking - Adult Recent Tobacco Use & Youth Cigarette/Tobacco Use
   category: questionnaire
+  codebook_status: verified
 - name: smqrtu
   description: Smoking Recent Tobacco Use
   category: questionnaire
+  codebook_status: verified
 - name: smqshs
   description: Smoking - Secondhand Smoke Exposure
   category: questionnaire
+  codebook_status: verified
 - name: ssq
   description: Social Support
   category: questionnaire
+  codebook_status: verified
 - name: sxq
   description: Sexual Behavior
   category: questionnaire
+  codebook_status: verified
 - name: tbq
   description: Tuberculosis
   category: questionnaire
+  codebook_status: verified
 - name: viq
   description: Vision
   category: questionnaire
+  codebook_status: verified
 - name: vtq
   description: Volatile Toxicant
   category: questionnaire
+  codebook_status: verified
 - name: whq
   description: Weight History
   category: questionnaire
+  codebook_status: verified
 - name: whqmec
   description: Weight History - Youth
   category: questionnaire
+  codebook_status: unverified
 - name: aa
   description: Aromatic Amines - Urine
   category: laboratory
+  codebook_status: verified
 - name: aas
   description: Aromatic Amines - Urine - Special Sample
   category: laboratory
+  codebook_status: verified
 - name: al_ige
   description: Allergen Specific IgE(s) & Total IgE - Serum
   category: laboratory
+  codebook_status: verified
 - name: ald
   description: Aldehydes - Serum
   category: laboratory
+  codebook_status: verified
 - name: alds
   description: Aldehydes - Serum - Special Sample
   category: laboratory
+  codebook_status: unverified
 - name: aldust
   description: Allergens - Household Dust
   category: laboratory
+  codebook_status: unverified
 - name: amdgds
   description: Acrylamide & Glycidamide - Special Sample
   category: laboratory
+  codebook_status: unverified
 - name: amdgyd
   description: Acrylamide & Glycidamide
   category: laboratory
+  codebook_status: unverified
 - name: apob
   description: Apolipoprotein B
   category: laboratory
+  codebook_status: unverified
 - name: b12
   description: Vitamin B12
   category: laboratory
+  codebook_status: unverified
 - name: cafe
   description: Caffeine & Caffeine Metabolites - Urine
   category: laboratory
+  codebook_status: unverified
 - name: carb
   description: Pesticides - Carbamates & Organophosphorus Metabolites - Urine
   category: laboratory
+  codebook_status: unverified
 - name: chlmda
   description: Chlamydia & Gonorrhea - Urine
   category: laboratory
+  codebook_status: unverified
 - name: cmv
   description: Cytomegalovirus IgG & IgM Antibodies - Serum
   category: laboratory
+  codebook_status: unverified
 - name: cot
   description: Cotinine - Serum
   category: laboratory
+  codebook_status: unverified
 - name: cotnal
   description: Cotinine - Serum & Total NNAL - Urine
   category: laboratory
+  codebook_status: unverified
 - name: crco
   description: Chromium & Cobalt
   category: laboratory
+  codebook_status: verified
 - name: crp
   description: C-Reactive Protein (CRP)
   category: laboratory
+  codebook_status: verified
 - name: cusezn
   description: Copper, Selenium & Zinc - Serum
   category: laboratory
+  codebook_status: verified
 - name: deet
   description: DEET and Metabolites
   category: laboratory
+  codebook_status: verified
 - name: eph
   description: Environmental Phenols & Parabens
   category: laboratory
+  codebook_status: verified
 - name: ephpp
   description: Personal Care and Consumer Product Chemicals and Metabolites
   category: laboratory
+  codebook_status: verified
 - name: epp
   description: Erythrocyte Protoporphyrin
   category: laboratory
+  codebook_status: verified
 - name: ethox
   description: Ethylene Oxide
   category: laboratory
+  codebook_status: verified
 - name: ethoxs
   description: Ethylene Oxide - Special Sample
   category: laboratory
+  codebook_status: verified
 - name: fas
   description: Fatty Acids - Serum
   category: laboratory
+  codebook_status: verified
 - name: fastqx
   description: Fasting Questionnaire
   category: laboratory
+  codebook_status: verified
 - name: fertin
   description: Ferritin
   category: laboratory
+  codebook_status: verified
 - name: fetib
   description: Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation
   category: laboratory
+  codebook_status: verified
 - name: fldep
   description: Fluoride - Plasma
   category: laboratory
+  codebook_status: verified
 - name: fldew
   description: Fluoride - Water
   category: laboratory
+  codebook_status: verified
 - name: folate
   description: Folate - RBC & Serum
   category: laboratory
+  codebook_status: verified
 - name: folfms
   description: Folate Forms - Individual - Serum
   category: laboratory
+  codebook_status: verified
 - name: formal
   description: Formaldehyde
   category: laboratory
+  codebook_status: verified
 - name: formas
   description: Formaldehyde - Special Sample
   category: laboratory
+  codebook_status: verified
 - name: fr
   description: Flame Retardants - Urine
   category: laboratory
+  codebook_status: verified
 - name: hcaa
   description: Heterocyclic Aromatic Amines - Urine
   category: laboratory
+  codebook_status: verified
 - name: hcaas
   description: Heterocyclic Aromatic Amines (HCAA) - Urine - Special Sample
   category: laboratory
+  codebook_status: verified
 - name: hcy
   description: Homocysteine
   category: laboratory
+  codebook_status: verified
 - name: hepa
   description: Hepatitis A Antibody
   category: laboratory
+  codebook_status: verified
 - name: hepbd
   description: Hepatitis B - Core Antibody, Surface Antigen & Hepatitis D Antibody
   category: laboratory
+  codebook_status: verified
 - name: hepc
   description: Hepatitis C - Confirmed Antibody, RNA (HCV-RNA) & Genotype
   category: laboratory
+  codebook_status: unverified
 - name: hepe
   description: Hepatitis E - IgG & IgM Antibodies
   category: laboratory
+  codebook_status: unverified
 - name: hpvp
   description: Human Papillomavirus (HPV) DNA Results from Penile Swab Samples
   category: laboratory
+  codebook_status: unverified
 - name: hpvser
   description: Human Papillomavirus (HPV) - 6, 11, 16 & 18 Antibody - Serum
   category: laboratory
+  codebook_status: unverified
 - name: hpvsrm
   description: Human Papillomavirus (HPV) - Multiplexed Antibody - Serum
   category: laboratory
+  codebook_status: unverified
 - name: hpvswc
   description: Human Papillomavirus (HPV) DNA - Vaginal Swab - Roche Cobas
   category: laboratory
+  codebook_status: unverified
 - name: hpvswr
   description: Human Papillomavirus (HPV) DNA - Vaginal Swab - Roche Linear Array
   category: laboratory
+  codebook_status: unverified
 - name: hscrp
   description: High-Sensitivity C-Reactive Protein (hs-CRP)
   category: laboratory
+  codebook_status: unverified
 - name: hsv
   description: Herpes Simplex Virus Type-1 & Type-2
   category: laboratory
+  codebook_status: unverified
 - name: ihg
   description: Mercury - Inorganic - Blood
   category: laboratory
+  codebook_status: unverified
 - name: ihgem
   description: Mercury - Inorganic, Ethyl and Methyl - Blood
   category: laboratory
+  codebook_status: unverified
 - name: ins
   description: Insulin
   category: laboratory
+  codebook_status: unverified
 - name: l02
   description: Hepatitis B & C - Core Antibody, Surface Antigen & RNA
   category: laboratory
+  codebook_status: unverified
 - name: l06
   description: Cadmium, Lead, Mercury, Cotinine & Nutritional Biochemistries
   category: laboratory
+  codebook_status: unverified
 - name: l06age
   description: Acrylamide & Glycidamide
   category: laboratory
+  codebook_status: unverified
 - name: l06bmt
   description: Cadmium, Lead & Total Mercury - Blood
   category: laboratory
+  codebook_status: unverified
 - name: l06cot
   description: Cotinine - Serum
   category: laboratory
+  codebook_status: unverified
 - name: l06hm
   description: Metals - Urine
   category: laboratory
+  codebook_status: unverified
 - name: l06mh
   description: Methylmalonic acid & Homocysteine
   category: laboratory
+  codebook_status: unverified
 - name: l06nb
   description: Folate - RBC & Serum, and Vitamin B12
   category: laboratory
+  codebook_status: unverified
 - name: l06phy
   description: Phytoestrogens - Urine
   category: laboratory
+  codebook_status: unverified
 - name: l06tfr
   description: Ferritin & Transferrin Receptor
   category: laboratory
+  codebook_status: unverified
 - name: l06uas
   description: Arsenics - Total & Speciated - Urine
   category: laboratory
+  codebook_status: unverified
 - name: l06uhg
   description: Mercury - Inorganic - Urine
   category: laboratory
+  codebook_status: unverified
 - name: l06uio
   description: Iodine - Urine
   category: laboratory
+  codebook_status: unverified
 - name: l06vid
   description: Vitamin D
   category: laboratory
+  codebook_status: unverified
 - name: l06vit
   description: Vitamin A, Vitamin E & Carotenoids
   category: laboratory
+  codebook_status: unverified
 - name: l11
   description: C-Reactive protein (CRP), Fibrinogen & Bone Alkaline Phosphatase
   category: laboratory
+  codebook_status: unverified
 - name: l11p_2_b
   description: Prostate-specific Antigen (PSA), Second Exam
   category: laboratory
+  codebook_status: verified
 - name: l11psa
   description: Prostate specific antigen (PSA)
   category: laboratory
+  codebook_status: unverified
 - name: l13am
   description: Cholesterol - LDL & Triglycerides
   category: laboratory
+  codebook_status: unverified
 - name: l16
   description: Albumin & Creatinine - Urine
   category: laboratory
+  codebook_status: unverified
 - name: l17
   description: Toxoplasma (IgG), Toxoplasma (IgM) & Toxoplasma (Dye)
   category: laboratory
+  codebook_status: unverified
 - name: l19
   description: Measles, Rubella & Varicella
   category: laboratory
+  codebook_status: unverified
 - name: l20
   description: Lead - Dust
   category: laboratory
+  codebook_status: unverified
 - name: l24eph
   description: Environmental Phenols
   category: laboratory
+  codebook_status: unverified
 - name: l24pfc
   description: Polyfluoroalkyl Chemicals
   category: laboratory
+  codebook_status: unverified
 - name: l24ph
   description: Phthalates - Urine
   category: laboratory
+  codebook_status: unverified
 - name: l24pp
   description: Pesticides - Environmental - Urine
   category: laboratory
+  codebook_status: unverified
 - name: l25
   description: Complete Blood Count with 5-part Differential - Whole Blood
   category: laboratory
+  codebook_status: unverified
 - name: l26opd
   description: Organophosphate Insecticides - Diakyl Phosphate Metabolites - Urine
   category: laboratory
+  codebook_status: unverified
 - name: l26pp
   description: Pesticides - Current Use - Urine
   category: laboratory
+  codebook_status: unverified
 - name: l26upp
   description: Pesticides - Current Use - Urine
   category: laboratory
+  codebook_status: unverified
 - name: l28dfp
   description: Dioxins, Furans & Coplanar PCBs
   category: laboratory
+  codebook_status: unverified
 - name: l28npb
   description: Non-dioxin-like Polychlorinated Biphenyls
   category: laboratory
+  codebook_status: unverified
 - name: l28ocp
   description: Pesticides - Organochlorine Metabolites - Serum
   category: laboratory
+  codebook_status: unverified
 - name: l28pbe
   description: Brominated Flame Retardants (BFRs)
   category: laboratory
+  codebook_status: unverified
 - name: l28poc
   description: Dioxins, Furans & Coplanar PCBs
   category: laboratory
+  codebook_status: unverified
 - name: l31pah
   description: Polyaromatic Hydrocarbons (PAHs) - Urine
   category: laboratory
+  codebook_status: unverified
 - name: l35
   description: Methicillin - Resistant Staphylococcus aureus (MRSA)
   category: laboratory
+  codebook_status: unverified
 - name: l36
   description: Syphilis-IgG, Syphilis RPR & Treponema pallidum
   category: laboratory
+  codebook_status: unverified
 - name: l37swa
   description: Human Papillomavirus (HPV) DNA - Vaginal Swab
   category: laboratory
+  codebook_status: unverified
 - name: l37swr
   description: Human Papillomavirus (HPV) DNA - Vaginal Swab - Roche Linear Array
   category: laboratory
+  codebook_status: unverified
 - name: l39
   description: Erythrocyte Protoporphyrin
   category: laboratory
+  codebook_status: unverified
 - name: l39epp
   description: Erythrocyte Protoporphyrin & Selenium
   category: laboratory
+  codebook_status: unverified
 - name: l40
   description: Standard Biochemistry Profile
   category: laboratory
+  codebook_status: unverified
 - name: l40fe
   description: Iron, Total Iron Binding Capacity (TIBC) & Transferrin Saturation
   category: laboratory
+  codebook_status: unverified
 - name: l40t4
   description: Thyroid - Stimulating Hormone & Thyroxine (TSH & T4)
   category: laboratory
+  codebook_status: unverified
 - name: l43
   description: Vitamin B6
   category: laboratory
+  codebook_status: unverified
 - name: l45vit
   description: Vitamin A, Vitamin E & Carotenoids
   category: laboratory
+  codebook_status: unverified
 - name: l52ser
   description: Human Papillomavirus (HPV) - 6, 11, 16 & 18 Antibody - Serum
   category: laboratory
+  codebook_status: unverified
 - name: lab06hm
   description: Metals - Urine
   category: laboratory
+  codebook_status: verified
 - name: lab13am
   description: Cholesterol - LDL & Triglycerides
   category: laboratory
+  codebook_status: verified
 - name: lab18t4
   description: Thyroid - Stimulating Hormone & Thyroxine (TSH & T4)
   category: laboratory
+  codebook_status: verified
 - name: lab26pp
   description: Pesticides - Current Use - Urine
   category: laboratory
+  codebook_status: verified
 - name: lab28poc
   description: Dioxins, Furans & Coplanar PCBs
   category: laboratory
+  codebook_status: verified
 - name: mma
   description: Methylmalonic Acid
   category: laboratory
+  codebook_status: unverified
 - name: mmrv
   description: Measles, Mumps, Rubella & Varicella
   category: laboratory
+  codebook_status: unverified
 - name: ogtt
   description: Oral Glucose Tolerance Test
   category: laboratory
+  codebook_status: unverified
 - name: opd
   description: Organophosphate Insecticides - Diakyl Phosphate Metabolites - Urine
   category: laboratory
+  codebook_status: unverified
 - name: orhpv
   description: Human Papillomavirus (HPV) - Oral Rinse
   category: laboratory
+  codebook_status: unverified
 - name: pah
   description: Polyaromatic Hydrocarbons (PAHs) - Urine
   category: laboratory
+  codebook_status: unverified
 - name: pahs
   description: Polyaromatic Hydrocarbons (PAHs) - Urine - Special Sample
   category: laboratory
+  codebook_status: unverified
 - name: pbcd
   description: Cadmium, Lead & Total Mercury - Blood
   category: laboratory
+  codebook_status: unverified
 - name: pernt
   description: Perchlorate, Nitrate & Thiocyanate - Urine
   category: laboratory
+  codebook_status: unverified
 - name: pernts
   description: Perchlorate, Nitrate & Thiocyanate - Urine - Special Sample
   category: laboratory
+  codebook_status: unverified
 - name: pfas
   description: Perfluoroalkyl and Polyfluoroalkyl Substances
   category: laboratory
+  codebook_status: unverified
 - name: pfc
   description: Polyfluoroalkyl Chemicals
   category: laboratory
+  codebook_status: unverified
 - name: ph
   description: Fasting Questionnaire
   category: laboratory
+  codebook_status: unverified
 - name: phpypa
   description: Phthalates, Phytoestrogens & PAHs - Urine
   category: laboratory
+  codebook_status: unverified
 - name: phthte
   description: Phthalates - Urine
   category: laboratory
+  codebook_status: unverified
 - name: phyto
   description: Phytoestrogens - Urine
   category: laboratory
+  codebook_status: unverified
 - name: pp
   description: Pesticides - Environmental - Urine
   category: laboratory
+  codebook_status: unverified
 - name: psa
   description: Prostate Specific Antigen (PSA)
   category: laboratory
+  codebook_status: unverified
 - name: pth
   description: Parathyroid Hormone
   category: laboratory
+  codebook_status: unverified
 - name: telo
   description: Telomere Mean and Standard Deviation
   category: laboratory
+  codebook_status: unverified
 - name: tfa
   description: Trans Fatty Acids
   category: laboratory
+  codebook_status: unverified
 - name: tfr
   description: Transferrin Receptor
   category: laboratory
+  codebook_status: unverified
 - name: tgema
   description: Tissue Transglutaminase Assay (IgA-TTG) & IgA Endomyseal Antibody
   category: laboratory
+  codebook_status: unverified
 - name: thyrod
   description: Thyroid Profile
   category: laboratory
+  codebook_status: unverified
 - name: trich
   description: Trichomonas - Urine
   category: laboratory
+  codebook_status: unverified
 - name: tsna
   description: Tobacco-specific Nitrosamines (TSNAs) - Urine
   category: laboratory
+  codebook_status: unverified
 - name: tst
   description: Total Testosterone
   category: laboratory
+  codebook_status: unverified
 - name: uadm
   description: Aromatic Diamines - Urine
   category: laboratory
+  codebook_status: unverified
 - name: uam
   description: Atrazine and Metabolites
   category: laboratory
+  codebook_status: unverified
 - name: uas
   description: Arsenics - Total & Speciated - Urine
   category: laboratory
+  codebook_status: unverified
 - name: uass
   description: Arsenics - Total & Speciated - Urine - Special Sample
   category: laboratory
+  codebook_status: unverified
 - name: uc
   description: Pregnancy Test - Urine
   category: laboratory
+  codebook_status: verified
 - name: ucflow
   description: Urine Flow Rate
   category: laboratory
+  codebook_status: unverified
 - name: ucm
   description: Chromium - Urine
   category: laboratory
+  codebook_status: unverified
 - name: ucosmo
   description: Osmolality - Urine
   category: laboratory
+  codebook_status: unverified
 - name: ucot
   description: Cotinine, Hydroxycotinine & Other Nicotine Metabolites - Urine
   category: laboratory
+  codebook_status: unverified
 - name: ucots
   description: Cotinine, Hydroxycotinine & Nicotine Metabolites - Urine - Special
     Sample
   category: laboratory
+  codebook_status: unverified
 - name: ucpreg
   description: Pregnancy Test - Urine
   category: laboratory
+  codebook_status: unverified
 - name: uflde
   description: Fluoride - Urine
   category: laboratory
+  codebook_status: unverified
 - name: uhg
   description: Mercury - Inorganic - Urine
   category: laboratory
+  codebook_status: unverified
 - name: uhm
   description: Metals - Urine
   category: laboratory
+  codebook_status: unverified
 - name: uhms
   description: Metals - Urine - Special Sample
   category: laboratory
+  codebook_status: unverified
 - name: uio
   description: Iodine - Urine
   category: laboratory
+  codebook_status: unverified
 - name: um
   description: Metals - Urine
   category: laboratory
+  codebook_status: unverified
 - name: ums
   description: Metals - Urine - Special Sample
   category: laboratory
+  codebook_status: unverified
 - name: uni
   description: Nickel - Urine
   category: laboratory
+  codebook_status: unverified
 - name: uphopm
   description: Pyrethroids, Herbicides & OP Metabolites - Urine
   category: laboratory
+  codebook_status: unverified
 - name: upp
   description: Pesticides - Current Use - Urine
   category: laboratory
+  codebook_status: unverified
 - name: utas
   description: Arsenic - Total - Urine
   category: laboratory
+  codebook_status: unverified
 - name: utass
   description: Arsenic - Total - Urine - Special Sample
   category: laboratory
+  codebook_status: unverified
 - name: uvoc
   description: Volatile Organic Compound (VOC) Metabolites - Urine
   category: laboratory
+  codebook_status: unverified
 - name: uvocs
   description: Volatile Organic Compound (VOC) Metabolites - Urine - Special Sample
   category: laboratory
+  codebook_status: unverified
 - name: vic
   description: Vitamin C
   category: laboratory
+  codebook_status: unverified
 - name: vid
   description: Vitamin D
   category: laboratory
+  codebook_status: unverified
 - name: vid_2
   description: Vitamin D, Second Exam
   category: laboratory
+  codebook_status: unverified
 - name: vit_2
   description: Vitamin A, Vitamin E & Carotenoids, Second Exam
   category: laboratory
+  codebook_status: unverified
 - name: vit_b6
   description: Vitamin B6
   category: laboratory
+  codebook_status: unverified
 - name: vitaec
   description: Vitamin A, Vitamin E & Carotenoids
   category: laboratory
+  codebook_status: unverified
 - name: vitb12
   description: Vitamin B12
   category: laboratory
+  codebook_status: unverified
 - name: vna
   description: Volatile N-Nitrosamine Compounds (VNAs) - Urine
   category: laboratory
+  codebook_status: unverified
 - name: vnas
   description: Volatile N-Nitrosamine Compounds (VNAs) - Urine - Special Sample
   category: laboratory
+  codebook_status: unverified
 - name: voc
   description: Volatile Organic Compounds - Water & Related Questionnaire Items
   category: laboratory
+  codebook_status: unverified
 - name: vocmwb
   description: Volatile Organic Compounds - Trihalomethanes/MTBE/Nitromethane - Blood
   category: laboratory
+  codebook_status: unverified
 - name: vocwb
   description: Volatile Organic Compounds - Blood & Related Questionnaire Items
   category: laboratory
+  codebook_status: unverified
 - name: vocwbs
   description: Volatile Organic Compounds & Trihalomethanes/MTBE - Blood - Special
     Sample
   category: laboratory
+  codebook_status: unverified
 - name: wpin
   description: Perchlorate, Nitrate & Iodide - Tap Water
   category: laboratory
+  codebook_status: unverified

@@ -86,6 +86,10 @@ Categories include:
 
 See the [dataset catalog](https://www.kylegrealis.com/nhanesdata/articles/the-datasets.html) for the complete list, or browse `inst/extdata/datasets.yml` in the source.
 
+## Data Quality
+
+Every dataset's categorical variable labels were cross-validated against CDC codebooks for each individual survey cycle (1999--2023). Out of 327 audited datasets, only one required a label correction (CDQ cardiovascular questionnaire, 2001 cycle). The **CB** column in the [dataset catalog](https://www.kylegrealis.com/nhanesdata/articles/the-datasets.html) indicates each dataset's validation status.
+
 ## Important Notes
 
 - The **2019-2020 survey cycle** (suffix K) is excluded due to COVID-19 data collection disruptions. See `vignette("covid-data-exclusion")` for details.
