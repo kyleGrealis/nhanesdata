@@ -57,11 +57,25 @@
 # TCHOL       – Available 2005+ only (earlier cycles used l13/l13_b/l13_c).
 # PAQ         – The paq605/pad615 variable series used here was introduced in
 #               2007–2008. Cycles 1999–2006 used different variable names not
-#               harmonized here, and the series was removed again in 2017–2018
-#               and 2021. total_met_min is NA by design for year==1999, 2001,
-#               2003, 2005, 2017, and 2021. Valid data: 2007–2015 only.
+#               harmonized here, so total_met_min is NA by design for those
+#               cycles. 2021 uses an entirely different schema (pad790q/u,
+#               pad810q/u sedentary-time module) — also NA by design.
+#               2017–2018 uses the SAME paq605–pad675 schema as 2007–2015
+#               (gates at 100%, sub-questions at 24–42%) — total_met_min IS
+#               computed for 2017. Valid data: 2007–2017 (6 cycles).
+#               pad680 (sedentary minutes/day) is retained separately; it is
+#               available for 2007–2021 and not used in the MET-min formula.
 # ALQ         – Not collected 1999–2000; adults 20+ only → high structural
 #               missingness in the full sample.
+#               alq110 ("Had ≥12 drinks in any one year?") was renamed to
+#               alq111 in 2017–2018 and 2021. alq110 is NA for those cycles;
+#               alq111 is NA for all earlier cycles. Both are coalesced into
+#               alq110_harmonized in Section 4 so alcohol_status is derived
+#               consistently across all cycles.
+#               LIMITATION: the frequency follow-up alq120q was also
+#               restructured in 2017 (→ alq121); alq121 is not harmonized
+#               here. 2017/2021 drinkers (alq111 == "Yes") will therefore be
+#               coded "Not provided" rather than "Current" or "Former".
 # DUQ         – Not available for 1999, 2001, or 2003 (NA by design).
 #               1999: not collected. 2001 (DUQ_B) and 2003 (DUQ_C): collected
 #               but NCHS-restricted (sensitive data); absent from nhanesdata.
@@ -93,16 +107,24 @@
 #
 # HARMONIZATION NOTES
 # -------------------
-# Several DEMO variables changed names or response-option wording across cycles.
+# Several variables changed names or response-option wording across cycles.
 # Key issues handled here:
-#   income  – indhhinc (1999–2006) vs indhhin2 (2007+): coalesced into one
-#             categorical variable; indfmpir (PIR) used as continuous income.
+#   income   – indhhinc (1999–2006) vs indhhin2 (2007+): coalesced into one
+#              categorical variable; indfmpir (PIR) used as continuous income.
 #   nativity – dmdborn/dmdborn2/dmdborn4 changed labels across cycles; we use
 #              the cleaned nhanesdata label strings (case_when on text).
-#   race    – ridreth3 (Asian category) only exists 2011+; ridreth1 used as
-#             fallback.
+#   race     – ridreth3 (Asian category) only exists 2011+; ridreth1 used as
+#              fallback.
 #   BPX/BPXO – auscultatory (bpxsy*/bpxdi*) coalesced with oscillometric
 #               (bpxosy*/bpxodi*) to handle the 2021 measurement transition.
+#   ALQ      – alq110 ("Had ≥12 drinks in any one year?") renamed to alq111 in
+#              2017–2018 and 2021. Harmonized via:
+#                alq110_harmonized = coalesce(alq110, alq111)
+#              This intermediate column drives alcohol_status derivation; it is
+#              not retained in base_small. alq111 labels confirmed: "Yes"/"No"
+#              in 2017; "Yes"/"No"/"Don't know" in 2021. The frequency follow-
+#              up (alq120q → alq121 in 2017+) is NOT harmonized; 2017/2021
+#              drinkers ("Yes") fall into "Not provided" in alcohol_status.
 ################################################################################
 
 
@@ -398,19 +420,38 @@ base <- base |>
 
     # -------------------------------------------------------------------------
     # ALCOHOL USE
+    #
+    # CROSS-CYCLE HARMONIZATION: alq110 → alq111 in 2017–2018 and 2021.
+    #   alq110_harmonized = coalesce(alq110, alq111)
+    #   1999–2015: alq110 populated → harmonized = alq110 value.
+    #   2017, 2021: alq110 is NA   → harmonized = alq111 value.
+    #
+    # LIMITATION: the frequency follow-up alq120q was restructured in 2017
+    # (replaced by alq121, not harmonized here). For 2017/2021, anyone who
+    # answers "Yes" to alq110_harmonized has no valid alq120q → they fall
+    # into the "Not provided" branch. Non-drinkers ("No") are classified
+    # correctly as "Never" across all cycles.
+    #
+    # ALQ not collected in the 1999–2000 cycle; alcohol_status = NA for
+    # year == 1999 by design.
     # -------------------------------------------------------------------------
+    alq110_harmonized = dplyr::coalesce(
+      as.character(alq110),
+      as.character(alq111)
+    ),
     alcohol_status = factor(
       case_when(
-        alq110 %in% c("Don't know", "Refused") |
-          alq120q >= 777 ~ "Not provided",
-        alq110 == "No"                                        ~ "Never",
-        alq110 == "Yes" & alq120q == 0                        ~ "Former",
-        alq110 == "Yes" & between(alq120q, 1, 700)            ~ "Current",
-        alq110 == "Yes" & (alq120q == 999 | is.na(alq120q))   ~ "Not provided",
-        is.na(alq110) & !is.na(alq120u)                       ~ "Current",
-        is.na(alq110) & alq120q == 0 ~
+        alq110_harmonized %in% c("Don't know", "Refused") |
+          alq120q >= 777                                             ~ "Not provided",
+        alq110_harmonized == "No"                                    ~ "Never",
+        alq110_harmonized == "Yes" & alq120q == 0                   ~ "Former",
+        alq110_harmonized == "Yes" & between(alq120q, 1, 700)       ~ "Current",
+        alq110_harmonized == "Yes" & (alq120q == 999 |
+                                        is.na(alq120q))             ~ "Not provided",
+        is.na(alq110_harmonized) & !is.na(alq120u)                  ~ "Current",
+        is.na(alq110_harmonized) & alq120q == 0 ~
           "Does not currently drink, hx unknown",
-        .default = alq110
+        .default = alq110_harmonized
       ),
       levels = c(
         "Never", "Does not currently drink, hx unknown",
@@ -660,9 +701,11 @@ base_small <- base |>
     smoking_status,
     alcohol_status, alcohol_current,
     total_met_min, pa_level, phys_active,
-    # NOTE: total_met_min is NA by design for year==1999, 2001, 2003, 2005,
-    #       2017, and 2021. Valid MET-min data exists for 2007–2015 only
-    #       (5 of 11 cycles).
+    # NOTE: total_met_min is NA by design for year==1999, 2001, 2003, 2005
+    #       (pre-2007 PAQ schema) and 2021 (different schema). Valid data
+    #       exists for 2007–2017 (6 of 11 cycles); 2017 uses the same
+    #       paq605–pad675 variables as 2007–2015.
+    pad680,       # sedentary time (minutes/day sitting); available 2007–2021
 
     # ----- Body composition ---------------------------------------------------
     bmi,         # continuous (kg/m²)
@@ -807,9 +850,28 @@ message("\ndiabetes distribution by year:")
 print(base_small |> count(diabetes, year) |>
   tidyr::pivot_wider(names_from = year, values_from = n))
 
-# 6e. PA missingness by year
-# Expect 100% missing for year==1999, 2001, 2003, 2005 (pre-2007 PAQ names),
-# year==2017 and year==2021 (PAQ restructured). Valid data: 2007–2015 only.
+# 6e. Alcohol coverage by year
+# Expect 0% for year==1999 (ALQ not collected 1999–2000).
+# Expect "Never" to be populated for 2017 and 2021 (alq111 coalesced).
+# Expect 2017/2021 drinkers to appear in "Not provided" (alq120q not harmonized).
+message("\nAlcohol status non-missing rate by year:")
+print(
+  base_small |>
+    group_by(year) |>
+    summarise(pct_alc_present = round(mean(!is.na(alcohol_status)) * 100, 1), n = n())
+)
+
+message("\nalcohol_status distribution for 2017 and 2021:")
+print(
+  base_small |>
+    filter(year %in% c(2017, 2021)) |>
+    count(year, alcohol_status)
+)
+
+# 6f. PA missingness by year
+# Expect 100% missing for year==1999, 2001, 2003, 2005 (pre-2007 PAQ names)
+# and 2021 (different schema). 2017 uses the same paq605–pad675 series as
+# 2007–2015 and should show non-zero total_met_min. Valid data: 2007–2017.
 message("\nPA (total_met_min) missing rate by year:")
 print(
   base_small |>
@@ -817,7 +879,7 @@ print(
     summarise(pct_pa_missing = round(mean(is.na(total_met_min)) * 100, 1), n = n())
 )
 
-# 6f. Mortality coverage by year
+# 6g. Mortality coverage by year
 # Expect non-NA mortstat for 1999–2017 eligible adults; 0% for year==2021.
 message("\nMortality coverage by year (% with non-NA mortstat):")
 print(
@@ -826,7 +888,7 @@ print(
     summarise(pct_linked = round(mean(!is.na(mortstat)) * 100, 1), n = n())
 )
 
-# 6g. DUQ coverage by year
+# 6h. DUQ coverage by year
 # Expect 0% present for year==1999; age-restriction pattern visible in others.
 message("\nDUQ (duq200) non-missing rate by year:")
 print(
@@ -835,7 +897,7 @@ print(
     summarise(pct_duq_present = round(mean(!is.na(duq200)) * 100, 1), n = n())
 )
 
-# 6h. OCQ work schedule (ocq670) coverage by year
+# 6i. OCQ work schedule (ocq670) coverage by year
 # Expect 0% present for years 1999–2011 (variable collected 2013+ only).
 message("\nOCQ work schedule (ocq670) non-missing rate by year:")
 print(
@@ -844,7 +906,7 @@ print(
     summarise(pct_ocq670_present = round(mean(!is.na(ocq670)) * 100, 1), n = n())
 )
 
-# 6i. Pregnancy variable (ridexprg) coverage by year
+# 6j. Pregnancy variable (ridexprg) coverage by year
 # Expect NA for all males and age-ineligible participants; non-NA for
 # examined females. Overall missingness ~81% in the full sample is expected.
 message("\nPregnancy status (ridexprg) non-missing rate by year:")
@@ -854,19 +916,19 @@ print(
     summarise(pct_ridexprg_present = round(mean(!is.na(ridexprg)) * 100, 1), n = n())
 )
 
-# 6j. Survey weight sanity checks
+# 6k. Survey weight sanity checks
 stopifnot(
   "Negative wtmec2yr found" = all(base_small$wtmec2yr >= 0, na.rm = TRUE),
   "Negative wtint2yr found" = all(base_small$wtint2yr >= 0, na.rm = TRUE)
 )
 
-# 6k. PIR range check
+# 6l. PIR range check
 if (any(base_small$pir > 10, na.rm = TRUE)) {
   warning(sum(base_small$pir > 10, na.rm = TRUE),
           " rows have PIR > 10 — check for coding errors.")
 }
 
-# 6l. OCQ hours check (>99 hrs/week; sentinel codes 77777/99999 already NA).
+# 6m. OCQ hours check (>99 hrs/week; sentinel codes 77777/99999 already NA).
 # Remaining values >99 are expected to be real extreme-hour workers.
 # Note: some cycles used 100 as a ceiling code ("100 or more") — interpret
 # the value 100 with caution in continuous models.
