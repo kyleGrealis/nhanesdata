@@ -65,8 +65,9 @@
 #               computed for 2017. Valid data: 2007–2017 (6 cycles).
 #               pad680 (sedentary minutes/day) is retained separately; it is
 #               available for 2007–2021 and not used in the MET-min formula.
-# ALQ         – Not collected 1999–2000; adults 20+ only → high structural
-#               missingness in the full sample.
+# ALQ         – Collected all cycles 1999–2017; adults 20+ only → ~6–13%
+#               structural missingness per cycle (age restrictions, refusals).
+#               No full-cycle design gap exists.
 #               alq110 ("Had ≥12 drinks in any one year?") was renamed to
 #               alq111 in 2017–2018 and 2021. alq110 is NA for those cycles;
 #               alq111 is NA for all earlier cycles. Both are coalesced into
@@ -421,19 +422,29 @@ base <- base |>
     # -------------------------------------------------------------------------
     # ALCOHOL USE
     #
-    # CROSS-CYCLE HARMONIZATION: alq110 → alq111 in 2017–2018 and 2021.
-    #   alq110_harmonized = coalesce(alq110, alq111)
-    #   1999–2015: alq110 populated → harmonized = alq110 value.
-    #   2017, 2021: alq110 is NA   → harmonized = alq111 value.
+    # CROSS-CYCLE HARMONIZATION — three distinct schemas:
     #
-    # LIMITATION: the frequency follow-up alq120q was restructured in 2017
-    # (replaced by alq121, not harmonized here). For 2017/2021, anyone who
-    # answers "Yes" to alq110_harmonized has no valid alq120q → they fall
-    # into the "Not provided" branch. Non-drinkers ("No") are classified
-    # correctly as "Never" across all cycles.
+    # 1999:        ALQ collected; same alq110 gate as 2001–2003.
     #
-    # ALQ not collected in the 1999–2000 cycle; alcohol_status = NA for
-    # year == 1999 by design.
+    # 2001–2003:   alq110 = "In any one year, had ≥12 drinks?" (Yes/No gate).
+    #              alq120q = frequency in past 12 months (numeric, 0–365; 0 →
+    #              former drinker; 1–700 → current; 999 → don't know).
+    #
+    # 2005 (ALQ_D): TWO-GATE STRUCTURE — different from all other cycles.
+    #   alq101 = "Ever had ≥12 drinks in any one year?" (primary gate).
+    #     Yes → skip alq110; use alq120q for Current/Former (same scale as 2001–2003).
+    #     No  → alq110 = "Had any drink in past 12 months?" (secondary gate).
+    #       alq110 = "Yes" → current light drinker → "Current".
+    #       alq110 = "No"  → abstainer → "Never".
+    #   2005 branches are evaluated FIRST in case_when to prevent them from
+    #   falling through to the generic alq110_harmonized logic below.
+    #
+    # 2007–2015:   Same alq110 gate as 2001–2003; alq120q same scale.
+    #
+    # 2017, 2021:  alq110 renamed to alq111 (labels identical: Yes/No/Don't know).
+    #              alq110_harmonized = coalesce(alq110, alq111).
+    #              alq120q restructured in 2017 (→ alq121, not harmonized here);
+    #              2017/2021 "Yes" respondents fall into "Not provided".
     # -------------------------------------------------------------------------
     alq110_harmonized = dplyr::coalesce(
       as.character(alq110),
@@ -441,6 +452,16 @@ base <- base |>
     ),
     alcohol_status = factor(
       case_when(
+        # ---- 2005: alq101 primary gate; alq110 = past-12-months drinker ----
+        year == 2005 & alq101 %in% c("Don't know", "Refused")          ~ "Not provided",
+        year == 2005 & alq101 == "Yes" & alq120q == 0                  ~ "Former",
+        year == 2005 & alq101 == "Yes" & dplyr::between(alq120q, 1, 700) ~ "Current",
+        year == 2005 & alq101 == "Yes" & (alq120q >= 777 | is.na(alq120q)) ~ "Not provided",
+        year == 2005 & alq101 == "No"  & alq110 == "Yes"               ~ "Current",
+        year == 2005 & alq101 == "No"  & alq110 == "No"                ~ "Never",
+        year == 2005 & alq101 == "No"  & is.na(alq110)                 ~ "Does not currently drink, hx unknown",
+        year == 2005 & is.na(alq101)                                    ~ NA_character_,
+        # ---- All other cycles: alq110_harmonized gate ----
         alq110_harmonized %in% c("Don't know", "Refused") |
           alq120q >= 777                                             ~ "Not provided",
         alq110_harmonized == "No"                                    ~ "Never",
@@ -649,11 +670,15 @@ base <- base |>
     total_cholesterol = lbxtc,
 
     # -------------------------------------------------------------------------
-    # OCQ SENTINEL CODE RECODE
-    # ocq180 uses 77777 (refused) and 99999 (don't know) as skip codes.
-    # These must be set to NA before analysis; they are not real hour values.
+    # OCQ SENTINEL CODE RECODE + 2001 VARIABLE NAME HARMONIZATION
+    # In 2001–2002 (OCQ_B), hours/week was stored as ocd180 (OCD prefix)
+    # rather than ocq180 (OCQ prefix used in all other cycles). Coalesce
+    # first so 2001 workers are not silently dropped.
+    # Sentinel codes 77777 (refused) and 99999 (don't know) present in both
+    # naming variants; set to NA before analysis.
     # -------------------------------------------------------------------------
-    ocq180 = if_else(ocq180 %in% c(77777L, 99999L), NA_real_, as.numeric(ocq180))
+    ocq180 = dplyr::coalesce(as.numeric(ocq180), as.numeric(ocd180)),
+    ocq180 = if_else(ocq180 %in% c(77777, 99999), NA_real_, ocq180)
 
   )
 
@@ -851,9 +876,10 @@ print(base_small |> count(diabetes, year) |>
   tidyr::pivot_wider(names_from = year, values_from = n))
 
 # 6e. Alcohol coverage by year
-# Expect 0% for year==1999 (ALQ not collected 1999–2000).
+# Expect ~87–95% non-missing across all cycles (ALQ collected 1999–2017).
 # Expect "Never" to be populated for 2017 and 2021 (alq111 coalesced).
 # Expect 2017/2021 drinkers to appear in "Not provided" (alq120q not harmonized).
+# Expect 2005 to have a real distribution (alq101 two-gate fix applied).
 message("\nAlcohol status non-missing rate by year:")
 print(
   base_small |>
