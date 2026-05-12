@@ -612,18 +612,18 @@ base <- base |>
     ),
     hypertension_jnc7 = case_when(
       is.na(mean_sbp) & is.na(htn_selfreport) & is.na(bp_meds) ~ NA,
-      isTRUE(bp_meds)           ~ TRUE,
-      isTRUE(htn_selfreport)    ~ TRUE,
-      !is.na(mean_sbp) & (mean_sbp >= 140 | mean_dbp >= 90) ~ TRUE,
-      !is.na(mean_sbp) & (mean_sbp < 140  & mean_dbp < 90)  ~ FALSE,
+      bp_meds == TRUE                                           ~ TRUE,
+      htn_selfreport == TRUE                                    ~ TRUE,
+      !is.na(mean_sbp) & (mean_sbp >= 140 | mean_dbp >= 90)   ~ TRUE,
+      !is.na(mean_sbp) & (mean_sbp < 140  & mean_dbp < 90)    ~ FALSE,
       .default = NA
     ),
     hypertension_aha = case_when(
       is.na(mean_sbp) & is.na(htn_selfreport) & is.na(bp_meds) ~ NA,
-      isTRUE(bp_meds)           ~ TRUE,
-      isTRUE(htn_selfreport)    ~ TRUE,
-      !is.na(mean_sbp) & (mean_sbp >= 130 | mean_dbp >= 80) ~ TRUE,
-      !is.na(mean_sbp) & (mean_sbp < 130  & mean_dbp < 80)  ~ FALSE,
+      bp_meds == TRUE                                           ~ TRUE,
+      htn_selfreport == TRUE                                    ~ TRUE,
+      !is.na(mean_sbp) & (mean_sbp >= 130 | mean_dbp >= 80)   ~ TRUE,
+      !is.na(mean_sbp) & (mean_sbp < 130  & mean_dbp < 80)    ~ FALSE,
       .default = NA
     ),
     hypertension = hypertension_jnc7,
@@ -663,7 +663,7 @@ base <- base |>
       lbxtc <  240 ~ FALSE
     ),
     hyperlipidemia = case_when(
-      isTRUE(highchol_selfreport) | isTRUE(highchol_measured) ~ TRUE,
+      highchol_selfreport == TRUE | highchol_measured == TRUE  ~ TRUE,
       !is.na(highchol_selfreport) | !is.na(highchol_measured) ~ FALSE,
       TRUE ~ NA
     ),
