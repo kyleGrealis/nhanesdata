@@ -1,8 +1,8 @@
 name: Deploy Slides to Pi
 
 on:
-  push:
-    branches: [slides]
+  # push:
+  #   branches: [slides]
   workflow_dispatch:
     
 
