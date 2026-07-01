@@ -1,5 +1,12 @@
 # nhanesdata
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/nhanesdata)](https://CRAN.R-project.org/package=nhanesdata)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/nhanesdata)](https://cran.r-project.org/package=nhanesdata)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/nhanesdata)](https://cran.r-project.org/package=nhanesdata)
+
 The National Health and Nutrition Examination Survey (NHANES) is one of
 the most comprehensive public health datasets available, spanning over
 two decades of U.S. health data. But working with it has been
