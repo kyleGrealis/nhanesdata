@@ -57,90 +57,36 @@ test_that("term_search still handles regex errors by escaping", {
   })
 })
 
-test_that("pull_nhanes retries on errors and tracks skipped cycles", {
-  # Simulate persistent network errors (not NULL returns)
+test_that("read_nhanes handles download and connection errors with helpful messages", {
   local_mocked_bindings(
-    nhanes = function(...) stop("Connection timed out"),
-    .package = "nhanesA"
-  )
-  local_mocked_bindings(
-    nhanesTranslate = function(...) NULL,
-    .package = "nhanesA"
-  )
-  withr::local_options(nhanesdata.retry_delay = 0)
-
-  # Expect warning about no data retrieved (all cycles error out)
-  expect_warning(
-    result <- suppressMessages(
-      nhanesdata:::pull_nhanes("DEMO", save = FALSE)
-    ),
-    "No data retrieved from any cycle"
+    read_parquet = function(...) stop("404 Not Found: object does not exist"),
+    .package = "arrow"
   )
 
-  # Should still return a tibble (empty since all cycles failed)
-  expect_s3_class(result, "tbl_df")
+  expect_error(
+    read_nhanes("nonexistent_table"),
+    "Failed to load dataset 'NONEXISTENT_TABLE'"
+  )
 
-  # Should have skipped_cycles attribute listing every attempted table
-  skipped <- attr(result, "skipped_cycles")
-  expect_true(!is.null(skipped))
-  expect_true(length(skipped) > 0)
-  expect_true("DEMO" %in% skipped) # base table (1999)
+  expect_error(
+    read_nhanes("nonexistent_table"),
+    "Did you misspell the dataset name?"
+  )
 })
 
-test_that("pull_nhanes does NOT retry or flag when nhanes() returns NULL", {
-  # NULL means "table doesn't exist", not a transient error.
-  # Should skip immediately without retry or flagging as skipped.
-  call_count <- 0
-  local_mocked_bindings(
-    nhanes = function(...) {
-      call_count <<- call_count + 1
-      NULL
-    },
-    .package = "nhanesA"
+test_that("read_nhanes validates dataset argument type and length", {
+  expect_error(
+    read_nhanes(123),
+    "`dataset` must be a single character string, not numeric"
   )
-  local_mocked_bindings(
-    nhanesTranslate = function(...) NULL,
-    .package = "nhanesA"
+  expect_error(
+    read_nhanes(NULL),
+    "`dataset` must be a single character string, not NULL"
   )
-  withr::local_options(nhanesdata.retry_delay = 0)
-
-  # No skipped_cycles warning because NULL is normal "not found"
-  expect_warning(
-    result <- suppressMessages(
-      nhanesdata:::pull_nhanes("DEMO", save = FALSE)
-    ),
-    "No data retrieved from any cycle"
+  expect_error(
+    read_nhanes(c("demo", "bmx")),
+    "`dataset` must be a single character string"
   )
-
-  # Should NOT have skipped_cycles (NULL returns are not errors)
-  expect_null(attr(result, "skipped_cycles"))
-
-  # Each cycle should be called exactly once (no retries)
-  expect_equal(call_count, 11) # 11 cycles for DEMO
-})
-
-test_that("pull_nhanes succeeds without warning when no cycles are skipped", {
-  # Simulate a dataset where nhanes always returns data
-  mock_data <- data.frame(SEQN = 1:5, X = letters[1:5])
-  local_mocked_bindings(
-    nhanes = function(...) mock_data,
-    .package = "nhanesA"
-  )
-  local_mocked_bindings(
-    nhanesTranslate = function(...) NULL,
-    .package = "nhanesA"
-  )
-  withr::local_options(nhanesdata.retry_delay = 0)
-
-  # Should NOT warn about skipped cycles
-  expect_no_warning(
-    result <- suppressMessages(
-      nhanesdata:::pull_nhanes("DEMO", save = FALSE)
-    )
-  )
-
-  expect_null(attr(result, "skipped_cycles"))
-  expect_true(nrow(result) > 0)
 })
 
 test_that("error messages are diplomatic and helpful", {

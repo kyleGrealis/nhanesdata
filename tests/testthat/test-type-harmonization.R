@@ -1,6 +1,15 @@
 library(testthat)
 library(nhanesdata)
 
+# Source internal harmonization helpers from inst/scripts/pull_nhanes.R
+pull_nhanes_script <- system.file("scripts", "pull_nhanes.R", package = "nhanesdata")
+if (!nzchar(pull_nhanes_script) || !file.exists(pull_nhanes_script)) {
+  pull_nhanes_script <- testthat::test_path("../../inst/scripts/pull_nhanes.R")
+}
+if (file.exists(pull_nhanes_script)) {
+  source(pull_nhanes_script, local = TRUE)
+}
+
 # ==============================================================================
 # Tests for type harmonization helpers
 #
@@ -39,7 +48,7 @@ test_that("factor vs double converts both to character, not double", {
   )
   df2 <- data.frame(x = c(1.0, 3.0, 4.0))
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_type(result$existing$x, "character")
   expect_type(result$new$x, "character")
@@ -56,7 +65,7 @@ test_that("factor vs integer converts both to character", {
   df1 <- data.frame(x = factor(c("Complete", "Partial")))
   df2 <- data.frame(x = c(1L, 2L))
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_type(result$existing$x, "character")
   expect_type(result$new$x, "character")
@@ -71,7 +80,7 @@ test_that("numeric vs factor converts both to character (reversed order)", {
     x = factor(c("Could not obtain", "Clothing", "Medical appliance"))
   )
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_type(result$existing$x, "character")
   expect_type(result$new$x, "character")
@@ -87,7 +96,7 @@ test_that("factor vs factor with different levels converts to character", {
     x = factor(c("C", "D"), levels = c("C", "D"))
   )
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_type(result$existing$x, "character")
   expect_type(result$new$x, "character")
@@ -101,7 +110,7 @@ test_that("factor vs character converts factor to character", {
   df1 <- data.frame(x = factor(c("A", "B")))
   df2 <- data.frame(x = c("C", "D"), stringsAsFactors = FALSE)
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_type(result$existing$x, "character")
   expect_type(result$new$x, "character")
@@ -111,7 +120,7 @@ test_that("character vs factor converts factor to character", {
   df1 <- data.frame(x = c("A", "B"), stringsAsFactors = FALSE)
   df2 <- data.frame(x = factor(c("C", "D")))
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_type(result$existing$x, "character")
   expect_type(result$new$x, "character")
@@ -123,7 +132,7 @@ test_that("integer vs double converts both to double", {
   df1 <- data.frame(x = c(1L, 2L, 3L))
   df2 <- data.frame(x = c(1.5, 2.5, 3.5))
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_type(result$existing$x, "double")
   expect_type(result$new$x, "double")
@@ -138,7 +147,7 @@ test_that("matching types are left unchanged", {
   df1 <- data.frame(x = c(1.0, 2.0))
   df2 <- data.frame(x = c(3.0, 4.0))
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_equal(result$existing$x, c(1.0, 2.0))
   expect_equal(result$new$x, c(3.0, 4.0))
@@ -148,7 +157,7 @@ test_that("matching character types are left unchanged", {
   df1 <- data.frame(x = c("a", "b"), stringsAsFactors = FALSE)
   df2 <- data.frame(x = c("c", "d"), stringsAsFactors = FALSE)
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_type(result$existing$x, "character")
   expect_equal(result$existing$x, c("a", "b"))
@@ -160,7 +169,7 @@ test_that("skip_cols are not harmonized", {
   df1 <- data.frame(year = 1999L, x = factor("A"))
   df2 <- data.frame(year = 2001L, x = 1.0)
 
-  result <- nhanesdata:::.harmonize_column_types(
+  result <- .harmonize_column_types(
     df1, df2,
     skip_cols = c("year")
   )
@@ -175,7 +184,7 @@ test_that("default skip_cols includes year and seqn", {
   df1 <- data.frame(year = 1999L, seqn = 1L, x = factor("A"))
   df2 <- data.frame(year = 2001.0, seqn = 2.0, x = 1.0)
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   # year and seqn left untouched
   expect_type(result$existing$year, "integer")
@@ -193,7 +202,7 @@ test_that("all-NA column in existing_df adopts new_df type", {
   df1 <- data.frame(x = c(NA, NA, NA)) # logical NA
   df2 <- data.frame(x = factor(c("A", "B", "C"))) # factor
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   # existing should be coerced to match new_df's type (factor -> character
   # doesn't apply here since we're matching the class, which is "factor")
@@ -209,7 +218,7 @@ test_that("all-NA character column adopts numeric type from new_df", {
   )
   df2 <- data.frame(x = c(1.5, 2.5, 3.5))
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_type(result$existing$x, "double")
   expect_true(all(is.na(result$existing$x)))
@@ -222,7 +231,7 @@ test_that("all-NA column in new_df adopts existing_df type", {
   df1 <- data.frame(x = c(1.0, 2.0, 3.0))
   df2 <- data.frame(x = c(NA, NA, NA)) # logical NA
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_type(result$existing$x, "double")
   # new_df's NA column should now be double to match existing
@@ -238,7 +247,7 @@ test_that("factor with numeric-looking levels handles correctly", {
   df1 <- data.frame(x = factor(c("1", "2", "3")))
   df2 <- data.frame(x = c(1.0, 2.0, 3.0))
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_type(result$existing$x, "character")
   expect_type(result$new$x, "character")
@@ -255,7 +264,7 @@ test_that("ordered factor is treated as factor", {
   )
   df2 <- data.frame(x = c(1.0, 2.0, 3.0))
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_type(result$existing$x, "character")
   expect_type(result$new$x, "character")
@@ -266,7 +275,7 @@ test_that("logical vs numeric converts to character", {
   df1 <- data.frame(x = c(TRUE, FALSE, TRUE))
   df2 <- data.frame(x = c(1.0, 0.0, 1.0))
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_type(result$existing$x, "character")
   expect_type(result$new$x, "character")
@@ -290,7 +299,7 @@ test_that("harmonized data frames are bindable with bind_rows", {
     score = c(10.5, 20.5, 30.5)
   )
 
-  result <- nhanesdata:::.harmonize_column_types(df1, df2)
+  result <- .harmonize_column_types(df1, df2)
 
   expect_no_error(dplyr::bind_rows(result$existing, result$new))
 
@@ -320,7 +329,7 @@ test_that("numeric column is translated using reference table", {
     )
   )
 
-  result <- nhanesdata:::.translate_numeric_columns(df, ref)
+  result <- .translate_numeric_columns(df, ref)
 
   expect_type(result$bmiwt, "character")
   expect_equal(
@@ -348,7 +357,7 @@ test_that("factor column is not re-translated", {
     )
   )
 
-  result <- nhanesdata:::.translate_numeric_columns(df, ref)
+  result <- .translate_numeric_columns(df, ref)
 
   # Should still be a factor, untouched
   expect_true(is.factor(result$bmiwt))
@@ -370,7 +379,7 @@ test_that("character column is not re-translated", {
     )
   )
 
-  result <- nhanesdata:::.translate_numeric_columns(df, ref)
+  result <- .translate_numeric_columns(df, ref)
 
   expect_type(result$bmiwt, "character")
   expect_equal(result$bmiwt, c("Could not obtain", "Clothing"))
@@ -379,7 +388,7 @@ test_that("character column is not re-translated", {
 test_that("NULL reference_translations returns data unchanged", {
   df <- data.frame(x = c(1, 2, 3))
 
-  result <- nhanesdata:::.translate_numeric_columns(df, NULL)
+  result <- .translate_numeric_columns(df, NULL)
 
   expect_equal(result, df)
 })
@@ -387,7 +396,7 @@ test_that("NULL reference_translations returns data unchanged", {
 test_that("empty reference_translations returns data unchanged", {
   df <- data.frame(x = c(1, 2, 3))
 
-  result <- nhanesdata:::.translate_numeric_columns(df, list())
+  result <- .translate_numeric_columns(df, list())
 
   expect_equal(result, df)
 })
@@ -408,7 +417,7 @@ test_that("column not in reference_translations is left unchanged", {
     )
   )
 
-  result <- nhanesdata:::.translate_numeric_columns(df, ref)
+  result <- .translate_numeric_columns(df, ref)
 
   # bmiwt translated
   expect_type(result$bmiwt, "character")
@@ -430,7 +439,7 @@ test_that("numeric code not in translation table becomes its string form", {
     )
   )
 
-  result <- nhanesdata:::.translate_numeric_columns(df, ref)
+  result <- .translate_numeric_columns(df, ref)
 
   expect_type(result$bmiwt, "character")
   # Known codes get labels, unknown code 99 becomes "99"
@@ -451,7 +460,7 @@ test_that("all-NA numeric column is skipped", {
     )
   )
 
-  result <- nhanesdata:::.translate_numeric_columns(df, ref)
+  result <- .translate_numeric_columns(df, ref)
 
   # Should stay as numeric NA, not translated
   expect_type(result$bmiwt, "double")
@@ -476,7 +485,7 @@ test_that("continuous variables with Range of Values are not translated", {
     )
   )
 
-  result <- nhanesdata:::.translate_numeric_columns(df, ref)
+  result <- .translate_numeric_columns(df, ref)
 
   # Column should stay numeric, NOT converted to character
   expect_type(result$ridageyr, "double")
@@ -499,7 +508,7 @@ test_that("continuous variables with Range of Values (income ratio) skipped", {
     )
   )
 
-  result <- nhanesdata:::.translate_numeric_columns(df, ref)
+  result <- .translate_numeric_columns(df, ref)
 
   expect_type(result$indfmpir, "double")
   expect_equal(result$indfmpir, c(0.5, 2.3, 5.0, NA))
@@ -524,7 +533,7 @@ test_that("translation handles lowercase column names from clean_names", {
     )
   )
 
-  result <- nhanesdata:::.translate_numeric_columns(df, ref)
+  result <- .translate_numeric_columns(df, ref)
 
   expect_type(result$bmdstats, "character")
   expect_equal(result$bmdstats[1], "Complete data for age group")
