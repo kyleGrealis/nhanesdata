@@ -1,3 +1,36 @@
+# nhanesdata (development version)
+
+## Data Fixes
+
+* The `dxx` dataset (Dual-Energy X-ray Absorptiometry, Whole Body) was
+  missing the 2017-2018 cycle (DXX_J). `read_nhanes("dxx")` returned
+  51,970 rows covering 2005, 2011, 2013, and 2015 only. It now returns
+  57,084 rows including 2017, with 3,658 non-missing `DXDTOPF` records
+  for that cycle, matching CDC's published file.
+
+  Any analysis using whole-body DXA variables (`DXDTOPF`, `DXDTOFAT`,
+  `DXDTOLE`, `DXDTOBMC`, `DXDTOTOT`, and the limb lean measures) over
+  the 2011-2018 window was silently restricted to 2011-2016. Results
+  were correct for the cycles present, but cohorts were smaller than
+  expected and pooled survey weights assumed four cycles rather than
+  three. Re-running affected analyses is recommended. The sibling
+  `dxxag` dataset was unaffected.
+
+  No action is needed to pick up the fix: data is served independently
+  of the installed package version.
+
+## Internal
+
+* The data update workflow now records per-dataset coverage (row count,
+  survey cycles, and column names) alongside the existing hash, and
+  blocks any upload that loses rows, cycles, or columns relative to the
+  previous build. This closes the gap that allowed a failed cycle fetch
+  to be published as a complete dataset (#24).
+
+* Added `inst/scripts/audit_parquet_cycles.R` to report survey cycle
+  coverage across all published datasets.
+
+
 # nhanesdata 0.2.2
 
 ## Bug Fixes
