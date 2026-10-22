@@ -19,15 +19,18 @@
   No action is needed to pick up the fix: data is served independently
   of the installed package version.
 
-* The `telo` and `tfa` datasets are missing their 1999-2000 cycle. CDC
+* The `telo` and `tfa` datasets were missing their 1999-2000 cycle. CDC
   publishes those two files as `TELO_A` and `TFA_A`, and the data pull
   only ever tried the bare 1999 name, so the cycle was never fetched.
-  `read_nhanes("telo")` returns 4,269 rows (2001 only) against 7,839
-  available, and `read_nhanes("tfa")` returns 5,423 rows (2009 only)
-  against 9,682 available. The pull loop is fixed; the rebuild of both
-  datasets is still pending (#25). No other dataset is affected: the
-  remaining 24 `_A` files for 1999-2000 are `SS*` surplus-specimen
+  `read_nhanes("telo")` returned 4,269 rows (2001 only) and now returns
+  7,839 across 1999 and 2001; `read_nhanes("tfa")` returned 5,423 rows
+  (2009 only) and now returns 9,682 across 1999 and 2009. Both datasets
+  have been rebuilt and republished (#25). No other dataset is affected:
+  the remaining 24 `_A` files for 1999-2000 are `SS*` surplus-specimen
   tables that this package does not publish.
+
+  No action is needed to pick up the fix: data is served independently
+  of the installed package version.
 
 ## Internal
 
