@@ -112,8 +112,18 @@ pull_nhanes <- function(nhanes_table, selected_variables = NULL, save = FALSE) {
   # Future-proofed through 2029 to automatically detect new cycles as CDC releases them.
   table_suffixes <- c(LETTERS[2:10], LETTERS[12:16])
 
+  # 2026-10-22: alt_code holds a second spelling to try for a cycle when the
+  # primary code returns nothing. Only 1999-2000 needs one: most tables are
+  # published bare (DEMO, BMX) but a few carry an "_A" suffix (TELO_A,
+  # TFA_A), and those were silently losing their 1999 cycle. Kept as a flat
+  # character column so code/year stay positionally aligned, one row per
+  # cycle, exactly as before.
   start_dfr <- tibble::tibble(
     code = c(nhanes_table, paste0(nhanes_table, "_", table_suffixes)),
+    alt_code = c(
+      paste0(nhanes_table, "_A"),
+      rep(NA_character_, length(table_suffixes))
+    ),
     year = c(seq(1999, 2017, by = 2), seq(2021, 2029, by = 2))
   )
 
@@ -168,6 +178,16 @@ pull_nhanes <- function(nhanes_table, selected_variables = NULL, save = FALSE) {
     code <- start_dfr$code[i]
     yr <- start_dfr$year[i]
 
+    # 2026-10-22: Candidate file names for this cycle, in priority order.
+    # Every cycle has exactly one except 1999-2000, which adds the "_A"
+    # fallback. The first candidate that returns data wins, so a table that
+    # has both a bare and an "_A" 1999 file uses the bare one and never
+    # fetches or binds the other. A cycle therefore can never be bound
+    # twice. The extra request only happens when the bare name returns
+    # nothing, so tables with a real bare 1999 file cost no extra fetch.
+    candidate_codes <- c(code, start_dfr$alt_code[i])
+    candidate_codes <- candidate_codes[!is.na(candidate_codes)]
+
     message(sprintf("Processing NHANES data for year: %s", yr))
 
     # Retry on errors (network failures, timeouts) but NOT on NULL
@@ -179,25 +199,44 @@ pull_nhanes <- function(nhanes_table, selected_variables = NULL, save = FALSE) {
     data <- NULL
     last_error <- NULL
 
-    for (attempt in seq_len(max_retries)) {
-      result <- tryCatch(
-        list(data = nhanesA::nhanes(code), ok = TRUE),
-        error = function(e) list(data = NULL, ok = FALSE, msg = e$message)
-      )
+    for (cand in candidate_codes) {
+      for (attempt in seq_len(max_retries)) {
+        result <- tryCatch(
+          list(data = nhanesA::nhanes(cand), ok = TRUE),
+          error = function(e) list(data = NULL, ok = FALSE, msg = e$message)
+        )
 
-      if (result$ok) {
-        data <- result$data
-        break
+        if (result$ok) {
+          data <- result$data
+          # Clear a carried-over error only when this candidate actually
+          # returned data. A clean NULL from the "_A" fallback says nothing
+          # about whether the bare name was reachable, so clearing on NULL
+          # would let a genuine fetch failure on candidate 1 be reported as
+          # "cycle not available" and escape skipped_cycles entirely. That
+          # is the silent-truncation path that caused #24.
+          if (!is.null(data)) {
+            last_error <- NULL
+          }
+          break
+        }
+
+        # Only retry on actual errors (network, timeout, etc.)
+        last_error <- result$msg
+        if (attempt < max_retries) {
+          message(sprintf(
+            "  Attempt %d/%d errored for %s: %s. Retrying in %ds...",
+            attempt, max_retries, cand, last_error, retry_delay
+          ))
+          Sys.sleep(retry_delay)
+        }
       }
 
-      # Only retry on actual errors (network, timeout, etc.)
-      last_error <- result$msg
-      if (attempt < max_retries) {
-        message(sprintf(
-          "  Attempt %d/%d errored for %s: %s. Retrying in %ds...",
-          attempt, max_retries, code, last_error, retry_delay
-        ))
-        Sys.sleep(retry_delay)
+      if (!is.null(data)) {
+        if (!identical(cand, code)) {
+          message(sprintf("  Resolved year %s via %s", yr, cand))
+          code <- cand
+        }
+        break
       }
     }
 

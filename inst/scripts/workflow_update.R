@@ -24,7 +24,7 @@
 
 # Source internal data processing functions
 # These are not part of the user-facing package API and live in inst/scripts/
-source("inst/scripts/pull_nhanes.R")  # Provides pull_nhanes() and helpers
+source("inst/scripts/pull_nhanes.R") # Provides pull_nhanes() and helpers
 
 # Helper function: Create category-based batches
 create_category_batches <- function(config, max_batch_size = 50) {
@@ -142,7 +142,7 @@ verify_r2_upload <- function(dataset_name, original_data, dataset_category = NUL
       },
       error = function(e) {
         if (attempt < max_attempts) {
-          Sys.sleep(10)  # Wait 10 seconds before retry
+          Sys.sleep(10) # Wait 10 seconds before retry
           NULL
         } else {
           return(list(
@@ -187,9 +187,11 @@ verify_r2_upload <- function(dataset_name, original_data, dataset_category = NUL
   checks$col_names <- if (names_match) {
     "Column names: match"
   } else {
-    sprintf("Column names: mismatch (missing: %s, extra: %s)",
-            paste(setdiff(orig_names, down_names), collapse = ", "),
-            paste(setdiff(down_names, orig_names), collapse = ", "))
+    sprintf(
+      "Column names: mismatch (missing: %s, extra: %s)",
+      paste(setdiff(orig_names, down_names), collapse = ", "),
+      paste(setdiff(down_names, orig_names), collapse = ", ")
+    )
   }
   if (!names_match) all_passed <- FALSE
 
@@ -199,8 +201,10 @@ verify_r2_upload <- function(dataset_name, original_data, dataset_category = NUL
   checks$required_cols <- if (has_required) {
     "Required columns (year, seqn): present"
   } else {
-    sprintf("Required columns: missing %s",
-            paste(setdiff(required_cols, down_names), collapse = ", "))
+    sprintf(
+      "Required columns: missing %s",
+      paste(setdiff(required_cols, down_names), collapse = ", ")
+    )
   }
   if (!has_required) all_passed <- FALSE
 
@@ -224,6 +228,10 @@ verify_r2_upload <- function(dataset_name, original_data, dataset_category = NUL
 args <- commandArgs(trailingOnly = TRUE)
 dry_run <- "--dry-run" %in% args
 sample_mode <- "--sample" %in% args
+# Permit a build that loses rows, cycles, or columns relative to the
+# previous build. Off by default: a shrinking dataset is a failed pull
+# far more often than it is a genuine CDC retraction.
+allow_shrink <- "--allow-shrink" %in% args
 specific_datasets <- NULL
 batch_number <- NULL
 
@@ -458,276 +466,348 @@ for (batch_idx in seq_along(batches)) {
     dataset_desc <- current_batch$description[i]
     dataset_category <- current_batch$category[i]
 
-  cli_h3("{i}/{nrow(config)}: {toupper(dataset_name)}")
-  cli_alert_info("Description: {dataset_desc}")
+    cli_h3("{i}/{nrow(config)}: {toupper(dataset_name)}")
+    cli_alert_info("Description: {dataset_desc}")
 
-  summary$datasets_processed <- summary$datasets_processed + 1
+    summary$datasets_processed <- summary$datasets_processed + 1
 
-  # Step 1: Pull data from CDC
-  cli_alert("Pulling data from CDC servers...")
+    # Step 1: Pull data from CDC
+    cli_alert("Pulling data from CDC servers...")
 
-  dataset_obj <- tryCatch(
-    {
-      pull_nhanes(dataset_name, save = TRUE)
-    },
-    error = function(e) {
-      err_msg <- conditionMessage(e)
+    dataset_obj <- tryCatch(
+      {
+        pull_nhanes(dataset_name, save = TRUE)
+      },
+      error = function(e) {
+        err_msg <- conditionMessage(e)
 
-      # Categorize error types
-      is_incompatible <- grepl("seqn.*not found|year.*not found", err_msg, ignore.case = TRUE)
+        # Categorize error types
+        is_incompatible <- grepl("seqn.*not found|year.*not found", err_msg, ignore.case = TRUE)
 
-      if (is_incompatible) {
-        error_type <- "incompatible structure (reference table, not participant data)"
-        cli_alert_warning("Skipping {dataset_name}: {error_type}")
-        summary$datasets_incompatible <<- summary$datasets_incompatible + 1
-        summary$incompatible_datasets <<- c(summary$incompatible_datasets, dataset_name)
-      } else {
-        error_type <- if (grepl("timeout|timed out", err_msg, ignore.case = TRUE)) {
-          "network timeout"
-        } else if (grepl("connection|socket", err_msg, ignore.case = TRUE)) {
-          "connection error"
+        if (is_incompatible) {
+          error_type <- "incompatible structure (reference table, not participant data)"
+          cli_alert_warning("Skipping {dataset_name}: {error_type}")
+          summary$datasets_incompatible <<- summary$datasets_incompatible + 1
+          summary$incompatible_datasets <<- c(summary$incompatible_datasets, dataset_name)
         } else {
-          "pull error"
+          error_type <- if (grepl("timeout|timed out", err_msg, ignore.case = TRUE)) {
+            "network timeout"
+          } else if (grepl("connection|socket", err_msg, ignore.case = TRUE)) {
+            "connection error"
+          } else {
+            "pull error"
+          }
+          cli_alert_danger("Failed to pull {dataset_name}: {error_type}")
+          cli_alert_info("Error details: {err_msg}")
+          summary$datasets_failed <<- summary$datasets_failed + 1
+          summary$failed_datasets <<- c(summary$failed_datasets, dataset_name)
         }
-        cli_alert_danger("Failed to pull {dataset_name}: {error_type}")
-        cli_alert_info("Error details: {err_msg}")
-        summary$datasets_failed <<- summary$datasets_failed + 1
-        summary$failed_datasets <<- c(summary$failed_datasets, dataset_name)
+
+        # Return list with error info for logging
+        list(error = TRUE, type = error_type, message = err_msg, incompatible = is_incompatible)
       }
+    )
 
-      # Return list with error info for logging
-      list(error = TRUE, type = error_type, message = err_msg, incompatible = is_incompatible)
+    if (is.list(dataset_obj) && isTRUE(dataset_obj$error)) {
+      log_dataset(
+        log_file,
+        dataset_name,
+        if (isTRUE(dataset_obj$incompatible)) "incompatible" else "failed",
+        dataset_obj$type,
+        uploaded = FALSE
+      )
+      cli_rule()
+      closeAllConnections()
+      next
     }
-  )
 
-  if (is.list(dataset_obj) && isTRUE(dataset_obj$error)) {
-    log_dataset(
-      log_file,
-      dataset_name,
-      if (isTRUE(dataset_obj$incompatible)) "incompatible" else "failed",
-      dataset_obj$type,
-      uploaded = FALSE
+    if (is.null(dataset_obj)) {
+      log_dataset(log_file, dataset_name, "failed", "unknown error", uploaded = FALSE)
+      cli_rule()
+      closeAllConnections()
+      next
+    }
+
+    # Check for empty dataset (no data available in any cycle)
+    if (nrow(dataset_obj) == 0) {
+      cli_alert_warning("No data available for {dataset_name} in any cycle - skipping")
+      log_dataset(log_file, dataset_name, "skipped", "no data available", uploaded = FALSE)
+      cli_rule()
+      closeAllConnections()
+      next
+    }
+
+    cli_alert_success("Downloaded {scales::comma(nrow(dataset_obj))} rows")
+
+    # Check for skipped cycles (transient CDC API failures)
+    skipped <- attr(dataset_obj, "skipped_cycles")
+    if (!is.null(skipped) && length(skipped) > 0) {
+      summary$datasets_skipped_cycles <- summary$datasets_skipped_cycles + 1
+      summary$skipped_cycle_details[[dataset_name]] <- skipped
+      cli_alert_danger(paste0(
+        "SKIPPING upload for {dataset_name}: ",
+        "{length(skipped)} cycle(s) failed after retries: ",
+        "{paste(skipped, collapse = ', ')}"
+      ))
+      cli_alert_warning(paste0(
+        "Data may be incomplete. Will not overwrite R2 ",
+        "with potentially missing cycles."
+      ))
+      log_dataset(
+        log_file,
+        dataset_name,
+        "skipped_cycles",
+        sprintf("missing cycles: %s", paste(skipped, collapse = ", ")),
+        uploaded = FALSE
+      )
+      cli_rule()
+      closeAllConnections()
+      next
+    }
+
+    # Step 2: Check if data has changed (hash data, not file)
+    checksums_file <- ".checksums.json"
+
+    cli_alert("Checking for changes...")
+    # Detect data changes via data hashing (pre-Parquet)
+    json_ok <- requireNamespace("jsonlite", quietly = TRUE)
+    digest_ok <- requireNamespace("digest", quietly = TRUE)
+    if (!json_ok || !digest_ok) {
+      stop(
+        "Packages 'jsonlite' and 'digest' are required. ",
+        "Install with: install.packages(c('jsonlite', 'digest'))",
+        call. = FALSE
+      )
+    }
+
+    # Sort data for deterministic hashing
+    dataset_sorted <- dataset_obj |>
+      dplyr::arrange(year, seqn)
+
+    # Hash the sorted tibble (pre-Parquet)
+    new_hash <- digest::digest(dataset_sorted, algo = "md5")
+
+    # Load stored hashes
+    checksums <- if (file.exists(checksums_file)) {
+      jsonlite::read_json(checksums_file, simplifyVector = TRUE)
+    } else {
+      list()
+    }
+
+    # Coverage record for this build. Stored alongside the hash so the next
+    # build can tell "this dataset changed" from "this dataset lost data".
+    new_coverage <- list(
+      hash = new_hash,
+      rows = nrow(dataset_obj),
+      years = sort(unique(dataset_obj$year)),
+      cols = sort(names(dataset_obj))
     )
-    cli_rule()
-    closeAllConnections()
-    next
-  }
 
-  if (is.null(dataset_obj)) {
-    log_dataset(log_file, dataset_name, "failed", "unknown error", uploaded = FALSE)
-    cli_rule()
-    closeAllConnections()
-    next
-  }
+    # Entries written before coverage tracking are a bare hash string.
+    stored_entry <- checksums[[dataset_name]]
+    stored_hash <- if (is.list(stored_entry)) stored_entry$hash else stored_entry
+    prev <- if (is.list(stored_entry)) stored_entry else NULL
 
-  # Check for empty dataset (no data available in any cycle)
-  if (nrow(dataset_obj) == 0) {
-    cli_alert_warning("No data available for {dataset_name} in any cycle - skipping")
-    log_dataset(log_file, dataset_name, "skipped", "no data available", uploaded = FALSE)
-    cli_rule()
-    closeAllConnections()
-    next
-  }
+    # ---------------------------------------------------------------------
+    # Regression gate
+    #
+    # A pull that silently drops a cycle still hashes cleanly, still
+    # round-trips through verify_r2_upload(), and still looks like an
+    # ordinary "CHANGED" result. Comparing against the previous build's
+    # coverage is the only check that catches it.
+    # ---------------------------------------------------------------------
+    if (!is.null(prev) && !is.null(prev$rows)) {
+      lost_rows <- new_coverage$rows < prev$rows
+      lost_years <- !all(prev$years %in% new_coverage$years)
+      lost_cols <- !all(prev$cols %in% new_coverage$cols)
 
-  cli_alert_success("Downloaded {scales::comma(nrow(dataset_obj))} rows")
+      if (lost_rows || lost_years || lost_cols) {
+        reasons <- c(
+          if (lost_rows) {
+            sprintf("rows %s -> %s", prev$rows, new_coverage$rows)
+          },
+          if (lost_years) {
+            sprintf(
+              "cycles lost: %s",
+              paste(setdiff(prev$years, new_coverage$years), collapse = ", ")
+            )
+          },
+          if (lost_cols) {
+            sprintf(
+              "columns lost: %s",
+              paste(setdiff(prev$cols, new_coverage$cols), collapse = ", ")
+            )
+          }
+        )
+        detail <- paste(reasons, collapse = "; ")
 
-  # Check for skipped cycles (transient CDC API failures)
-  skipped <- attr(dataset_obj, "skipped_cycles")
-  if (!is.null(skipped) && length(skipped) > 0) {
-    summary$datasets_skipped_cycles <- summary$datasets_skipped_cycles + 1
-    summary$skipped_cycle_details[[dataset_name]] <- skipped
-    cli_alert_danger(paste0(
-      "SKIPPING upload for {dataset_name}: ",
-      "{length(skipped)} cycle(s) failed after retries: ",
-      "{paste(skipped, collapse = ', ')}"
-    ))
-    cli_alert_warning(paste0(
-      "Data may be incomplete. Will not overwrite R2 ",
-      "with potentially missing cycles."
-    ))
-    log_dataset(
-      log_file,
-      dataset_name,
-      "skipped_cycles",
-      sprintf("missing cycles: %s", paste(skipped, collapse = ", ")),
-      uploaded = FALSE
-    )
-    cli_rule()
-    closeAllConnections()
-    next
-  }
-
-  # Step 2: Check if data has changed (hash data, not file)
-  checksums_file <- ".checksums.json"
-
-  cli_alert("Checking for changes...")
-  # Detect data changes via data hashing (pre-Parquet)
-  json_ok <- requireNamespace("jsonlite", quietly = TRUE)
-  digest_ok <- requireNamespace("digest", quietly = TRUE)
-  if (!json_ok || !digest_ok) {
-    stop(
-      "Packages 'jsonlite' and 'digest' are required. ",
-      "Install with: install.packages(c('jsonlite', 'digest'))",
-      call. = FALSE
-    )
-  }
-
-  # Sort data for deterministic hashing
-  dataset_sorted <- dataset_obj |>
-    dplyr::arrange(year, seqn)
-
-  # Hash the sorted tibble (pre-Parquet)
-  new_hash <- digest::digest(dataset_sorted, algo = "md5")
-
-  # Load stored hashes
-  checksums <- if (file.exists(checksums_file)) {
-    jsonlite::read_json(checksums_file, simplifyVector = TRUE)
-  } else {
-    list()
-  }
-
-  stored_hash <- checksums[[dataset_name]]
-
-  has_changed <- if (is.null(stored_hash)) {
-    message(sprintf("%s: NEW dataset (no previous hash)", dataset_name))
-    TRUE
-  } else if (new_hash != stored_hash) {
-    message(sprintf("%s: CHANGED (data hash mismatch)", dataset_name))
-    TRUE
-  } else {
-    message(sprintf("%s: UNCHANGED (data hash match)", dataset_name))
-    FALSE
-  }
-
-  if (has_changed) {
-    summary$datasets_changed <- summary$datasets_changed + 1
-    summary$changed_datasets <- c(summary$changed_datasets, dataset_name)
-
-    # Step 3: Upload to R2 (if not dry run)
-    if (!dry_run) {
-      cli_alert("Uploading to R2 bucket...")
-
-      upload_success <- tryCatch(
-        {
-          nhanesdata:::nhanes_r2_upload(
-            x = dataset_obj,
-            name = dataset_name,
-            bucket = "nhanes-data"
+        if (allow_shrink) {
+          cli_alert_warning(
+            "{dataset_name}: regression vs previous build ({detail}) - proceeding (--allow-shrink)"
           )
-          TRUE
-        },
-        error = function(e) {
-          cli_alert_danger("R2 upload failed: {conditionMessage(e)}")
+        } else {
           summary$datasets_failed <- summary$datasets_failed + 1
           summary$failed_datasets <- c(summary$failed_datasets, dataset_name)
-          FALSE
-        }
-      )
-
-      if (upload_success) {
-        summary$datasets_uploaded <- summary$datasets_uploaded + 1
-        cli_alert_success("Uploaded to R2")
-
-        # Verify upload integrity (only during live uploads)
-        if (!dry_run) {
-          cli_alert_info("Verifying upload integrity...")
-          verify_result <- verify_r2_upload(
-            dataset_name = dataset_name,
-            original_data = dataset_obj,
-            dataset_category = dataset_category,
-            log_file = log_file
+          cli_alert_danger(
+            "BLOCKED upload for {dataset_name}: regression vs previous build"
           )
+          cli_alert_warning("{detail}")
+          cli_alert_info(
+            "Re-run with --allow-shrink only if CDC genuinely withdrew data."
+          )
+          log_dataset(
+            log_file, dataset_name, "blocked",
+            sprintf("regression: %s", detail),
+            uploaded = FALSE
+          )
+          cli_rule()
+          closeAllConnections()
+          next
+        }
+      }
+    }
 
-          if (!verify_result$success) {
-            cli_alert_danger("Verification FAILED: {verify_result$details}")
+    has_changed <- if (is.null(stored_hash)) {
+      message(sprintf("%s: NEW dataset (no previous hash)", dataset_name))
+      TRUE
+    } else if (new_hash != stored_hash) {
+      message(sprintf("%s: CHANGED (data hash mismatch)", dataset_name))
+      TRUE
+    } else {
+      message(sprintf("%s: UNCHANGED (data hash match)", dataset_name))
+      FALSE
+    }
+
+    if (has_changed) {
+      summary$datasets_changed <- summary$datasets_changed + 1
+      summary$changed_datasets <- c(summary$changed_datasets, dataset_name)
+
+      # Step 3: Upload to R2 (if not dry run)
+      if (!dry_run) {
+        cli_alert("Uploading to R2 bucket...")
+
+        upload_success <- tryCatch(
+          {
+            nhanesdata:::nhanes_r2_upload(
+              x = dataset_obj,
+              name = dataset_name,
+              bucket = "nhanes-data"
+            )
+            TRUE
+          },
+          error = function(e) {
+            cli_alert_danger("R2 upload failed: {conditionMessage(e)}")
+            summary$datasets_failed <- summary$datasets_failed + 1
+            summary$failed_datasets <- c(summary$failed_datasets, dataset_name)
+            FALSE
+          }
+        )
+
+        if (upload_success) {
+          summary$datasets_uploaded <- summary$datasets_uploaded + 1
+          cli_alert_success("Uploaded to R2")
+
+          # Verify upload integrity (only during live uploads)
+          if (!dry_run) {
+            cli_alert_info("Verifying upload integrity...")
+            verify_result <- verify_r2_upload(
+              dataset_name = dataset_name,
+              original_data = dataset_obj,
+              dataset_category = dataset_category,
+              log_file = log_file
+            )
+
+            if (!verify_result$success) {
+              cli_alert_danger("Verification FAILED: {verify_result$details}")
+              log_dataset(
+                log_file,
+                dataset_name,
+                "verification_failed",
+                verify_result$details,
+                uploaded = FALSE
+              )
+              stop(sprintf("Upload verification failed for %s. Halting workflow.", dataset_name),
+                call. = FALSE
+              )
+            }
+
+            cli_alert_success("Verification passed: {verify_result$checks_passed}")
             log_dataset(
               log_file,
               dataset_name,
-              "verification_failed",
-              verify_result$details,
-              uploaded = FALSE
+              "verified",
+              verify_result$checks_passed,
+              uploaded = TRUE
             )
-            stop(sprintf("Upload verification failed for %s. Halting workflow.", dataset_name),
-                 call. = FALSE)
           }
 
-          cli_alert_success("Verification passed: {verify_result$checks_passed}")
+          # Step 4: Update data hash for this dataset
+          checksums <- if (file.exists(checksums_file)) {
+            jsonlite::read_json(checksums_file, simplifyVector = TRUE)
+          } else {
+            list()
+          }
+
+          checksums[[dataset_name]] <- new_coverage
+          checksums <- checksums[sort(names(checksums))]
+
+          jsonlite::write_json(
+            checksums,
+            checksums_file,
+            pretty = TRUE,
+            auto_unbox = TRUE
+          )
+
+          message(sprintf("Updated data hash for %s", dataset_name))
           log_dataset(
             log_file,
             dataset_name,
-            "verified",
-            verify_result$checks_passed,
+            "changed",
+            if (is.null(stored_hash)) "new dataset" else "data hash mismatch",
             uploaded = TRUE
           )
-        }
-
-        # Step 4: Update data hash for this dataset
-        checksums <- if (file.exists(checksums_file)) {
-          jsonlite::read_json(checksums_file, simplifyVector = TRUE)
         } else {
-          list()
+          log_dataset(
+            log_file,
+            dataset_name,
+            "failed",
+            "R2 upload failed",
+            uploaded = FALSE
+          )
         }
-
-        checksums[[dataset_name]] <- new_hash
-        checksums <- checksums[sort(names(checksums))]
-
-        jsonlite::write_json(
-          checksums,
-          checksums_file,
-          pretty = TRUE,
-          auto_unbox = TRUE
-        )
-
-        message(sprintf("Updated data hash for %s", dataset_name))
+      } else {
+        cli_alert_warning("SKIPPED upload (dry run mode)")
         log_dataset(
           log_file,
           dataset_name,
           "changed",
           if (is.null(stored_hash)) "new dataset" else "data hash mismatch",
-          uploaded = TRUE
-        )
-      } else {
-        log_dataset(
-          log_file,
-          dataset_name,
-          "failed",
-          "R2 upload failed",
           uploaded = FALSE
         )
       }
     } else {
-      cli_alert_warning("SKIPPED upload (dry run mode)")
+      summary$datasets_unchanged <- summary$datasets_unchanged + 1
+      cli_alert_info("No changes detected - skipping upload")
       log_dataset(
         log_file,
         dataset_name,
-        "changed",
-        if (is.null(stored_hash)) "new dataset" else "data hash mismatch",
+        "unchanged",
+        "data hash match",
         uploaded = FALSE
       )
     }
-  } else {
-    summary$datasets_unchanged <- summary$datasets_unchanged + 1
-    cli_alert_info("No changes detected - skipping upload")
-    log_dataset(
-      log_file,
-      dataset_name,
-      "unchanged",
-      "data hash match",
-      uploaded = FALSE
-    )
-  }
 
-  cli_rule()
+    cli_rule()
 
-  # Aggressive memory cleanup after each dataset
-  # Close any lingering connections to avoid R's 128 connection limit
-  closeAllConnections()
-  # Force garbage collection to free memory
-  gc(verbose = FALSE, full = TRUE)
-  # Remove large objects from workspace
-  if (exists("dataset_obj")) rm(dataset_obj)
-  if (exists("dataset_sorted")) rm(dataset_sorted)
-  if (exists("parquet_temp")) rm(parquet_temp)
+    # Aggressive memory cleanup after each dataset
+    # Close any lingering connections to avoid R's 128 connection limit
+    closeAllConnections()
+    # Force garbage collection to free memory
+    gc(verbose = FALSE, full = TRUE)
+    # Remove large objects from workspace
+    if (exists("dataset_obj")) rm(dataset_obj)
+    if (exists("dataset_sorted")) rm(dataset_sorted)
+    if (exists("parquet_temp")) rm(parquet_temp)
   }
 
   # Add delay between batches to avoid CDC rate limiting
