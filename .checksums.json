@@ -1702,15 +1702,15 @@
     "cols": ["lbdtcsi", "lbxtc", "seqn", "wtph2yr", "year"]
   },
   "telo": {
-    "hash": "898f1d78234ecf4880ebda7768bf72a0",
-    "rows": 4269,
-    "years": 2001,
+    "hash": "7296fafb7e9576d956dd6e117e3d902c",
+    "rows": 7839,
+    "years": [1999, 2001],
     "cols": ["seqn", "telomean", "telostd", "year"]
   },
   "tfa": {
-    "hash": "7a59cfb996052ac9d3cfe7f4fd49b004",
-    "rows": 5423,
-    "years": 2009,
+    "hash": "0184464680b66a9ddb4c5cb6d6def227",
+    "rows": 9682,
+    "years": [1999, 2009],
     "cols": ["lbdhdtlc", "lbdod1lc", "lbdod9lc", "lbdottlc", "lbxhdt", "lbxod1", "lbxod9", "lbxott", "seqn", "wttfa2yr", "year"]
   },
   "tfr": {
