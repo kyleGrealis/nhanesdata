@@ -1,0 +1,210 @@
+# nhanesdata
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/nhanesdata)](https://CRAN.R-project.org/package=nhanesdata)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/nhanesdata)](https://cran.r-project.org/package=nhanesdata)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/nhanesdata)](https://cran.r-project.org/package=nhanesdata)
+
+The National Health and Nutrition Examination Survey (NHANES) is one of
+the most comprehensive public health datasets available, spanning over
+two decades of U.S. health data. But working with it has been
+frustrating. If you’ve tried using NHANES before, you’ve likely hit two
+major problems: (1) CDC server reliability issues that break
+reproducible research, and (2) cycle suffix confusion, where finding
+`DEMO`, `DEMO_B`, `DEMO_C`, all the way through `DEMO_L` makes data
+discovery a scavenger hunt.
+
+**nhanesdata** solves both problems. All datasets are hosted on reliable
+cloud storage with fast access, and all survey cycles are already
+merged. Just use `read_nhanes("demo")` and you get demographics data
+from 1999-2023 with a `year` column tracking which cycle each
+observation belongs to. No CDC server timeouts, no suffix confusion.
+
+> All processed datasets are publicly available at
+> `https://nhanes.kylegrealis.com/` with no authentication required.
+
+## Acknowledgments
+
+This package builds on the
+[**nhanesA**](https://cran.r-project.org/package=nhanesA) package, which
+provides the foundation for accessing NHANES data through R.
+
+## Installation
+
+``` r
+
+# From CRAN (submitted for approval Feb. 18, 2026)
+install.packages("nhanesdata")
+
+# Development version from GitHub
+pak::pak("kyleGrealis/nhanesdata")
+```
+
+## Quick Start
+
+``` r
+
+library(nhanesdata)
+
+# Load any dataset (case-insensitive)
+demo   <- read_nhanes("demo")    # Demographics
+bpx    <- read_nhanes("BPX")     # Blood pressure
+trigly <- read_nhanes("TRIGLY")   # Triglycerides
+
+# Search for variables
+term_search("diabetes") # By keyword
+var_search("RIDAGEYR")  # By variable name
+
+# Get CDC documentation
+get_url("DEMO_J")
+```
+
+All datasets include a `year` column (survey cycle start year) and
+`seqn` (participant ID). Join datasets on both columns:
+
+``` r
+
+library(dplyr)
+
+analysis <- read_nhanes("demo") |>
+  inner_join(read_nhanes("bpx"), by = c("seqn", "year"))
+```
+
+## Functions
+
+| Function | Purpose |
+|----|----|
+| [`read_nhanes()`](https://www.kylegrealis.com/nhanesdata/dev/reference/read_nhanes.md) | Load a pre-merged NHANES dataset from cloud storage |
+| [`create_design()`](https://www.kylegrealis.com/nhanesdata/dev/reference/create_design.md) | Create survey design objects with proper weighting for multiple cycles |
+| [`term_search()`](https://www.kylegrealis.com/nhanesdata/dev/reference/term_search.md) | Search variables by keyword or phrase |
+| [`var_search()`](https://www.kylegrealis.com/nhanesdata/dev/reference/var_search.md) | Search variables by exact name |
+| [`get_url()`](https://www.kylegrealis.com/nhanesdata/dev/reference/get_url.md) | Get CDC codebook URL for a specific table |
+
+All functions are case-insensitive.
+
+## Available Datasets
+
+All standard NHANES datasets are included, except:
+
+- Surplus samples (requires special access)
+- Pooled samples (different analysis requirements)
+- Special samples (limited availability)
+- 2019-2020 cycle data (COVID-19 disruption)
+
+Categories include:
+
+- **Questionnaire/Interview:** Demographics, health conditions,
+  lifestyle factors, dietary data
+- **Examination:** Physical measurements, body composition,
+  cardiovascular fitness
+- **Laboratory:** Biomarkers, environmental chemicals, infectious
+  disease serology, nutritional status
+- **Dietary:** Dietary recall, supplement use, food frequency
+  questionnaires
+
+See the [dataset
+catalog](https://www.kylegrealis.com/nhanesdata/articles/the-datasets.html)
+for the complete list, or browse `inst/extdata/datasets.yml` in the
+source.
+
+## Data Quality
+
+Every dataset’s categorical variable labels were cross-validated against
+CDC codebooks for each individual survey cycle (1999–2023). Out of 327
+audited datasets, only one required a label correction (CDQ
+cardiovascular questionnaire, 2001 cycle). The **CB** column in the
+[dataset
+catalog](https://www.kylegrealis.com/nhanesdata/articles/the-datasets.html)
+indicates each dataset’s validation status.
+
+## Important Notes
+
+- The **2019-2020 survey cycle** (suffix K) is excluded due to COVID-19
+  data collection disruptions. See
+  [`vignette("covid-data-exclusion")`](https://www.kylegrealis.com/nhanesdata/dev/articles/covid-data-exclusion.md)
+  for details.
+- Variable names match CDC documentation. Always verify definitions with
+  [`get_url()`](https://www.kylegrealis.com/nhanesdata/dev/reference/get_url.md)
+  since variable usage may differ across cycles.
+- Data types are automatically harmonized across cycles (integer
+  vs. double, factor vs. character).
+
+## Direct Access (Without the Package)
+
+``` r
+
+library(arrow)
+demo <- arrow::read_parquet("https://nhanes.kylegrealis.com/demo.parquet")
+```
+
+This works from any language with Arrow support. Dataset names in URLs
+are lowercase.
+
+## Getting Help
+
+- **Documentation:**
+  [`?read_nhanes`](https://www.kylegrealis.com/nhanesdata/dev/reference/read_nhanes.md),
+  `browseVignettes("nhanesdata")`
+- **Bug reports:** [GitHub
+  Issues](https://github.com/kyleGrealis/nhanesdata/issues)
+- **CDC NHANES:** [nhanes.cdc.gov](https://www.cdc.gov/nchs/nhanes/)
+
+## Related Packages
+
+- [**nhanesA**](https://cran.r-project.org/package=nhanesA): Direct
+  interface to the NHANES API
+- [**survey**](https://cran.r-project.org/package=survey): Complex
+  survey analysis with proper weighting
+- [**srvyr**](https://cran.r-project.org/package=srvyr): Tidy survey
+  analysis using **dplyr** syntax
+- [**gtsummary**](https://cran.r-project.org/package=gtsummary):
+  Publication-ready summary tables
+- [**sumExtras**](https://www.kylegrealis.com/sumExtras): Extended
+  summary statistics and helpers
+
+## License
+
+NHANES data is public domain (U.S. government). This processing code is
+MIT licensed.
+
+# Package index
+
+## Load Data
+
+Access pre-processed NHANES datasets from cloud storage.
+
+- [`read_nhanes()`](https://www.kylegrealis.com/nhanesdata/dev/reference/read_nhanes.md)
+  : Read NHANES Data from Cloud Storage
+
+## Survey Design
+
+Create survey design objects with proper weighting for NHANES analyses.
+
+- [`create_design()`](https://www.kylegrealis.com/nhanesdata/dev/reference/create_design.md)
+  : Calculate survey design weight within a NHANES dataset
+
+## Search & Discovery
+
+Find variables and documentation across NHANES datasets.
+
+- [`term_search()`](https://www.kylegrealis.com/nhanesdata/dev/reference/term_search.md)
+  : Search NHANES Variables by Term or Phrase
+- [`var_search()`](https://www.kylegrealis.com/nhanesdata/dev/reference/var_search.md)
+  : Search for NHANES Variable by Exact Name
+- [`get_url()`](https://www.kylegrealis.com/nhanesdata/dev/reference/get_url.md)
+  : Get CDC Documentation URL for NHANES Table
+
+# Articles
+
+### Get Started
+
+- [Getting Started with NHANES
+  Data](https://www.kylegrealis.com/nhanesdata/dev/articles/getting-started.md):
+- [Available NHANES
+  Datasets](https://www.kylegrealis.com/nhanesdata/dev/articles/the-datasets.md):
+- [COVID-19 and the 2019-2020 NHANES
+  Cycle](https://www.kylegrealis.com/nhanesdata/dev/articles/covid-data-exclusion.md):
+- [Creating Survey Design
+  Objects](https://www.kylegrealis.com/nhanesdata/dev/articles/survey-design.md):
