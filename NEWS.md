@@ -19,7 +19,26 @@
   No action is needed to pick up the fix: data is served independently
   of the installed package version.
 
+* The `telo` and `tfa` datasets are missing their 1999-2000 cycle. CDC
+  publishes those two files as `TELO_A` and `TFA_A`, and the data pull
+  only ever tried the bare 1999 name, so the cycle was never fetched.
+  `read_nhanes("telo")` returns 4,269 rows (2001 only) against 7,839
+  available, and `read_nhanes("tfa")` returns 5,423 rows (2009 only)
+  against 9,682 available. The pull loop is fixed; the rebuild of both
+  datasets is still pending (#25). No other dataset is affected: the
+  remaining 24 `_A` files for 1999-2000 are `SS*` surplus-specimen
+  tables that this package does not publish.
+
 ## Internal
+
+* `pull_nhanes()` now tries a second file name for the 1999-2000 cycle.
+  Most 1999-2000 tables are published bare (`DEMO`, `BMX`) but a few
+  carry an `_A` suffix, so the cycle enumeration gained an `alt_code`
+  column holding `<NAME>_A` on the 1999 row only. The bare name is tried
+  first and the first candidate returning data wins, so a table with
+  both spellings uses the bare file and a cycle can never be bound
+  twice. Cycle-to-year alignment is unchanged, and tables with a real
+  bare 1999 file cost no extra request (#25).
 
 * The data update workflow now records per-dataset coverage (row count,
   survey cycles, and column names) alongside the existing hash, and
